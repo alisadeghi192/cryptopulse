@@ -1,1 +1,69 @@
 @import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Orbitron", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Brand Colors — Updated */
+  --color-background: #0f1218;
+  --color-surface: #161a22;
+  --color-elevated: #1e232d;
+  --color-primary: #f0b90b;
+  --color-primary-hover: #f8d33a;
+  --color-success: #0ecb81;
+  --color-error: #f6465d;
+  --color-text: #f0f2f5;
+  --color-text-secondary: #8b95a5;
+  --color-border: #2d3340;
+
+  /* Border Beam Colors */
+  --beam-color-1: #f0b90b;
+  --beam-color-2: #f6465d;
+  --beam-color-3: #0ecb81;
+
+  /* Border Beam Config */
+  --beam-thickness: 3px;
+  --beam-duration: 8s;
+}
+
+@utility container {
+  @media (width >= 40rem) {
+    max-width: 40rem;
+  }
+  @media (width >= 48rem) {
+    max-width: 48rem;
+  }
+  @media (width >= 64rem) {
+    max-width: 64rem;
+  }
+  @media (width >= 80rem) {
+    max-width: 80rem;
+  }
+  @media (width >= 90rem) {
+    max-width: 90rem;
+  }
+
+  @apply mx-auto w-full px-4 md:px-6;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin-border {
+  to {
+    --angle: 360deg;
+  }
+}
