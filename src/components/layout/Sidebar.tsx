@@ -1,0 +1,150 @@
+import { NavLink } from "react-router";
+import {
+  LayoutDashboard,
+  Star,
+  User,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  X,
+} from "lucide-react";
+import { cn } from "@/utils/cn";
+
+interface SidebarProps {
+  collapsed: boolean;
+  onToggleCollapse: () => void;
+  mobileOpen: boolean;
+  onMobileClose: () => void;
+  isAuthenticated: boolean;
+  onSignOut: () => void;
+}
+
+interface NavItem {
+  label: string;
+  href: string;
+  icon: typeof LayoutDashboard;
+}
+
+const navItems: NavItem[] = [
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Watchlist", href: "/watchlist", icon: Star },
+  { label: "Profile", href: "/profile", icon: User },
+];
+
+export function Sidebar({
+  collapsed,
+  onToggleCollapse,
+  mobileOpen,
+  onMobileClose,
+  isAuthenticated,
+  onSignOut,
+}: SidebarProps) {
+
+
+
+  return (
+    <>
+      {/* Mobile Backdrop */}
+      <div
+        onClick={onMobileClose}
+        className={cn(
+          "fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
+          mobileOpen ? "opacity-100" : "pointer-events-none opacity-0",
+        )}
+        aria-hidden="true"
+      />
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed top-0 bottom-0 left-0 z-50 flex flex-col border-r border-border bg-surface/30 backdrop-blur-xl transition-all duration-300 ease-out",
+          "lg:sticky lg:top-12 lg:z-0 lg:h-[calc(100vh-3rem)] lg:translate-x-0",
+          collapsed ? "lg:w-16" : "lg:w-64",
+          "w-72",
+          mobileOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
+        {/* Mobile Header (Close + Logo) */}
+        <div className="flex h-14 items-center justify-between border-b border-border px-4 lg:hidden">
+          <span className="font-display text-base font-bold tracking-wider text-primary">
+            CryptoPulse
+          </span>
+          <button
+            type="button"
+            onClick={onMobileClose}
+            aria-label="Close sidebar"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-elevated hover:text-text"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Nav Items */}
+        <nav className="flex-1 space-y-1 overflow-y-auto p-3">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <NavLink
+                key={item.href}
+                to={item.href}
+                onClick={onMobileClose}
+                className={({ isActive }) =>
+                  cn(
+                    "group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-elevated text-primary"
+                      : "text-text-secondary hover:bg-elevated hover:text-text",
+                    collapsed && "lg:justify-center lg:px-0",
+                  )
+                }
+              >
+                <Icon className="h-5 w-5 shrink-0" />
+                <span className={cn(collapsed && "lg:hidden")}>
+                  {item.label}
+                </span>
+              </NavLink>
+            );
+          })}
+        </nav>
+
+        {/* Bottom: Sign Out + Collapse */}
+        <div className="space-y-1 border-t border-border p-3">
+          {isAuthenticated && (
+            <button
+              type="button"
+              onClick={onSignOut}
+              className={cn(
+                "flex h-11 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium text-text-secondary transition-colors hover:bg-elevated hover:text-error",
+                collapsed && "lg:justify-center lg:px-0",
+              )}
+            >
+              <LogOut className="h-5 w-5 shrink-0" />
+              <span className={cn(collapsed && "lg:hidden")}>Sign Out</span>
+            </button>
+          )}
+
+          {/* Collapse Toggle (Desktop only) */}
+          <button
+            type="button"
+            onClick={onToggleCollapse}
+            aria-label="Toggle sidebar"
+            className={cn(
+              "hidden h-11 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium text-text-secondary transition-colors hover:bg-elevated hover:text-text lg:flex",
+              collapsed && "lg:justify-center lg:px-0",
+            )}
+          >
+            {collapsed ? (
+              <ChevronRight className="h-5 w-5 shrink-0" />
+            ) : (
+              <>
+                <ChevronLeft className="h-5 w-5 shrink-0" />
+                <span>Collapse</span>
+              </>
+            )}
+          </button>
+        </div>
+      </aside>
+    </>
+  );
+}
