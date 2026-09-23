@@ -37,7 +37,7 @@ export function BorderBeam({
         }}
       />
 
-      <div className="relative rounded-[inherit] backdrop-blur-xl">
+      <div className="relative rounded-[inherit] backdrop-blur-3xl">
         {children}
       </div>
     </div>
