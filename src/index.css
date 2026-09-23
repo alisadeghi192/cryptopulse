@@ -1,29 +1,56 @@
 @import "tailwindcss";
 
-@theme {
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Light Mode — Pure Gray */
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-elevated: #f3f4f6;
+  --color-primary: #ffa000;
+  --color-primary-hover: #f0b90b;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-text: #111827;
+  --color-text-secondary: #4b5563;
+  --color-border: #e5e7eb;
+
   /* Fonts */
   --font-sans: "Inter", system-ui, sans-serif;
   --font-display: "Orbitron", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+}
 
-  /* Brand Colors — Updated */
-  --color-background: #0f1218;
+.dark {
+  /* Dark Mode — Current */
+  --color-background: #0b0e14;
   --color-surface: #161a22;
-  --color-elevated: #1e232d;
-  --color-primary: #f0b90b;
-  --color-primary-hover: #f8d33a;
-  --color-success: #0ecb81;
-  --color-error: #f6465d;
-  --color-text: #f0f2f5;
-  --color-text-secondary: #8b95a5;
-  --color-border: #2d3340;
+  --color-elevated: #1f242c;
+  --color-primary: #ffc107;
+  --color-primary-hover: #f0b90b;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-text: #e8eaed;
+  --color-text-secondary: #8a94a6;
+  --color-border: #252a36;
+}
 
-  /* Border Beam Colors */
-  --beam-color-1: #f0b90b;
-  --beam-color-2: #f6465d;
-  --beam-color-3: #0ecb81;
+@theme inline {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-elevated: var(--color-elevated);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-success: var(--color-success);
+  --color-error: var(--color-error);
+  --color-text: var(--color-text);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-border: var(--color-border);
 
-  /* Border Beam Config */
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
   --beam-thickness: 3px;
   --beam-duration: 8s;
 }
@@ -44,7 +71,6 @@
   @media (width >= 90rem) {
     max-width: 90rem;
   }
-
   @apply mx-auto w-full px-4 md:px-6;
 }
 
@@ -54,6 +80,30 @@ body {
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Custom Scrollbar */
+/* Scrollbar — فقط thumb، بدون track و button */
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track,
+.custom-scroll::-webkit-scrollbar-button,
+.custom-scroll::-webkit-scrollbar-corner {
+  display: none !important;
+  background: transparent !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 9999px;
 }
 
 @property --angle {
