@@ -1,6 +1,7 @@
 import { NavLink } from "react-router";
 import { X } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { Logo } from "../ui/Logo";
 
 interface NavLinkItem {
   label: string;
@@ -28,7 +29,7 @@ export function MobileNavDrawer({
       <div
         onClick={onClose}
         className={cn(
-          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden",
+          "fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-opacity duration-300 md:hidden",
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         aria-hidden="true"
@@ -43,9 +44,7 @@ export function MobileNavDrawer({
       >
         {/* Header */}
         <div className="flex h-14 items-center justify-between border-b border-border px-4">
-          <span className="font-display text-base font-bold tracking-wider text-primary">
-            CryptoPulse
-          </span>
+          <Logo/>
           <button
             type="button"
             onClick={onClose}
@@ -67,8 +66,8 @@ export function MobileNavDrawer({
                 cn(
                   "flex h-11 items-center rounded-lg border px-3 text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "border-primary/30 bg-primary/10 text-primary shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_-1px_0_rgba(240,185,11,0.2),0_0_12px_-4px_rgba(240,185,11,0.4)]"
-                    : "border-transparent text-text-secondary hover:bg-elevated/40 hover:text-text",
+                    ? "border-primary/30 dark:bg-primary/10 bg-white/20 backdrop-blur-3xl text-primary dark:text-primary shadow-[inset_0_3px_6px_rgba(0,0,0,0.6),inset_0_-1px_0_rgba(240,185,11,0.15),inset_0_1px_0_rgba(255,255,255,0.05),0_0_12px_-4px_rgba(240,185,11,0.3)]"
+                    :  "border-transparent text-text dark:hover:bg-elevated/40 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]",
                 )
               }
             >
@@ -92,7 +91,7 @@ export function MobileNavDrawer({
                 <span className="text-sm font-medium text-text">
                   {userName}
                 </span>
-                <span className="text-xs text-text-secondary">
+                <span className="text-xs text-text">
                   View Dashboard
                 </span>
               </div>

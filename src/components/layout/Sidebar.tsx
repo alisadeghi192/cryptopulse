@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink } from 'react-router'
 import {
   LayoutDashboard,
   Star,
@@ -7,29 +7,30 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-} from "lucide-react";
-import { cn } from "@/utils/cn";
+} from 'lucide-react'
+import { cn } from '@/utils/cn'
+import { Logo } from '@/components/ui/Logo'
 
 interface SidebarProps {
-  collapsed: boolean;
-  onToggleCollapse: () => void;
-  mobileOpen: boolean;
-  onMobileClose: () => void;
-  isAuthenticated: boolean;
-  onSignOut: () => void;
+  collapsed: boolean
+  onToggleCollapse: () => void
+  mobileOpen: boolean
+  onMobileClose: () => void
+  isAuthenticated: boolean
+  onSignOut: () => void
 }
 
 interface NavItem {
-  label: string;
-  href: string;
-  icon: typeof LayoutDashboard;
+  label: string
+  href: string
+  icon: typeof LayoutDashboard
 }
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Watchlist", href: "/watchlist", icon: Star },
-  { label: "Profile", href: "/profile", icon: User },
-];
+  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Watchlist', href: '/watchlist', icon: Star },
+  { label: 'Profile', href: '/profile', icon: User },
+]
 
 export function Sidebar({
   collapsed,
@@ -45,8 +46,8 @@ export function Sidebar({
       <div
         onClick={onMobileClose}
         className={cn(
-          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
-          mobileOpen ? "opacity-100" : "pointer-events-none opacity-0",
+          'fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-opacity duration-300 lg:hidden',
+          mobileOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         aria-hidden="true"
       />
@@ -54,18 +55,16 @@ export function Sidebar({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-60 flex flex-col border-r border-border/40 bg-surface/30 backdrop-blur-xl shadow-[8px_0_24px_-4px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out",
-          "lg:sticky lg:top-12 lg:z-0 lg:h-[calc(100vh-3rem)] lg:translate-x-0",
-          collapsed ? "lg:w-16" : "lg:w-64",
-          "w-72",
-          mobileOpen ? "translate-x-0" : "-translate-x-full",
+          'fixed top-0 bottom-0 left-0 z-60 flex flex-col border-r border-border/40 bg-surface/30 backdrop-blur-xl shadow-[8px_0_24px_-4px_rgba(0,0,0,0.5)] md:shadow-xl transition-all duration-300 ease-out',
+          'lg:sticky lg:top-12 lg:z-0 lg:h-[calc(100vh-3rem)] lg:translate-x-0',
+          collapsed ? 'lg:w-16' : 'lg:w-64',
+          'w-72',
+          mobileOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
         {/* Mobile Header (Close + Logo) */}
-        <div className="flex h-14 items-center justify-between border-b border-border/40 px-4 lg:hidden">
-          <span className="font-display text-base font-bold tracking-wider text-primary">
-            CryptoPulse
-          </span>
+        <div className="flex h-14 items-center justify-between border-b border-border px-4 lg:hidden">
+          <Logo />
           <button
             type="button"
             onClick={onMobileClose}
@@ -79,7 +78,7 @@ export function Sidebar({
         {/* Nav Items */}
         <nav className="flex-1 space-y-1 overflow-y-auto p-3">
           {navItems.map((item) => {
-            const Icon = item.icon;
+            const Icon = item.icon
 
             return (
               <NavLink
@@ -88,20 +87,20 @@ export function Sidebar({
                 onClick={onMobileClose}
                 className={({ isActive }) =>
                   cn(
-                    "group flex h-11 items-center gap-3 rounded-lg border px-3 text-sm font-medium transition-all duration-200",
+                    'group flex h-11 items-center gap-3 rounded-lg border px-3 text-sm font-medium transition-all duration-200',
                     isActive
-                      ? "border-primary/30 bg-primary/10 text-primary shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_-1px_0_rgba(240,185,11,0.2),0_0_12px_-4px_rgba(240,185,11,0.4)]"
-                      : "border-transparent text-text-secondary hover:bg-elevated/40 hover:text-text",
-                    collapsed && "lg:justify-center lg:px-0",
+                      ? 'border-primary/30 dark:bg-primary/10 bg-white/20 backdrop-blur-3xl text-primary dark:text-primary shadow-[inset_0_3px_6px_rgba(0,0,0,0.6),inset_0_-1px_0_rgba(240,185,11,0.15),inset_0_1px_0_rgba(255,255,255,0.05),0_0_12px_-4px_rgba(240,185,11,0.3)]'
+                      : 'border-transparent text-text dark:hover:bg-elevated/40 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]',
+                    collapsed && 'lg:justify-center lg:px-0',
                   )
                 }
               >
                 <Icon className="h-5 w-5 shrink-0" />
-                <span className={cn(collapsed && "lg:hidden")}>
+                <span className={cn(collapsed && 'lg:hidden')}>
                   {item.label}
                 </span>
               </NavLink>
-            );
+            )
           })}
         </nav>
 
@@ -112,12 +111,12 @@ export function Sidebar({
               type="button"
               onClick={onSignOut}
               className={cn(
-                "flex h-11 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium text-text-secondary transition-colors hover:bg-elevated hover:text-error",
-                collapsed && "lg:justify-center lg:px-0",
+                'flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium text-text transition-all duration-200 dark:hover:bg-elevated/40 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)] hover:text-error',
+                collapsed && 'lg:justify-center lg:px-0',
               )}
             >
               <LogOut className="h-5 w-5 shrink-0" />
-              <span className={cn(collapsed && "lg:hidden")}>Sign Out</span>
+              <span className={cn(collapsed && 'lg:hidden')}>Sign Out</span>
             </button>
           )}
 
@@ -127,8 +126,8 @@ export function Sidebar({
             onClick={onToggleCollapse}
             aria-label="Toggle sidebar"
             className={cn(
-              "hidden h-11 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium text-text-secondary transition-colors hover:bg-elevated hover:text-text lg:flex",
-              collapsed && "lg:justify-center lg:px-0",
+              'hidden h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium text-text transition-all duration-200 dark:hover:bg-elevated/40 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)] lg:flex',
+              collapsed && 'lg:justify-center lg:px-0',
             )}
           >
             {collapsed ? (
@@ -143,5 +142,5 @@ export function Sidebar({
         </div>
       </aside>
     </>
-  );
+  )
 }
