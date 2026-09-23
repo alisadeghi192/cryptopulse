@@ -1,12 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="custom-scroll">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CryptoPulse — Real-Time Crypto Tracker</title>
+    <!-- Anti-FOUC theme script -->
+    <script>
+      (function () {
+        var saved = document.cookie.match(/(?:^|;\s*)theme=([^;]+)/);
+        if (saved && saved[1]) {
+          document.documentElement.classList.add(saved[1]);
+          return;
+        }
+        var prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        document.documentElement.classList.add(prefersDark ? "dark" : "light");
+      })();
+    </script>
   </head>
-  <body>
+  <body >
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
