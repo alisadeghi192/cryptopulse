@@ -40,14 +40,12 @@ export function TopBar({
 
   const headerContent = (
     <header
-      className={cn(
-        "w-full border-b border-border transition-all duration-300 ease-out",
-        {
-          " backdrop-blur-xl  md:shadow-[0_0_30px_-8px_rgba(240,185,11,0.3)] rounded-3xl":
-            scrolled && useBorderBeam,
-          " backdrop-blur-xl": !useBorderBeam,
-        },
-      )}
+      className={cn("w-full transition-all duration-300 ease-out", {
+        " backdrop-blur-xl md:shadow-[0_0_30px_-8px_rgba(240,185,11,0.3)] rounded-3xl":
+          scrolled && useBorderBeam,
+        " backdrop-blur-xl": !useBorderBeam,
+        " border-b border-border": !scrolled,
+      })}
     >
       <nav
         className={cn(
@@ -77,7 +75,7 @@ export function TopBar({
               className="md:hidden"
               aria-label="Open menu"
             >
-              <Menu className='h-5 w-5' />
+              <Menu className="h-5 w-5" />
             </Button>
           )}
         </div>
