@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 import { TopBar } from "@/components/layout/TopBar";
 import { MobileNavDrawer } from "@/components/layout/MobileNavDrawer";
 
-const isAuthenticated = false;
+const isAuthenticated = true;
 const user = { name: "Ali" };
 
 export function RootLayout() {
