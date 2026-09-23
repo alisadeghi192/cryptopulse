@@ -39,16 +39,13 @@ export function Sidebar({
   isAuthenticated,
   onSignOut,
 }: SidebarProps) {
-
-
-
   return (
     <>
       {/* Mobile Backdrop */}
       <div
         onClick={onMobileClose}
         className={cn(
-          "fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
+          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
           mobileOpen ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         aria-hidden="true"
@@ -57,7 +54,7 @@ export function Sidebar({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-50 flex flex-col border-r border-border bg-surface/30 backdrop-blur-xl transition-all duration-300 ease-out",
+          "fixed top-0 bottom-0 left-0 z-60 flex flex-col border-r border-border/40 bg-surface/30 backdrop-blur-xl shadow-[8px_0_24px_-4px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out",
           "lg:sticky lg:top-12 lg:z-0 lg:h-[calc(100vh-3rem)] lg:translate-x-0",
           collapsed ? "lg:w-16" : "lg:w-64",
           "w-72",
@@ -65,7 +62,7 @@ export function Sidebar({
         )}
       >
         {/* Mobile Header (Close + Logo) */}
-        <div className="flex h-14 items-center justify-between border-b border-border px-4 lg:hidden">
+        <div className="flex h-14 items-center justify-between border-b border-border/40 px-4 lg:hidden">
           <span className="font-display text-base font-bold tracking-wider text-primary">
             CryptoPulse
           </span>
@@ -91,10 +88,10 @@ export function Sidebar({
                 onClick={onMobileClose}
                 className={({ isActive }) =>
                   cn(
-                    "group flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors",
+                    "group flex h-11 items-center gap-3 rounded-lg border px-3 text-sm font-medium transition-all duration-200",
                     isActive
-                      ? "bg-elevated text-primary"
-                      : "text-text-secondary hover:bg-elevated hover:text-text",
+                      ? "border-primary/30 bg-primary/10 text-primary shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_-1px_0_rgba(240,185,11,0.2),0_0_12px_-4px_rgba(240,185,11,0.4)]"
+                      : "border-transparent text-text-secondary hover:bg-elevated/40 hover:text-text",
                     collapsed && "lg:justify-center lg:px-0",
                   )
                 }
@@ -109,7 +106,7 @@ export function Sidebar({
         </nav>
 
         {/* Bottom: Sign Out + Collapse */}
-        <div className="space-y-1 border-t border-border p-3">
+        <div className="space-y-1 border-t border-border/40 p-3">
           {isAuthenticated && (
             <button
               type="button"

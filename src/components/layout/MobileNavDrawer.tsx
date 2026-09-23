@@ -37,7 +37,7 @@ export function MobileNavDrawer({
       {/* Drawer */}
       <aside
         className={cn(
-          "fixed top-0 right-0 bottom-0 z-60 flex w-72 flex-col border-l border-border bg-surface/30 backdrop-blur-xl transition-transform duration-300 ease-out md:hidden",
+          "fixed top-0 right-0 bottom-0 z-60 flex w-72 flex-col border-l border-border/40 bg-surface/30 backdrop-blur-xl shadow-[-8px_0_24px_-4px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-out md:hidden",
           open ? "translate-x-0" : "translate-x-full",
         )}
       >
@@ -65,10 +65,10 @@ export function MobileNavDrawer({
               onClick={onClose}
               className={({ isActive }) =>
                 cn(
-                  "flex h-11 items-center rounded-lg px-3 text-sm font-medium transition-colors",
+                  "flex h-11 items-center rounded-lg border px-3 text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-elevated text-primary"
-                    : "text-text-secondary hover:bg-elevated hover:text-text",
+                    ? "border-primary/30 bg-primary/10 text-primary shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_-1px_0_rgba(240,185,11,0.2),0_0_12px_-4px_rgba(240,185,11,0.4)]"
+                    : "border-transparent text-text-secondary hover:bg-elevated/40 hover:text-text",
                 )
               }
             >
