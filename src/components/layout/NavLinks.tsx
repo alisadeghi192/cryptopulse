@@ -22,7 +22,7 @@ export function NavLinks({ links, className, onLinkClick }: NavLinksProps) {
           onClick={onLinkClick}
           className={({ isActive }) =>
             cn(
-              'inline-flex h-9 items-center justify-center rounded-lg px-4 text-sm font-medium transition-colors',
+              'inline-flex h-9 items-center justify-center rounded-lg px-4  font-medium transition-colors',
               isActive
                 ? 'text-primary'
                 : 'text-text-secondary hover:bg-elevated hover:text-text'

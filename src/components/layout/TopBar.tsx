@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { BorderBeam } from "@/components/ui/BorderBeam";
@@ -26,13 +25,7 @@ export function TopBar({
   showHamburger = true,
   useBorderBeam = true,
 }: TopBarProps) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const scrolled = useScroll();
-
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
   const navLinks = [
     { label: "Markets", href: "/markets" },
     { label: "About", href: "/about" },
@@ -56,14 +49,15 @@ export function TopBar({
         )}
       >
         {/* Logo */}
-        <Logo />
+        <Logo /> 
+        
 
         {/* Desktop Navigation */}
         {showNav && <NavLinks links={navLinks} className="hidden md:flex" />}
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          <ThemeToggle />
           <UserMenu isAuthenticated={isAuthenticated} userName={user.name} />
 
           {/* Mobile Menu Toggle */}
