@@ -28,7 +28,7 @@ export function AppLayout() {
           onSignOut={() => console.log('Sign out')}
         />
 
-        <main className="min-w-0 flex-1 overflow-y-auto">
+        <main className="min-w-0 flex-1 overflow-y-auto custom-scroll">
           <Outlet />
         </main>
       </div>

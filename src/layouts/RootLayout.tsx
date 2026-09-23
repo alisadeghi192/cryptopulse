@@ -17,6 +17,7 @@ export function RootLayout() {
   }, [mobileOpen]);
 
   const navLinks = [
+    { label: "Home", href: "/" },
     { label: "Markets", href: "/markets" },
     ...(isAuthenticated ? [{ label: "Watchlist", href: "/watchlist" }] : []),
     { label: "About", href: "/about" },
