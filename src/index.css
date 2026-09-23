@@ -73,10 +73,12 @@
   }
   @apply mx-auto w-full px-4 md:px-6;
 }
+html {
+  background-color: var(--color-background);
+}
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-background);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -104,6 +106,27 @@ body {
 .custom-scroll::-webkit-scrollbar-thumb {
   background-color: var(--color-primary);
   border-radius: 9999px;
+}
+
+/* View Transition for Theme Toggle */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: none;
+  clip-path: var(--theme-vt-clip-from, circle(0% at 50% 50%));
+}
+
+html[data-theme-vt='active'] * {
+  transition: none !important;
 }
 
 @property --angle {
