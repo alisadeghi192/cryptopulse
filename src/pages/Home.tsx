@@ -13,10 +13,10 @@ import { BorderBeam } from '@/components/ui/BorderBeam'
 import { NumberTicker } from '@/components/ui/NumberTicker'
 import { Marquee } from '@/components/ui/Marquee'
 import { AnimatedSparkline } from '@/components/ui/AnimatedSparkline'
-import { Aurora } from '@/components/ui/Aurora'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { GridPattern } from '@/components/ui/GridPattern'
 import { cn } from '@/utils/cn'
+import { Aurora } from '@/components/ui/Aurora'
 
 const tickerData = [
   { symbol: 'BTC', price: 45234.56, change: 2.34 },
@@ -29,16 +29,15 @@ const tickerData = [
 
 export function Home() {
   return (
-    <main className="relative">
-      {/* ─── Background Effects ─────────────────── */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <Aurora />
-        <GridPattern />
-      </div>
-
-      <div className="container mx-auto px-6 py-12 lg:px-8">
+    <main>
+      <div className="relative z-10 mx-auto sm:px-2 md:px-4 lg:px-6 xl:px-10">
+        {/* ─── Background Effects ─────────────────── */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <Aurora />
+          <GridPattern />
+        </div>
         {/* ─── Hero Section ────────────────────── */}
-        <section className="grid grid-cols-1 items-center gap-12 pt-12 md:pt-20 lg:grid-cols-12 lg:gap-8">
+        <section className="grid grid-cols-1 items-center gap-12 py-12 md:py-20 lg:grid-cols-12 lg:gap-8">
           {/* ─── Left Column ───────────────────── */}
           <div className="flex flex-col items-start gap-6 lg:col-span-6">
             {/* 1. Badge */}
@@ -86,29 +85,29 @@ export function Home() {
             </BlurFade>
 
             {/* 4. CTAs */}
-              <BlurFade delay={0.4} className='w-full'>
-                <div className="flex flex-wrap basis-full items-center gap-3 pt-2">
-                  <Link
-                    to="/register"
-                    className={cn(
-                      buttonVariants({ variant: 'primary', size: 'lg' }),
-                      'group shadow-primary/20 gap-2 shadow-lg max-sm:w-full',
-                    )}
-                  >
-                    Get $1,000 Free
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                  <Link
-                    to="/markets"
-                    className={cn(
-                      buttonVariants({ variant: 'outline', size: 'lg' }),
-                      "max-sm:w-full"
-                    )}
-                  >
-                    Explore Markets
-                  </Link>
-                </div>
-              </BlurFade>
+            <BlurFade delay={0.4} className="w-full">
+              <div className="flex basis-full flex-wrap items-center gap-3 pt-2">
+                <Link
+                  to="/register"
+                  className={cn(
+                    buttonVariants({ variant: 'primary', size: 'lg' }),
+                    'group shadow-primary/20 gap-2 shadow-lg max-sm:w-full',
+                  )}
+                >
+                  Get $1,000 Free
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  to="/markets"
+                  className={cn(
+                    buttonVariants({ variant: 'outline', size: 'lg' }),
+                    'max-sm:w-full',
+                  )}
+                >
+                  Explore Markets
+                </Link>
+              </div>
+            </BlurFade>
 
             {/* 5. Trust badges */}
             <BlurFade delay={0.5}>
@@ -146,6 +145,7 @@ export function Home() {
                   <div className="border-border/50 bg-background/40 border-b py-2">
                     <Marquee
                       speed={30}
+                      pauseOnHover={true}
                       className="mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
                     >
                       {tickerData.map((coin) => (
@@ -179,7 +179,7 @@ export function Home() {
                   </div>
 
                   {/* ─── Main Card (BTC) ────── */}
-                  <div className="p-6">
+                  <div className="xs:p-3 p-2 sm:p-4 md:p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-[#F7931A] to-[#FFB84D] text-xl font-bold text-white shadow-lg shadow-[#F7931A]/30">

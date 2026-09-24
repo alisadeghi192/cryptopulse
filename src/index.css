@@ -145,3 +145,23 @@ html[data-theme-vt="active"] * {
     --angle: 360deg;
   }
 }
+
+/* ─── Marquee Animation ────────────────── */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - 1rem));
+  }
+}
+
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+/* Pause on hover */
+.marquee-pausable:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
