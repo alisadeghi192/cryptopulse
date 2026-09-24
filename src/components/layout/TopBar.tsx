@@ -37,7 +37,7 @@ export function TopBar({
         " backdrop-blur-xl md:shadow-[0_0_30px_-8px_rgba(240,185,11,0.3)] rounded-3xl":
           scrolled && useBorderBeam,
         " backdrop-blur-xl": !useBorderBeam,
-        " border-b border-border": !scrolled,
+        " border-b border-border backdrop-blur-xl": !scrolled,
       })}
     >
       <nav
