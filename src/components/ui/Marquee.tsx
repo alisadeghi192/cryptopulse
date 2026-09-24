@@ -15,7 +15,11 @@ export function Marquee({
 }: MarqueeProps) {
   return (
     <div
-      className={cn('group flex overflow-hidden', className)}
+      className={cn(
+        'group flex overflow-hidden',
+        pauseOnHover && 'marquee-pausable',
+        className
+      )}
       style={
         {
           '--marquee-duration': `${speed}s`,
@@ -24,8 +28,7 @@ export function Marquee({
     >
       <div
         className={cn(
-          'flex shrink-0 animate-marquee gap-4',
-          pauseOnHover && 'group-hover:[animation-play-state:paused]'
+          'animate-marquee flex shrink-0 gap-4',
         )}
       >
         {children}
@@ -33,8 +36,7 @@ export function Marquee({
       <div
         aria-hidden="true"
         className={cn(
-          'flex shrink-0 animate-marquee gap-4',
-          pauseOnHover && 'group-hover:[animation-play-state:paused]'
+          'animate-marquee flex shrink-0 gap-4',
         )}
       >
         {children}

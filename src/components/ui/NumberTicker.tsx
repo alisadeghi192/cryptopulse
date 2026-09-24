@@ -15,7 +15,7 @@ export function NumberTicker({
   decimals = 2,
   prefix = '',
   suffix = '',
-  duration = 800,
+  duration = 2000,
   className,
 }: NumberTickerProps) {
   const [display, setDisplay] = useState(0)
