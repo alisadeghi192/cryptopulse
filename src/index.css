@@ -53,9 +53,14 @@
 
   --beam-thickness: 3px;
   --beam-duration: 8s;
+
+  --breakpoint-xs: 30rem;
 }
 
 @utility container {
+  @media (width >= 30rem) {
+    max-width: 100%;
+  }
   @media (width >= 40rem) {
     max-width: 40rem;
   }
@@ -125,7 +130,7 @@ body {
   clip-path: var(--theme-vt-clip-from, circle(0% at 50% 50%));
 }
 
-html[data-theme-vt='active'] * {
+html[data-theme-vt="active"] * {
   transition: none !important;
 }
 
