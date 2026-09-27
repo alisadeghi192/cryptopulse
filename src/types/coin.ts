@@ -40,3 +40,53 @@ export interface MarketChartResponse {
 }
 
 export type TimeRange = '24H' | '7D' | '1M' | '1Y' 
+
+export interface GlobalStats {
+  active_cryptocurrencies: number
+  markets: number
+  total_market_cap: {
+    usd: number
+  }
+  total_volume: {
+    usd: number
+  }
+  market_cap_percentage: {
+    btc: number
+    eth: number
+  }
+  market_cap_change_percentage_24h_usd: number
+}
+
+export interface GlobalStatsResponse {
+  data: GlobalStats
+}
+
+export interface TrendingCoin {
+  item: {
+    id: string
+    coin_id: number
+    name: string
+    symbol: string
+    market_cap_rank: number
+    thumb: string
+    small: string
+    large: string
+    slug: string
+    price_btc: number
+    score: number
+    data: {
+      price: number
+      price_btc: string
+      price_change_percentage_24h: {
+        usd: number
+      }
+      market_cap: string
+      total_volume: string
+      sparkline: string
+    }
+  }
+}
+
+export interface TrendingResponse {
+  coins: TrendingCoin[]
+}
