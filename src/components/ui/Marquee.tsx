@@ -10,7 +10,7 @@ interface MarqueeProps {
 export function Marquee({
   children,
   className,
-  speed = 40,
+  speed = 400,
   pauseOnHover = true,
 }: MarqueeProps) {
   return (

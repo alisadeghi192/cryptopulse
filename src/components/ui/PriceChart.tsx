@@ -1,14 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { createChart, ColorType, AreaSeries } from 'lightweight-charts'
 import type { MarketChartPoint } from '@/types/coin'
-import { data } from 'react-router'
 
 interface PriceChartProps {
   data: MarketChartPoint[]
   isPositive: boolean
   height?: number
 }
-console.log(data)
+
 export function PriceChart({
   data,
   isPositive,
