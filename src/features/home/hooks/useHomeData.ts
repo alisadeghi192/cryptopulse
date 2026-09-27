@@ -1,11 +1,18 @@
 import { useCoins } from '@/hooks/useCoins'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
 
 export function useHomeData() {
   const {
     data: coins,
-    isLoading,
-    error,
-  } = useCoins({ perPage: 10 })
+    isLoading: coinsLoading,
+    error: coinsError,
+  } = useCoins({ perPage: 100 })
+
+  const {
+    data: globalStats,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useGlobalStats()
 
   const bitcoin = coins?.find((c) => c.id === 'bitcoin')
   const isPositive = (bitcoin?.price_change_percentage_24h ?? 0) >= 0
@@ -14,7 +21,8 @@ export function useHomeData() {
     coins: coins ?? [],
     bitcoin,
     isPositive,
-    isLoading,
-    error,
+    globalStats,
+    isLoading: coinsLoading || statsLoading,
+    error: coinsError || statsError,
   }
 }
