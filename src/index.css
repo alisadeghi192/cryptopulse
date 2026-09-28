@@ -7,12 +7,12 @@
   --color-background: #f9fafb;
   --color-surface: #ffffff;
   --color-elevated: #f3f4f6;
-  --color-primary: #ffa000;
-  --color-primary-hover: #f0b90b;
-  --color-success: #16a34a;
+  --color-primary: #d97706;
+  --color-primary-hover: #b45309;
+  --color-success: #15803d;
   --color-error: #dc2626;
   --color-text: #111827;
-  --color-text-secondary: #4b5563;
+  --color-text-secondary: #374151;
   --color-border: #e5e7eb;
 
   /* Fonts */
@@ -175,7 +175,6 @@ html[data-theme-vt="active"] * {
 }
 
 /* ─── CTA Ambient Lights ─────────────── */
-/* ─── CTA Ambient Lights ─────────────── */
 @keyframes cta-light-1 {
   0%, 100% {
     transform: translate(0, 0) scale(1);
@@ -214,5 +213,37 @@ html[data-theme-vt="active"] * {
   50% {
     transform: translate(-50%, -50%) scale(1.4);
     opacity: 0.45;
+  }
+}
+@keyframes aurora-1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(80px, 60px) scale(1.2);
+  }
+  66% {
+    transform: translate(-60px, 100px) scale(0.9);
+  }
+}
+
+@keyframes aurora-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-100px, -80px) scale(1.15);
+  }
+  66% {
+    transform: translate(70px, -100px) scale(1.05);
+  }
+}
+
+@keyframes aurora-3 {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.4);
   }
 }

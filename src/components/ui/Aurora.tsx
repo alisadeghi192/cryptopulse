@@ -12,7 +12,7 @@ export function Aurora({ className }: { className?: string }) {
       <div
         className="absolute -top-40 -left-40 h-96 w-96 rounded-full opacity-50 blur-[80px]"
         style={{
-          background: 'var(--color-primary)',
+          background: '#7C3AED',
           animation: 'aurora-1 15s ease-in-out infinite',
         }}
       />
@@ -28,7 +28,7 @@ export function Aurora({ className }: { className?: string }) {
       <div
         className="absolute top-1/2 left-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-[100px]"
         style={{
-          background: '#7C3AED',
+          background: 'var(--color-primary)',
           animation: 'aurora-3 20s ease-in-out infinite',
         }}
       />
