@@ -4,19 +4,11 @@ import { TopMoversCard } from './TopMoversCard'
 import type { Coin } from '@/types/coin'
 
 interface TopMoversProps {
-  coins: Coin[]
+  gainers: Coin[]
+  losers: Coin[]
 }
 
-export function TopMovers({ coins }: TopMoversProps) {
-  const sorted = [...coins].sort(
-    (a, b) =>
-      (b.price_change_percentage_24h ?? 0) -
-      (a.price_change_percentage_24h ?? 0)
-  )
-
-  const gainers = sorted.slice(0, 5)
-  const losers = sorted.slice(-5).reverse()
-
+export function TopMovers({ gainers, losers }: TopMoversProps) {
   return (
     <section className="py-12 md:py-16">
       <BlurFade delay={0.1}>

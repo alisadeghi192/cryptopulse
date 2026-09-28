@@ -1,14 +1,25 @@
+// src/pages/Home.tsx
 import { HeroSection } from '@/features/home/components/HeroSection'
 import { HeroSkeleton } from '@/features/home/components/HeroSkeleton'
 import { TopMovers } from '@/features/home/components/TopMovers'
 import { GlobalStats } from '@/features/home/components/GlobalStats'
 import { TrendingCoins } from '@/features/home/components/TrendingCoins'
+import { MarketsPreview } from '@/features/home/components/MarketsPreview'
+import { CTASection } from '@/features/home/components/CTASection'
 import { useHomeData } from '@/features/home/hooks/useHomeData'
 import { useTrending } from '@/hooks/useTrending'
-import { CTASection } from '@/features/home/components/CTASection'
+
 export function Home() {
-  const { coins, bitcoin, isPositive, globalStats, isLoading, error } =
-    useHomeData()
+  const {
+    bitcoin,
+    isPositive,
+    globalStats,
+    topGainers,
+    topLosers,
+    top10,
+    isLoading,
+    error,
+  } = useHomeData()
   const { data: trending } = useTrending()
 
   if (isLoading) return <HeroSkeleton />
@@ -33,21 +44,17 @@ export function Home() {
 
   return (
     <main>
-      {/* ─── Hero ───────────────────────────── */}
-      <HeroSection coins={coins} bitcoin={bitcoin} isPositive={isPositive} />
+      <HeroSection
+        coins={top10}
+        bitcoin={bitcoin}
+        isPositive={isPositive}
+      />
 
-      {/* ─── Sections ────────────────────────── */}
       <div className="mx-auto sm:px-2 md:px-4 lg:px-6 xl:px-10">
-        {/* Top Movers */}
-        <TopMovers coins={coins} />
-
-        {/* Global Stats */}
+        <TopMovers gainers={topGainers} losers={topLosers} />
         {globalStats && <GlobalStats stats={globalStats} />}
-
-        {/* Trending */}
         {trending && <TrendingCoins coins={trending} />}
-
-        {/* CTA actions */}
+        <MarketsPreview/>
         <CTASection />
       </div>
     </main>

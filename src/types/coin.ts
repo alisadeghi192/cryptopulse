@@ -26,6 +26,9 @@ export interface Coin {
   atl_change_percentage: number
   atl_date: string
   last_updated: string
+  sparkline_in_7d?: {
+    price: number[]
+  }
 }
 
 export interface MarketChartPoint {
@@ -39,7 +42,7 @@ export interface MarketChartResponse {
   total_volumes: [number, number][]
 }
 
-export type TimeRange = '24H' | '7D' | '1M' | '1Y' 
+export type TimeRange = '24H' | '7D' | '1M' | '1Y'
 
 export interface GlobalStats {
   active_cryptocurrencies: number

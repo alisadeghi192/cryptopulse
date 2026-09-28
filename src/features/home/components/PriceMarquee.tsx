@@ -11,7 +11,7 @@ export function PriceMarquee({ coins }: PriceMarqueeProps) {
   return (
     <div className="border-border/50 bg-background/40 border-b py-2">
       <Marquee
-        speed={300}
+        speed={40}
         pauseOnHover={true}
         className="mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
       >
