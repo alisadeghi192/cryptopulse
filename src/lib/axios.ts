@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: '/api/coingecko',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -10,13 +10,7 @@ export const apiClient = axios.create({
 })
 
 // ─── Request Interceptor ─────────────────────
-apiClient.interceptors.request.use((config) => {
-  const apiKey = import.meta.env.VITE_COINGECKO_API_KEY
-  if (apiKey) {
-    config.headers['x-cg-demo-api-key'] = apiKey
-  }
-  return config
-})
+
 
 // ─── Response Interceptor ────────────────────
 apiClient.interceptors.response.use(
