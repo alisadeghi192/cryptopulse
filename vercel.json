@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/coingecko/:path*",
+      "destination": "/api/coingecko"
+    }
+  ]
+}
