@@ -5,7 +5,7 @@ import { NavLinks } from "@/components/layout/NavLinks";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { UserMenu } from "@/components/layout/UserMenu";
 import { useScroll } from "@/hooks/useScroll";
-import { BORDER_BEAM_CONFIG } from "@/lib/constants";
+import { BORDER_BEAM_CONFIG } from "@/constants";
 import { cn } from "@/utils/cn";
 import { Menu } from "lucide-react";
 

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   HEADER_EXPAND_THRESHOLD,
   HEADER_SCROLL_THRESHOLD,
-} from '@/lib/constants'
+} from '@/constants'
 
 export function useScroll(
   threshold: number = HEADER_SCROLL_THRESHOLD
