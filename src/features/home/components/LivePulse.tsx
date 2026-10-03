@@ -12,7 +12,7 @@ interface LivePulseProps {
 
 export function LivePulse({ coins, bitcoin, isPositive }: LivePulseProps) {
   return (
-    <div className="lg:col-span-6">
+    <div className="lg:col-span-6 shadow-md">
       <BlurFade delay={0.4}>
         <BorderBeam
           thickness={2}

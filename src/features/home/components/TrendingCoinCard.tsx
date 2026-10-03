@@ -26,14 +26,14 @@ export function TrendingCoinCard({ coin }: TrendingCoinCardProps) {
         <SpotlightCard
           spotlightColor={spotlightColor}
           className={cn(
-            'group border-border/50 bg-surface/40 relative h-full overflow-hidden rounded-2xl border backdrop-blur-xl',
+            'group border-border bg-surface shadow-lg relative h-full overflow-hidden rounded-2xl border backdrop-blur-xl',
             'transition-colors hover:border-border',
           )}
         >
           <div className="relative z-10 p-5">
             {/* ─── Header: Rank + Star ─── */}
             <div className="mb-4 flex items-start justify-between">
-              <div className="border-border/50 bg-elevated/60 text-text-secondary rounded-md border px-2 py-0.5 font-mono text-[10px]">
+              <div className="border-border bg-elevated/60 text-text-secondary rounded-md border px-2 py-0.5 font-mono text-[10px]">
                 #{coin.item.market_cap_rank}
               </div>
               <button
@@ -44,7 +44,7 @@ export function TrendingCoinCard({ coin }: TrendingCoinCardProps) {
               </button>
             </div>
 
-            {/* ─── Coin Info (افقی) ─── */}
+            {/* ─── Coin Info ─── */}
             <div className="mb-4 flex items-center gap-3">
               <div className="relative shrink-0">
                 <div className="bg-primary/20 absolute inset-0 rounded-full blur-md" />
@@ -73,7 +73,7 @@ export function TrendingCoinCard({ coin }: TrendingCoinCardProps) {
               />
             </p>
 
-            {/* ─── Change (دلاری + درصدی) ─── */}
+            {/* ─── Change ─── */}
             <div className="mt-1 flex items-center gap-2">
               <span
                 className={cn(

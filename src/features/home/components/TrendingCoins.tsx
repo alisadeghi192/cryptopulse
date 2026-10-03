@@ -83,7 +83,7 @@ export function TrendingCoins({ coins }: TrendingCoinsProps) {
   }
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-12 md:py-16 container">
       <BlurFade delay={0.1}>
         <div className="mb-8 flex items-end justify-between">
           <div>
@@ -114,11 +114,11 @@ export function TrendingCoins({ coins }: TrendingCoinsProps) {
         onMouseUp={handleMouseUp}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className={`no-scrollbar -mx-6 overflow-x-auto px-6 pb-4 lg:-mx-8 lg:px-8 ${
+        className={`no-scrollbar overflow-x-auto pb-4 ${
           isDragging ? 'cursor-grabbing' : 'cursor-grab'
         }`}
       >
-        <div className="flex gap-4" style={{ width: 'max-content' }}>
+        <div className="flex  gap-4" style={{ width: 'max-content' }}>
           {duplicatedCoins.map((coin, i) => (
             <div key={`${coin.item.id}-${i}`} className="w-65 select-none">
               <TrendingCoinCard coin={coin} />

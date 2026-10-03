@@ -10,18 +10,18 @@ export function MarketsPreview() {
 
   if (isLoading || !coins) {
     return (
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 container">
         <div className="mb-8">
           <div className="bg-elevated mb-2 h-4 w-32 animate-pulse rounded" />
           <div className="bg-elevated h-10 w-40 animate-pulse rounded" />
         </div>
-        <div className="border-border/50 bg-surface/40 h-96 animate-pulse rounded-2xl border" />
+        <div className="border-border bg-surface h-96 animate-pulse rounded-2xl border" />
       </section>
     )
   }
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="pt-12 md:pt-16 container">
       <BlurFade delay={0.1}>
         <div className="mb-8 flex items-end justify-between">
           <div>
@@ -47,9 +47,9 @@ export function MarketsPreview() {
       </BlurFade>
 
       <BlurFade delay={0.2}>
-        <div className="border-border/50 bg-surface/40 overflow-hidden rounded-2xl border backdrop-blur-xl">
+        <div className="border-border bg-surface shadow-lg overflow-hidden rounded-2xl border backdrop-blur-xl">
           {/* Header */}
-          <div className="border-border/50 text-text-secondary grid grid-cols-[1fr_90px_80px] items-center border-b px-4 py-3 font-mono text-xs tracking-wider uppercase md:grid-cols-[60px_1fr_130px_110px_100px_120px]">
+          <div className="border-border text-text-secondary grid grid-cols-[1fr_90px_80px] items-center border-b px-4 py-3 font-mono text-xs tracking-wider uppercase md:grid-cols-[60px_1fr_130px_110px_100px_120px]">
             <span className="md:hidden">Coin</span>
             <span className="hidden md:block">#</span>
             <span className="hidden md:block">Coin</span>

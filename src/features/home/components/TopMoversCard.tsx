@@ -26,12 +26,12 @@ export function TopMoversCard({
     <TiltCard maxTilt={3}>
       <SpotlightCard
         spotlightColor={spotlightColor}
-        className="border-border/50 bg-surface/40 border backdrop-blur-xl"
+        className="border-border bg-surface border shadow-lg backdrop-blur-xl"
       >
         {/* Header */}
         <div
           className={cn(
-            'flex items-center gap-2 border-b border-border/50 px-5 py-4',
+            'flex items-center gap-2 border-b border-border px-5 py-4',
             variant === 'success' ? 'text-success' : 'text-error',
           )}
         >

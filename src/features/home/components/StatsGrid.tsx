@@ -31,13 +31,13 @@ export function StatsGrid({ bitcoin }: StatsGridProps) {
   ]
 
   return (
-    <div className="border-border/50 grid grid-cols-3 border-t">
+    <div className="border-border grid grid-cols-3 border-t">
       {stats.map((stat, i) => (
         <div
           key={stat.label}
           className={cn(
             'p-4 text-center',
-            i !== 2 && 'border-border/50 border-r',
+            i !== 2 && 'border-border border-r',
           )}
         >
           <p className="text-text-secondary font-mono text-xs">

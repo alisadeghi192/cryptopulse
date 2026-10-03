@@ -10,7 +10,7 @@ interface TopMoversProps {
 
 export function TopMovers({ gainers, losers }: TopMoversProps) {
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-12 md:py-16 container">
       <BlurFade delay={0.1}>
         <div className="mb-8 flex items-center justify-between">
           <div>

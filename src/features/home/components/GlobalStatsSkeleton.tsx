@@ -9,7 +9,7 @@ export function GlobalStatsSkeleton() {
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
-            className="border-border/50 bg-surface/40 h-32 animate-pulse rounded-2xl border"
+            className="border-border bg-surface h-32 animate-pulse rounded-2xl border"
           />
         ))}
       </div>

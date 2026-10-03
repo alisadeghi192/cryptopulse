@@ -3,40 +3,13 @@ import { ArrowRight, Sparkles, Zap, Shield } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/Button'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { cn } from '@/utils/cn'
+import { AmbientLights } from '@/components/ui/AmbientLights'
 
 export function CTASection() {
   return (
-    <section className="relative py-20 md:py-32">
+    <section className="relative py-20 md:py-32 container">
       {/* ─── Neon Lights  ─── */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {/*  gold  */}
-        <div
-          className="absolute top-1/3 left-1/4 h-72 w-72 rounded-full blur-[100px]"
-          style={{
-            background: 'var(--color-primary)',
-            opacity: 0.4,
-            animation: 'cta-light-1 14s ease-in-out infinite',
-          }}
-        />
-        {/* green */}
-        <div
-          className="absolute right-1/4 bottom-1/3 h-72 w-72 rounded-full blur-[100px]"
-          style={{
-            background: 'var(--color-success)',
-            opacity: 0.25,
-            animation: 'cta-light-2 18s ease-in-out infinite',
-          }}
-        />
-        {/* purple */}
-        <div
-          className="absolute top-1/2 left-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[110px]"
-          style={{
-            background: '#7C3AED',
-            opacity: 0.25,
-            animation: 'cta-light-3 20s ease-in-out infinite',
-          }}
-        />
-      </div>
+      <AmbientLights variant="multi" />
 
       <div className="relative z-10 mx-auto max-w-3xl px-6">
         <BlurFade delay={0.1}>

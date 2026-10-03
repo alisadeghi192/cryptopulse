@@ -4,7 +4,6 @@ import { BlurFade } from '@/components/ui/BlurFade'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { cn } from '@/utils/cn'
 import type { GlobalStats as GlobalStatsType } from '@/types/coin'
-
 interface GlobalStatsProps {
   stats: GlobalStatsType
 }
@@ -69,7 +68,8 @@ export function GlobalStats({ stats }: GlobalStatsProps) {
   ]
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="relative py-12 md:py-16 container">
+
       <BlurFade delay={0.1}>
         <div className="mb-8 flex items-end justify-between">
           <div>
@@ -99,7 +99,7 @@ export function GlobalStats({ stats }: GlobalStatsProps) {
               <SpotlightCard
                 spotlightColor={card.color.spotlight}
                 className={cn(
-                  'group border-border/50 bg-surface/40 relative h-full overflow-hidden rounded-2xl border backdrop-blur-xl',
+                  'group border-border shadow-md bg-surface relative h-full overflow-hidden rounded-2xl border backdrop-blur-xl',
                   'transition-colors hover:border-border',
                 )}
               >

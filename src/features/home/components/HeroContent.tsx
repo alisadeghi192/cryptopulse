@@ -64,7 +64,7 @@ export function HeroContent() {
             to="/register"
             className={cn(
               buttonVariants({ variant: 'primary', size: 'lg' }),
-              'group shadow-primary/20 gap-2 shadow-lg max-sm:w-full',
+              'group  gap-2 shadow-lg max-sm:w-full',
             )}
           >
             Get $1,000 Free
@@ -74,7 +74,7 @@ export function HeroContent() {
             to="/markets"
             className={cn(
               buttonVariants({ variant: 'outline', size: 'lg' }),
-              'max-sm:w-full',
+              'max-sm:w-full shadow-lg',
             )}
           >
             Explore Markets
