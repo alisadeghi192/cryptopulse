@@ -8,6 +8,7 @@ import { MarketsPreview } from '@/features/home/components/MarketsPreview'
 import { CTASection } from '@/features/home/components/CTASection'
 import { useHomeData } from '@/features/home/hooks/useHomeData'
 import { useTrending } from '@/hooks/useTrending'
+import { AmbientLights } from '@/components/ui/AmbientLights'
 
 export function Home() {
   const {
@@ -44,17 +45,18 @@ export function Home() {
 
   return (
     <main>
-      <HeroSection
-        coins={top10}
-        bitcoin={bitcoin}
-        isPositive={isPositive}
-      />
+      <HeroSection coins={top10} bitcoin={bitcoin} isPositive={isPositive} />
+      <div className="mx-auto">
+        <div className="relative">
+          <AmbientLights variant="home" intensity="subtle" />
 
-      <div className="mx-auto sm:px-2 md:px-4 lg:px-6 xl:px-10">
-        <TopMovers gainers={topGainers} losers={topLosers} />
-        {globalStats && <GlobalStats stats={globalStats} />}
-        {trending && <TrendingCoins coins={trending} />}
-        <MarketsPreview/>
+          <div className="relative z-10">
+            <TopMovers gainers={topGainers} losers={topLosers} />
+            {globalStats && <GlobalStats stats={globalStats} />}
+            {trending && <TrendingCoins coins={trending} />}
+            <MarketsPreview />
+          </div>
+        </div>
         <CTASection />
       </div>
     </main>
