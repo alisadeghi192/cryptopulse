@@ -1,0 +1,2 @@
+export const HEADER_SCROLL_THRESHOLD = 50
+export const HEADER_EXPAND_THRESHOLD = 10
