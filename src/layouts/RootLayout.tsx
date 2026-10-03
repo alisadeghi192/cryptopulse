@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import { TopBar } from "@/components/layout/TopBar";
 import { MobileNavDrawer } from "@/components/layout/MobileNavDrawer";
+import { Footer } from "@/components/layout/Footer/Footer";
 
 const isAuthenticated = true;
 const user = { name: "Ali" };
@@ -24,7 +25,7 @@ export function RootLayout() {
   ];
 
   return (
-    <div className="min-h-screen container bg-background">
+    <div className="min-h-screen  bg-background">
       <TopBar
         onMenuClick={() => setMobileOpen(true)}
         showNav={true}
@@ -41,6 +42,7 @@ export function RootLayout() {
       />
 
       <Outlet />
+      <Footer/>
     </div>
   );
 }
