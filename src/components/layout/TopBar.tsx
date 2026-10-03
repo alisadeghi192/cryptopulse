@@ -8,6 +8,7 @@ import { useScroll } from "@/hooks/useScroll";
 import { BORDER_BEAM_CONFIG } from "@/constants";
 import { cn } from "@/utils/cn";
 import { Menu } from "lucide-react";
+import { NavigationProgress } from "../ui/NavigationProgress";
 
 const isAuthenticated = true;
 const user = { name: "Ali" };
@@ -33,7 +34,7 @@ export function TopBar({
 
   const headerContent = (
     <header
-      className={cn("w-full transition-all duration-300 ease-out", {
+      className={cn("w-full relative transition-all duration-300 ease-out", {
         " backdrop-blur-xl md:shadow-[0_0_30px_-8px_rgba(240,185,11,0.3)] rounded-3xl":
           scrolled && useBorderBeam,
         " backdrop-blur-xl": !useBorderBeam,
@@ -74,6 +75,7 @@ export function TopBar({
           )}
         </div>
       </nav>
+      <NavigationProgress />
     </header>
   );
   if (!useBorderBeam) {
