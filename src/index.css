@@ -2,40 +2,95 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ═══════════════════════════════════════════════
+   LIGHT THEME
+   ═══════════════════════════════════════════════ */
 :root {
-  /* Light Mode — Pure Gray */
-  --color-background: #f9fafb;
-  --color-surface: #ffffff;
-  --color-elevated: #f3f4f6;
+  /* ─── background ─── */
+  --color-background: #ffffff;
+  --color-surface: #f8f9fa;
+  --color-elevated: #f1f3f5;
+
+  /* ─── colors ─── */
   --color-primary: #d97706;
   --color-primary-hover: #b45309;
   --color-success: #15803d;
   --color-error: #dc2626;
-  --color-text: #111827;
-  --color-text-secondary: #374151;
-  --color-border: #e5e7eb;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
 
-  /* Fonts */
+  /* ─── borders ─── */
+  --color-border: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
+  --color-border-strong: #cbd5e1;
+
+  /* ─── shadows ─── */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.06);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.12), 0 1px 2px -1px rgb(0 0 0 / 0.08);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.12), 0 2px 4px -2px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.12), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.14), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+
+  /* ─── DataRain ─── */
+  --footer-rain-color: var(--color-primary);
+  --footer-rain-opacity: 0.6;
+  --footer-rain-glow: none;
+  --footer-rain-blur-glow: 0 0 6px rgb(217 119 6 / 0.5);
+
+  /* ─── Fonts ─── */
   --font-sans: "Inter", system-ui, sans-serif;
   --font-display: "Orbitron", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+
+  --ambient-multiplier: 0.5; 
 }
 
+/* ═══════════════════════════════════════════════
+   DARK THEME 
+   ═══════════════════════════════════════════════ */
 .dark {
-  /* Dark Mode — Current */
   --color-background: #0b0e14;
   --color-surface: #161a22;
   --color-elevated: #1f242c;
+
   --color-primary: #ffc107;
   --color-primary-hover: #f0b90b;
   --color-success: #22c55e;
   --color-error: #ef4444;
   --color-text: #e8eaed;
   --color-text-secondary: #8a94a6;
+
   --color-border: #252a36;
+  --color-border-subtle: #1b2029;
+  --color-border-strong: #343a48;
+
+  /* ─── shadows ─── */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+  --shadow-sm: 
+    0 1px 3px 0 rgb(0 0 0 / 0.5),
+    0 0 20px -8px rgb(255 193 7 / 0.08);
+  --shadow-md: 
+    0 4px 6px -1px rgb(0 0 0 / 0.6),
+    0 0 24px -8px rgb(255 193 7 / 0.12);
+  --shadow-lg: 
+    0 10px 15px -3px rgb(0 0 0 / 0.7),
+    0 0 40px -10px rgb(255 193 7 / 0.15);
+  --shadow-xl: 
+    0 20px 25px -5px rgb(0 0 0 / 0.8),
+    0 0 60px -12px rgb(255 193 7 / 0.2);
+
+  /* ─── DataRain ─── */
+  --footer-rain-color: var(--color-primary);
+  --footer-rain-opacity: 0.18;
+  --footer-rain-glow: 0 0 8px currentColor;
+  --footer-rain-blur-glow: 0 0 8px rgb(255 193 7 / 0.8);
+
+  --ambient-multiplier: 1;
 }
 
+
 @theme inline {
+  /* colors */
   --color-background: var(--color-background);
   --color-surface: var(--color-surface);
   --color-elevated: var(--color-elevated);
@@ -46,7 +101,17 @@
   --color-text: var(--color-text);
   --color-text-secondary: var(--color-text-secondary);
   --color-border: var(--color-border);
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-strong: var(--color-border-strong);
 
+  /* shadows */
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+
+  /* Fonts */
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
@@ -58,26 +123,15 @@
 }
 
 @utility container {
-  @media (width >= 30rem) {
-    max-width: 100%;
-  }
-  @media (width >= 40rem) {
-    max-width: 40rem;
-  }
-  @media (width >= 48rem) {
-    max-width: 48rem;
-  }
-  @media (width >= 64rem) {
-    max-width: 64rem;
-  }
-  @media (width >= 80rem) {
-    max-width: 80rem;
-  }
-  @media (width >= 90rem) {
-    max-width: 90rem;
-  }
+  @media (width >= 30rem) { max-width: 100%; }
+  @media (width >= 40rem) { max-width: 40rem; }
+  @media (width >= 48rem) { max-width: 48rem; }
+  @media (width >= 64rem) { max-width: 64rem; }
+  @media (width >= 80rem) { max-width: 80rem; }
+  @media (width >= 90rem) { max-width: 90rem; }
   @apply mx-auto w-full px-4 md:px-6;
 }
+
 html {
   background-color: var(--color-background);
 }
@@ -87,13 +141,10 @@ body {
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom Scrollbar */
-/* Scrollbar — فقط thumb، بدون track و button */
+/* ─── Custom Scrollbar ─── */
 .custom-scroll::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -113,16 +164,14 @@ body {
   border-radius: 9999px;
 }
 
-/* View Transition for Theme Toggle */
+/* ─── View Transition ─── */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
 
-::view-transition-old(root) {
-  z-index: 1;
-}
+::view-transition-old(root) { z-index: 1; }
 
 ::view-transition-new(root) {
   z-index: 2;
@@ -141,109 +190,99 @@ html[data-theme-vt="active"] * {
 }
 
 @keyframes spin-border {
-  to {
-    --angle: 360deg;
-  }
+  to { --angle: 360deg; }
 }
 
-/* ─── Marquee Animation ────────────────── */
+/* ─── Marquee ─── */
 @keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(calc(-100% - 1rem));
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - 1rem)); }
 }
 
 .animate-marquee {
   animation: marquee var(--marquee-duration, 40s) linear infinite;
 }
 
-/* Pause on hover */
 .marquee-pausable:hover .animate-marquee {
   animation-play-state: paused;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+@keyframes marquee-reverse {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 30s linear infinite;
+}
+
+.group:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+/* ─── Scrollbar Hide ─── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-/* ─── CTA Ambient Lights ─────────────── */
+/* ─── CTA Ambient Lights ─── */
 @keyframes cta-light-1 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.4;
-  }
-  33% {
-    transform: translate(80px, 60px) scale(1.3);
-    opacity: 0.6;
-  }
-  66% {
-    transform: translate(-60px, 100px) scale(0.9);
-    opacity: 0.3;
-  }
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  33% { transform: translate(80px, 60px) scale(1.3); opacity: 0.6; }
+  66% { transform: translate(-60px, 100px) scale(0.9); opacity: 0.3; }
 }
 
 @keyframes cta-light-2 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.35;
-  }
-  33% {
-    transform: translate(-100px, -80px) scale(1.2);
-    opacity: 0.55;
-  }
-  66% {
-    transform: translate(70px, -100px) scale(1.1);
-    opacity: 0.4;
-  }
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.35; }
+  33% { transform: translate(-100px, -80px) scale(1.2); opacity: 0.55; }
+  66% { transform: translate(70px, -100px) scale(1.1); opacity: 0.4; }
 }
 
 @keyframes cta-light-3 {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.25;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.4);
-    opacity: 0.45;
-  }
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.25; }
+  50% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.45; }
 }
+
+/* ─── Aurora ─── */
 @keyframes aurora-1 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(80px, 60px) scale(1.2);
-  }
-  66% {
-    transform: translate(-60px, 100px) scale(0.9);
-  }
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(80px, 60px) scale(1.2); }
+  66% { transform: translate(-60px, 100px) scale(0.9); }
 }
 
 @keyframes aurora-2 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(-100px, -80px) scale(1.15);
-  }
-  66% {
-    transform: translate(70px, -100px) scale(1.05);
-  }
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-100px, -80px) scale(1.15); }
+  66% { transform: translate(70px, -100px) scale(1.05); }
 }
 
 @keyframes aurora-3 {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.4);
-  }
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.4); }
+}
+
+/* ─── Watermark ─── */
+@keyframes watermark-chase {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Pulse Footer ─── */
+@keyframes pulse-travel {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: -1000; }
+}
+
+@keyframes pulse-text-glow {
+  0%, 100% { opacity: 0.7; filter: blur(0px); }
+  50% { opacity: 1; filter: blur(0.3px); }
+}
+
+/* ─── Data Rain ─── */
+@keyframes data-rain {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100vh); }
 }
