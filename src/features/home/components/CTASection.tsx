@@ -7,7 +7,7 @@ import { AmbientLights } from '@/components/ui/AmbientLights'
 
 export function CTASection() {
   return (
-    <section className="relative py-20 md:py-32 container">
+    <section className="relative py-20 md:py-32 ">
       {/* ─── Neon Lights  ─── */}
       <AmbientLights variant="multi" />
 

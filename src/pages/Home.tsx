@@ -1,6 +1,4 @@
-// src/pages/Home.tsx
 import { HeroSection } from '@/features/home/components/HeroSection'
-import { HeroSkeleton } from '@/features/home/components/HeroSkeleton'
 import { TopMovers } from '@/features/home/components/TopMovers'
 import { GlobalStats } from '@/features/home/components/GlobalStats'
 import { TrendingCoins } from '@/features/home/components/TrendingCoins'
@@ -9,6 +7,7 @@ import { CTASection } from '@/features/home/components/CTASection'
 import { useHomeData } from '@/features/home/hooks/useHomeData'
 import { useTrending } from '@/hooks/useTrending'
 import { AmbientLights } from '@/components/ui/AmbientLights'
+import { PageLoader } from '@/components/ui/PageLoader'
 
 export function Home() {
   const {
@@ -21,9 +20,9 @@ export function Home() {
     isLoading,
     error,
   } = useHomeData()
-  const { data: trending } = useTrending()
+  const { data: trending, isLoading: trendingLoading } = useTrending()
+  const pageLoading = isLoading || trendingLoading
 
-  if (isLoading) return <HeroSkeleton />
 
   if (error) {
     return (
@@ -43,13 +42,17 @@ export function Home() {
     )
   }
 
+  if (pageLoading) {
+    return <PageLoader />
+  }
+
   return (
-    <main>
+    <main className="animate-[fade-in_0.4s_ease-out]">
       <HeroSection coins={top10} bitcoin={bitcoin} isPositive={isPositive} />
+
       <div className="mx-auto">
         <div className="relative">
           <AmbientLights variant="home" intensity="subtle" />
-
           <div className="relative z-10">
             <TopMovers gainers={topGainers} losers={topLosers} />
             {globalStats && <GlobalStats stats={globalStats} />}

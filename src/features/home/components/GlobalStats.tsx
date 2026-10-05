@@ -99,7 +99,7 @@ export function GlobalStats({ stats }: GlobalStatsProps) {
               <SpotlightCard
                 spotlightColor={card.color.spotlight}
                 className={cn(
-                  'group border-border shadow-md bg-surface relative h-full overflow-hidden rounded-2xl border backdrop-blur-xl',
+                  'group border-border shadow-md bg-surface relative h-35 overflow-hidden rounded-2xl border backdrop-blur-xl',
                   'transition-colors hover:border-border',
                 )}
               >

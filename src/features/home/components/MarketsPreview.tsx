@@ -1,7 +1,8 @@
 import { Link } from 'react-router'
 import { ArrowRight } from 'lucide-react'
 import { BlurFade } from '@/components/ui/BlurFade'
-import { NumberTicker } from '@/components/ui/NumberTicker'
+import { FlashValue } from '@/components/ui/FlashValue'
+import { MiniSparkline } from '@/components/ui/MiniSparkline'
 import { useCoins } from '@/hooks/useCoins'
 import { cn } from '@/utils/cn'
 
@@ -10,7 +11,7 @@ export function MarketsPreview() {
 
   if (isLoading || !coins) {
     return (
-      <section className="py-12 md:py-16 container">
+      <section className="container pt-12 md:pt-16">
         <div className="mb-8">
           <div className="bg-elevated mb-2 h-4 w-32 animate-pulse rounded" />
           <div className="bg-elevated h-10 w-40 animate-pulse rounded" />
@@ -21,7 +22,7 @@ export function MarketsPreview() {
   }
 
   return (
-    <section className="pt-12 md:pt-16 container">
+    <section className="container pt-12 md:pt-16">
       <BlurFade delay={0.1}>
         <div className="mb-8 flex items-end justify-between">
           <div>
@@ -47,16 +48,16 @@ export function MarketsPreview() {
       </BlurFade>
 
       <BlurFade delay={0.2}>
-        <div className="border-border bg-surface shadow-lg overflow-hidden rounded-2xl border backdrop-blur-xl">
+        <div className="border-border bg-surface overflow-hidden rounded-2xl border shadow-lg backdrop-blur-xl">
           {/* Header */}
-          <div className="border-border text-text-secondary grid grid-cols-[1fr_90px_80px] items-center border-b px-4 py-3 font-mono text-xs tracking-wider uppercase md:grid-cols-[60px_1fr_130px_110px_100px_120px]">
+          <div className="border-border text-text-secondary grid grid-cols-[1fr_90px_80px] items-center border-b px-4 py-3 font-mono text-xs tracking-wider uppercase md:grid-cols-[60px_1fr_130px_110px_120px_100px]">
             <span className="md:hidden">Coin</span>
             <span className="hidden md:block">#</span>
             <span className="hidden md:block">Coin</span>
-            <span className="text-right">Price</span>
-            <span className="text-right">24h %</span>
-            <span className="hidden text-right md:block">7d</span>
-            <span className="hidden text-right md:block">Market Cap</span>
+            <span className="text-center">Price</span>
+            <span className="text-center">24h %</span>
+            <span className="hidden text-center md:block">7d</span>
+            <span className="hidden text-center md:block">Market Cap</span>
           </div>
 
           {/* Rows */}
@@ -73,10 +74,10 @@ export function MarketsPreview() {
                 <BlurFade key={coin.id} delay={0.3 + i * 0.03}>
                   <Link
                     to={`/coin/${coin.id}`}
-                    className="group hover:bg-elevated/40 grid grid-cols-[1fr_90px_80px] items-center px-4 py-3 transition-colors md:grid-cols-[60px_1fr_130px_110px_100px_120px]"
+                    className="group hover:bg-elevated/40 grid grid-cols-[1fr_90px_80px] items-center px-4 py-3 transition-colors md:grid-cols-[60px_1fr_130px_110px_120px_100px]"
                   >
-                    {/* Rank   */}
-                    <span className="text-text-secondary hidden font-mono text-xs md:block">
+                    {/* Rank */}
+                    <span className="text-text-secondary hidden font-mono text-sm md:block">
                       {coin.market_cap_rank}
                     </span>
 
@@ -98,9 +99,9 @@ export function MarketsPreview() {
                     </div>
 
                     {/* Price */}
-                    <p className="text-text text-right font-mono text-sm tabular-nums">
+                    <p className="text-text text-center font-mono text-sm tabular-nums">
                       $
-                      <NumberTicker
+                      <FlashValue
                         value={coin.current_price}
                         decimals={coin.current_price < 1 ? 4 : 2}
                       />
@@ -109,7 +110,7 @@ export function MarketsPreview() {
                     {/* 24h */}
                     <p
                       className={cn(
-                        'text-right font-mono text-sm tabular-nums',
+                        'text-center font-mono text-sm tabular-nums',
                         isPositive ? 'text-success' : 'text-error',
                       )}
                     >
@@ -118,15 +119,16 @@ export function MarketsPreview() {
                     </p>
 
                     {/* Sparkline */}
-                    <div className="hidden justify-end md:flex">
-                      <MiniSparkline
-                        data={sparklineData}
-                        isPositive={sparklinePositive}
-                      />
-                    </div>
+                    <MiniSparkline
+                      data={sparklineData}
+                      isPositive={sparklinePositive}
+                      width={90}
+                      height={32}
+                      className="mx-auto hidden! md:block!"
+                    />
 
-                    {/* Market Cap  */}
-                    <p className="text-text-secondary hidden text-right font-mono text-sm tabular-nums md:block">
+                    {/* Market Cap */}
+                    <p className="text-text-secondary hidden text-center font-mono text-sm tabular-nums md:block">
                       ${(coin.market_cap / 1_000_000_000).toFixed(1)}B
                     </p>
                   </Link>
@@ -137,63 +139,5 @@ export function MarketsPreview() {
         </div>
       </BlurFade>
     </section>
-  )
-}
-
-// ─── Mini Sparkline ───
-function MiniSparkline({
-  data,
-  isPositive,
-}: {
-  data: number[]
-  isPositive: boolean
-}) {
-  if (data.length < 2) return null
-
-  const width = 80
-  const height = 28
-  const padding = 2
-
-  const min = Math.min(...data)
-  const max = Math.max(...data)
-  const range = max - min || 1
-
-  const points = data.map((value, i) => {
-    const x = (i / (data.length - 1)) * (width - padding * 2) + padding
-    const y =
-      height - ((value - min) / range) * (height - padding * 2) - padding
-    return `${x},${y}`
-  })
-
-  const pathD = `M${points.join(' L')}`
-  const color = isPositive ? 'var(--color-success)' : 'var(--color-error)'
-  const gradientId = `spark-${Math.random().toString(36).slice(2, 9)}`
-
-  return (
-    <svg
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
-      className="overflow-visible"
-    >
-      <defs>
-        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.25" />
-          <stop offset="100%" stopColor={color} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <path
-        d={`${pathD} L${width - padding},${height} L${padding},${height} Z`}
-        fill={`url(#${gradientId})`}
-      />
-      <path
-        d={pathD}
-        fill="none"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   )
 }
