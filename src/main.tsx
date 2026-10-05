@@ -8,6 +8,10 @@ import { queryClient } from "./lib/queryClient";
 import "./lib/fonts";
 import "./index.css";
 
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual'
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
