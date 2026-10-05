@@ -31,6 +31,7 @@ export function DataRain() {
             color: 'var(--footer-rain-color)',
             opacity: 'var(--footer-rain-opacity)',
             animation: `data-rain ${col.duration}s linear ${col.delay}s infinite`,
+             transform: 'translateY(-100%)'
           }}
         >
           {col.chars.split(' ').map((char, i) => (

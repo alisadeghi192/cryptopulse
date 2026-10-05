@@ -18,7 +18,12 @@ function LiveDot() {
   )
 }
 
-function CoinTicker({ symbol, price, change, className }: {
+function CoinTicker({
+  symbol,
+  price,
+  change,
+  className,
+}: {
   symbol: string
   price: number
   change: number
@@ -45,8 +50,8 @@ export function TelemetryStrip() {
   const eth = coins?.find((c) => c.id === 'ethereum')
 
   return (
-    <div className="border-border/40 flex items-center justify-between gap-4 border-b py-3 font-mono text-[11px] tracking-wider">
-      <div className="flex items-center gap-4">
+    <div className="border-border/40 flex items-center justify-between gap-4 border-b py-3 font-mono text-[11px] tracking-wider max-md:flex-wrap">
+      <div className="flex items-center gap-4 max-md:w-full max-md:justify-between">
         <LiveDot />
         <div className="bg-border/40 h-3 w-px" />
         <div className="text-text-secondary flex items-center gap-1.5">
@@ -55,23 +60,25 @@ export function TelemetryStrip() {
         </div>
       </div>
 
-      <div className="text-text-secondary flex items-center gap-4">
-        {btc && (
-          <CoinTicker
-            symbol="BTC"
-            price={btc.current_price}
-            change={btc.price_change_percentage_24h ?? 0}
-            className="hidden md:inline-flex"
-          />
-        )}
-        {eth && (
-          <CoinTicker
-            symbol="ETH"
-            price={eth.current_price}
-            change={eth.price_change_percentage_24h ?? 0}
-            className="hidden lg:inline-flex"
-          />
-        )}
+      <div className="text-text-secondary flex items-center gap-4 max-md:w-full max-md:justify-between">
+        <div className='flex items-center gap-4'>
+          {btc && (
+            <CoinTicker
+              symbol="BTC"
+              price={btc.current_price}
+              change={btc.price_change_percentage_24h ?? 0}
+              className="flex"
+            />
+          )}
+          {eth && (
+            <CoinTicker
+              symbol="ETH"
+              price={eth.current_price}
+              change={eth.price_change_percentage_24h ?? 0}
+              className="flex"
+            />
+          )}
+        </div>
 
         <div className="bg-border/40 h-3 w-px" />
         <div className="flex items-center gap-1.5">
