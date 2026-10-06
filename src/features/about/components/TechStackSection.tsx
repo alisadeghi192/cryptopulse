@@ -1,0 +1,144 @@
+import { useState } from 'react'
+import { TECH_GROUPS, TECH_STACK } from '@/constants'
+
+export default function TechStackSection() {
+  const [activeTech, setActiveTech] = useState<string | null>(null)
+
+  return (
+    <section className="relative py-12 lg:py-20">
+      <div className="container">
+        <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+          <div>
+            <span className="text-primary font-mono text-xs tracking-[0.2em] uppercase">
+              02 / Technology
+            </span>
+
+            <h2 className="text-text mt-4 text-3xl font-bold tracking-tight md:text-4xl">
+              Built with modern tools
+            </h2>
+
+            <p className="text-text-secondary mt-4 max-w-xl text-sm leading-7">
+              Every technology has a specific role in the application, from
+              rendering and state management to data validation and visual
+              exploration.
+            </p>
+          </div>
+
+          <div className="text-text-secondary font-mono text-xs">
+            {TECH_STACK.length.toString().padStart(2, '0')} technologies
+          </div>
+        </div>
+
+        <div className="space-y-12">
+          {TECH_GROUPS.map((group) => {
+            const technologies = TECH_STACK.filter(
+              (tech) => tech.category === group.key,
+            )
+
+            return (
+              <div key={group.key}>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="bg-primary/50 h-px w-5" />
+
+                  <div>
+                    <h3 className="text-text text-xs font-semibold tracking-[0.15em] uppercase">
+                      {group.label}
+                    </h3>
+
+                    <p className="text-text-secondary mt-0.5 text-[11px]">
+                      {group.description}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                  {technologies.map((tech) => {
+                    const active = activeTech === tech.name
+
+                    return (
+                      <button
+                        type="button"
+                        key={tech.name}
+                        onMouseEnter={() => setActiveTech(tech.name)}
+                        onMouseLeave={() => setActiveTech(null)}
+                        onFocus={() => setActiveTech(tech.name)}
+                        onBlur={() => setActiveTech(null)}
+                        className="group border-border bg-surface/40 hover:border-(--tech-color)/40 relative min-h-33 overflow-hidden rounded-xl border p-4 text-left transition-all duration-300 hover:-translate-y-1"
+                        style={
+                          {
+                            '--tech-color': tech.accent,
+                            '--tech-glow': `${tech.accent}22`,
+                          } as React.CSSProperties
+                        }
+                      >
+                        {/* Brand spotlight */}
+                        <div
+                          className="pointer-events-none absolute -top-10 -right-10 size-32 rounded-full blur-3xl transition-opacity duration-500"
+                          style={{
+                            background: tech.accent,
+                            opacity: active ? 0.2 : 0,
+                          }}
+                        />
+
+                        {/* Radial wash */}
+                        <div
+                          className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+                          style={{
+                            background: `radial-gradient(circle at 50% 20%, ${tech.accent}18, transparent 55%)`,
+                            opacity: active ? 1 : 0,
+                          }}
+                        />
+
+                        <div className="relative flex h-full flex-col justify-between">
+                          {/* Top: Icon + Name + Version */}
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="border-border bg-background/60 flex size-11 shrink-0 items-center justify-center rounded-xl border p-2 transition-all duration-300 group-hover:scale-105"
+                              style={{
+                                borderColor: active
+                                  ? `${tech.accent}55`
+                                  : undefined,
+                                boxShadow: active
+                                  ? `0 0 24px ${tech.accent}20`
+                                  : undefined,
+                              }}
+                            >
+                              <img
+                                src={tech.icon}
+                                alt={tech.name}
+                                className="size-7 object-contain"
+                              />
+                            </div>
+
+                            <div className="min-w-0">
+                              <div className="text-text truncate text-sm font-semibold">
+                                {tech.name}
+                              </div>
+                              <div
+                                className="text-text-secondary font-mono text-[10px] transition-colors"
+                                style={{
+                                  color: active ? tech.accent : undefined,
+                                }}
+                              >
+                                v{tech.version}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Bottom: Description */}
+                          <div className="text-text-secondary mt-4 text-[10px]">
+                            {tech.description}
+                          </div>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
