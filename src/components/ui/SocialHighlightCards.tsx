@@ -1,3 +1,4 @@
+import { useThemeStore } from '@/stores/useThemeStore'
 import {
   GithubIcon,
   LinkedinIcon,
@@ -16,7 +17,7 @@ const socials: SocialLink[] = [
   {
     label: 'GitHub',
     href: 'https://github.com/alisadeghi192',
-    highlight: '#f0f0f0',
+    highlight: '#14181e',
     icon: GithubIcon,
   },
   {
@@ -40,10 +41,19 @@ const socials: SocialLink[] = [
 ]
 
 export function SocialHighlightCards() {
+  const theme = useThemeStore((s) => s.theme)
+
   return (
     <nav className="social-highlight-cards" aria-label="Social links">
       {socials.map((social) => {
         const Icon = social.icon
+
+        // GitHub only: white in dark mode
+        const color =
+          social.label === 'GitHub' && theme === 'dark'
+            ? '#f0f0f0'
+            : social.highlight
+
         return (
           <a
             key={social.href}
@@ -53,7 +63,7 @@ export function SocialHighlightCards() {
             rel="noreferrer"
             title={social.label}
             aria-label={social.label}
-            style={{ color: social.highlight }}
+            style={{ color }}
           >
             <span className="social-highlight-card__glow" aria-hidden="true" />
             <span className="social-highlight-card__beam" aria-hidden="true" />
