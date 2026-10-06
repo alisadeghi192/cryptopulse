@@ -7,7 +7,7 @@
    ═══════════════════════════════════════════════ */
 :root {
   /* ─── background ─── */
-  --color-background: #ffffff;
+  --color-background: #fcf6de;
   --color-surface: #f8f9fa;
   --color-elevated: #f1f3f5;
 
@@ -323,4 +323,120 @@ img {
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Social Highlight Cards */
+.social-highlight-cards {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.social-highlight-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  text-decoration: none;
+  transition:
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.social-highlight-card__glow {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 78% 92% at 50% -4%,
+    color-mix(in srgb, currentColor 38%, transparent) 0%,
+    color-mix(in srgb, currentColor 16%, transparent) 38%,
+    transparent 76%
+  );
+  opacity: 0.15;
+  transition: opacity 260ms ease;
+}
+
+.social-highlight-card__beam {
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  left: 6px;
+  height: 3px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.3;
+  transform: scaleX(0.9);
+  transition:
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.social-highlight-card__icon {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  color: var(--color-text-secondary);
+  opacity: 0.85;
+  transform: scale(0.96);
+  transition:
+    color 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.social-highlight-card__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.social-highlight-card:hover,
+.social-highlight-card:focus-visible {
+  border-color: color-mix(
+    in srgb,
+    currentColor 28%,
+    var(--color-border)
+  );
+  background: var(--color-elevated);
+  box-shadow: 0 0 22px
+    color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.social-highlight-card:hover .social-highlight-card__glow,
+.social-highlight-card:focus-visible .social-highlight-card__glow {
+  opacity: 1;
+}
+
+.social-highlight-card:hover .social-highlight-card__beam,
+.social-highlight-card:focus-visible .social-highlight-card__beam {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.social-highlight-card:hover .social-highlight-card__icon,
+.social-highlight-card:focus-visible .social-highlight-card__icon {
+  color: inherit;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.social-highlight-card:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
 }

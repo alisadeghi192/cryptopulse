@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn'
 
 interface AmbientLightsProps {
-  variant?: 'gold' | 'success' | 'purple' | 'multi' | 'home' | 'aurora'
+  variant?: 'gold' | 'success' | 'purple' | 'multi' | 'home' | 'aurora' | 'about'
   intensity?: 'subtle' | 'normal'
   className?: string
 }
@@ -142,6 +142,103 @@ home: [
     color: 'var(--color-error)',
     opacity: 0.12,
     animation: 'cta-light-3 24s ease-in-out infinite',
+  },
+],
+about: [
+  // Row 1: Hero
+  {
+    position: 'top-[3%] left-[8%]',
+    size: 'h-80 w-80',
+    blur: 'blur-[110px]',
+    color: 'var(--color-primary)',
+    opacity: 0.22,
+    animation: 'cta-light-1 18s ease-in-out infinite',
+  },
+  {
+    position: 'top-[5%] right-[10%]',
+    size: 'h-72 w-72',
+    blur: 'blur-[100px]',
+    color: 'var(--color-error)',
+    opacity: 0.14,
+    animation: 'cta-light-2 20s ease-in-out infinite',
+  },
+
+  // Row 2: Mission / Tech
+  {
+    position: 'top-[18%] left-[15%]',
+    size: 'h-72 w-72',
+    blur: 'blur-[100px]',
+    color: '#7C3AED',
+    opacity: 0.20,
+    animation: 'cta-light-3 22s ease-in-out infinite',
+  },
+  {
+    position: 'top-[25%] right-[15%]',
+    size: 'h-72 w-72',
+    blur: 'blur-[100px]',
+    color: 'var(--color-success)',
+    opacity: 0.16,
+    animation: 'cta-light-1 24s ease-in-out infinite',
+  },
+  {
+    position: 'top-[32%] left-1/2 -translate-x-1/2',
+    size: 'h-80 w-80',
+    blur: 'blur-[110px]',
+    color: 'var(--color-primary)',
+    opacity: 0.16,
+    animation: 'cta-light-2 26s ease-in-out infinite',
+  },
+
+  // Row 3: Features / Capabilities
+  {
+    position: 'top-[45%] left-[10%]',
+    size: 'h-72 w-72',
+    blur: 'blur-[100px]',
+    color: 'var(--color-error)',
+    opacity: 0.12,
+    animation: 'cta-light-3 20s ease-in-out infinite',
+  },
+  {
+    position: 'top-[52%] right-[10%]',
+    size: 'h-72 w-72',
+    blur: 'blur-[100px]',
+    color: '#7C3AED',
+    opacity: 0.18,
+    animation: 'cta-light-1 22s ease-in-out infinite',
+  },
+  {
+    position: 'top-[60%] left-1/2 -translate-x-1/2',
+    size: 'h-80 w-80',
+    blur: 'blur-[110px]',
+    color: 'var(--color-success)',
+    opacity: 0.14,
+    animation: 'cta-light-2 24s ease-in-out infinite',
+  },
+
+  // Row 4: Developer / Bottom
+  {
+    position: 'top-[74%] left-[15%]',
+    size: 'h-72 w-72',
+    blur: 'blur-[100px]',
+    color: 'var(--color-primary)',
+    opacity: 0.18,
+    animation: 'cta-light-3 24s ease-in-out infinite',
+  },
+  {
+    position: 'top-[80%] right-[15%]',
+    size: 'h-72 w-72',
+    blur: 'blur-[100px]',
+    color: 'var(--color-error)',
+    opacity: 0.12,
+    animation: 'cta-light-1 26s ease-in-out infinite',
+  },
+  {
+    position: 'top-[88%] left-1/2 -translate-x-1/2',
+    size: 'h-80 w-80',
+    blur: 'blur-[110px]',
+    color: '#7C3AED',
+    opacity: 0.16,
+    animation: 'cta-light-2 28s ease-in-out infinite',
   },
 ],
 } as const
