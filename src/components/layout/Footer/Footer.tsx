@@ -1,9 +1,9 @@
 import { Logo } from '@/components/ui/Logo'
 import { DataRain } from './DataRain'
 import { TelemetryStrip } from './TelemetryStrip'
-import { SocialLinks } from './SocialLinks'
 import { FooterLinks } from './FooterLinks'
 import { FOOTER_TEXT } from '@/constants'
+import { SocialHighlightCards } from '@/components/ui/SocialHighlightCards'
 export function Footer() {
   return (
     <footer className="border-border/40 bg-background relative overflow-hidden border-t">
@@ -21,7 +21,10 @@ export function Footer() {
               Real-time crypto market data, curated and beautiful. Track
               thousands of coins with live prices and zero noise.
             </p>
-            <SocialLinks />
+            <div className='mt-5'>
+            <SocialHighlightCards />
+
+            </div>
           </div>
 
           <FooterLinks />
