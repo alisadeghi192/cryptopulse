@@ -440,3 +440,21 @@ img {
   outline: 2px solid currentColor;
   outline-offset: 4px;
 }
+
+@media (max-width: 767px) {
+  .social-highlight-card__beam {
+    opacity: 0.9;
+    transform: scaleX(1);
+    box-shadow: 0 0 12px currentColor;
+  }
+
+  .social-highlight-card__glow {
+    opacity: 1;
+  }
+
+  .social-highlight-card__icon {
+    color: inherit;
+    opacity: 1;
+    transform: scale(1);
+  }
+}

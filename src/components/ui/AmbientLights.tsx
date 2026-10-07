@@ -233,7 +233,7 @@ about: [
     animation: 'cta-light-1 26s ease-in-out infinite',
   },
   {
-    position: 'top-[88%] left-1/2 -translate-x-1/2',
+    position: 'top-[93%] left-[25%] -translate-x-1/2',
     size: 'h-80 w-80',
     blur: 'blur-[110px]',
     color: '#7C3AED',
