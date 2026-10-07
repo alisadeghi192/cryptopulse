@@ -89,45 +89,35 @@ export default function TechStackSection() {
                           }}
                         />
 
-                        <div className="relative flex h-full flex-col justify-between">
-                          {/* Top: Icon + Name + Version */}
-                          <div className="flex items-center gap-3">
-                            <div
-                              className="border-border bg-background/60 flex size-11 shrink-0 items-center justify-center rounded-xl border p-2 transition-all duration-300 group-hover:scale-105"
-                              style={{
-                                borderColor: active
-                                  ? `${tech.accent}55`
-                                  : undefined,
-                                boxShadow: active
-                                  ? `0 0 24px ${tech.accent}20`
-                                  : undefined,
-                              }}
-                            >
-                              <img
-                                src={tech.icon}
-                                alt={tech.name}
-                                className="size-7 object-contain"
-                              />
-                            </div>
-
-                            <div className="min-w-0">
-                              <div className="text-text truncate text-sm font-semibold">
-                                {tech.name}
-                              </div>
-                              <div
-                                className="text-text-secondary font-mono text-[10px] transition-colors"
-                                style={{
-                                  color: active ? tech.accent : undefined,
-                                }}
-                              >
-                                v{tech.version}
-                              </div>
-                            </div>
+                        <div className="relative flex h-full flex-col items-center justify-between text-center">
+                          {/* Icon */}
+                          <div
+                            className="border-border/60 bg-background/60 mt-2 flex size-14 items-center justify-center rounded-2xl border p-3 transition-all duration-500 group-hover:scale-110"
+                            style={{
+                              borderColor: active
+                                ? `${tech.accent}55`
+                                : undefined,
+                              boxShadow: active
+                                ? `0 0 24px ${tech.accent}25`
+                                : undefined,
+                            }}
+                          >
+                            <img
+                              src={tech.icon}
+                              alt={tech.name}
+                              className="size-8 object-contain"
+                            />
                           </div>
 
-                          {/* Bottom: Description */}
-                          <div className="text-text-secondary mt-4 text-[10px]">
-                            {tech.description}
+                          {/* Name + Description */}
+                          <div className="mt-4 w-full">
+                            <div className="text-text truncate text-sm font-semibold">
+                              {tech.name}
+                            </div>
+
+                            <div className="text-text-secondary mt-1 text-[10px] tracking-wider uppercase">
+                              {tech.description}
+                            </div>
                           </div>
                         </div>
                       </button>

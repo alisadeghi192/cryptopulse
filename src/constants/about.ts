@@ -1,10 +1,4 @@
-import {
-  Database,
-  Palette,
-  Gauge,
-  Code2,
-  type LucideIcon,
-} from 'lucide-react'
+import { Database, Palette, Gauge, Code2, type LucideIcon } from 'lucide-react'
 
 export interface Tech {
   name: string
@@ -12,7 +6,7 @@ export interface Tech {
   version: string
   icon: string
   accent: string
-  category: 'core' | 'state' | 'ui' | 'backend'
+  category: 'core' | 'state' | 'ui' | 'backend' | 'ai'
 }
 
 export const TECH_STACK: Tech[] = [
@@ -128,6 +122,14 @@ export const TECH_STACK: Tech[] = [
     accent: '#EC5990',
     category: 'backend',
   },
+  {
+    name: 'DeepSeek',
+    description: 'AI Assistant',
+    version: '',
+    icon: '/tech/deepseek.svg',
+    accent: '#4D6BFE',
+    category: 'ai',
+  },
 ]
 
 export const TECH_GROUPS = [
@@ -150,6 +152,11 @@ export const TECH_GROUPS = [
     key: 'backend',
     label: 'Backend',
     description: 'Data, forms and validation',
+  },
+  {
+    key: 'ai',
+    label: 'AI Assistant',
+    description: 'Development accelerator',
   },
 ] as const
 
