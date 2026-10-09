@@ -27,7 +27,7 @@ export default function MissionSection() {
           <div className="space-y-10">
             <SpotlightCard
               spotlightColor="rgba(255, 193, 7, 0.08)"
-              className="border-border bg-surface/50 rounded-2xl border p-6 md:p-8"
+              className="border-border bg-surface/50 rounded-2xl border p-6 shadow-lg md:p-8"
             >
               <div className="flex items-start gap-4">
                 <div className="border-primary/20 bg-primary/10 text-primary mt-1 flex size-9 shrink-0 items-center justify-center rounded-lg border font-mono text-xs">
@@ -59,7 +59,7 @@ export default function MissionSection() {
                   <SpotlightCard
                     key={step.number}
                     spotlightColor="rgba(255, 193, 7, 0.06)"
-                    className="group border-border bg-surface/40 hover:border-primary/30 rounded-xl border p-5 transition-all duration-300 hover:-translate-y-0.5"
+                    className="group border-border bg-surface/40 hover:border-primary/30 rounded-xl border p-5 shadow-lg transition-all duration-300 hover:-translate-y-0.5"
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-primary/70 font-mono text-xs">

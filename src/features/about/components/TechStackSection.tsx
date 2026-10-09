@@ -63,7 +63,7 @@ export default function TechStackSection() {
                         onMouseLeave={() => setActiveTech(null)}
                         onFocus={() => setActiveTech(tech.name)}
                         onBlur={() => setActiveTech(null)}
-                        className="group border-border bg-surface/40 hover:border-(--tech-color)/40 relative min-h-33 overflow-hidden rounded-xl border p-4 text-left transition-all duration-300 hover:-translate-y-1"
+                        className="group border-border bg-surface/40 relative min-h-33 overflow-hidden rounded-xl border p-4 text-left shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-(--tech-color)/40"
                         style={
                           {
                             '--tech-color': tech.accent,

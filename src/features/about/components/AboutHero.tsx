@@ -63,7 +63,7 @@ export default function AboutHero() {
             {ABOUT_STATS.map((stat, i) => (
               <BlurFade key={stat.label} delay={0.5 + i * 0.05}>
                 <div className="group hover:bg-background/60 relative px-4 py-5 text-center transition-all duration-300 hover:shadow-[inset_0_4px_12px_rgba(0,0,0,0.15),inset_0_-2px_6px_rgba(255,255,255,0.05)] md:px-6 md:py-6">
-                  {/* Inner glow (به جای hover) */}
+                  {/* Inner glow  */}
                   <div className="bg-primary/0 group-hover:bg-primary/5 pointer-events-none absolute inset-0 transition-colors duration-300" />
 
                   <div className="relative">

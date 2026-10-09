@@ -1,9 +1,8 @@
-
 import { SocialHighlightCards } from '@/components/ui/SocialHighlightCards'
 
 export default function DeveloperSection() {
   return (
-    <section className="relative py-12 lg:py-25">
+    <section className="relative pb-12 lg:pb-25">
       <div className="container">
         <div className="border-border border-t pt-10 md:pt-14">
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
@@ -36,7 +35,7 @@ export default function DeveloperSection() {
             </div>
 
             <div className="flex items-center gap-2">
-<SocialHighlightCards />
+              <SocialHighlightCards />
             </div>
           </div>
 

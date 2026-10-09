@@ -26,7 +26,7 @@ export default function ChallengesSection() {
             <BlurFade key={item.number} delay={0.1 + i * 0.1}>
               <SpotlightCard
                 spotlightColor={item.glow}
-                className="border-border bg-surface/35 h-full rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1"
+                className="border-border bg-surface/35 h-full rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1 shadow-lg"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-text-secondary font-mono text-xs">

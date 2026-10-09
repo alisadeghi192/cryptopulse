@@ -2,6 +2,7 @@ import { FEATURES, ENGINEERING_POINTS } from '@/constants'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { cn } from '@/utils/cn'
+import { ArrowRight, Layers } from 'lucide-react'
 
 export default function FeaturesSection() {
   return (
@@ -48,12 +49,12 @@ export default function FeaturesSection() {
                 </span>
 
                 <div
-                  className={`font-display  font-semibold ${color} transition-transform duration-300 group-hover:scale-105`}
+                  className={`font-display font-semibold ${color} transition-transform duration-300 group-hover:scale-105`}
                 >
                   {point.value}
                 </div>
 
-                <div className="text-text-secondary  text-[10px]">
+                <div className="text-text-secondary text-[10px]">
                   {point.description}
                 </div>
               </div>
@@ -78,7 +79,7 @@ export default function FeaturesSection() {
               >
                 <SpotlightCard
                   spotlightColor={feature.color.glow}
-                  className="group border-border bg-surface/35 relative h-full overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1 md:p-7"
+                  className="group border-border bg-surface/35 relative h-full overflow-hidden rounded-2xl border p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 md:p-7"
                 >
                   <div className="relative">
                     <div
@@ -114,25 +115,46 @@ export default function FeaturesSection() {
         </div>
 
         {/* Bottom architecture line */}
-        <div className="border-border bg-surface/20 mt-5 flex flex-col gap-4 rounded-2xl border p-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <div>
-            <span className="text-text text-sm font-medium">
-              Architecture principle
-            </span>
 
-            <p className="text-text-secondary mt-1 text-xs">
-              Keep complexity close to the feature that owns it.
-            </p>
+        <div className="mt-5">
+          {/* Title */}
+          <div className="mb-3 flex items-center gap-2">
+            <Layers className="text-primary size-3.5" />
+            <span className="text-primary font-mono text-[10px] tracking-[0.25em] uppercase">
+              Architecture
+            </span>
+            <div className="bg-border h-px flex-1" />
+            <span className="text-text-secondary font-mono text-[10px]">
+              principle
+            </span>
           </div>
 
-          <div className="text-primary relative overflow-hidden font-mono text-[10px]">
-            <span className="relative z-10">
-              maintainable / predictable / reusable
-            </span>
-            <div
-              className="via-primary/30 absolute inset-0 -translate-x-full bg-linear-to-r from-transparent to-transparent"
-              style={{ animation: 'shimmer 3s ease-in-out infinite' }}
-            />
+          {/* Card */}
+          <div className="border-border bg-surface/20 grid overflow-hidden rounded-2xl border shadow-lg md:grid-cols-[1fr_auto_1fr]">
+            {/* Left: What */}
+            <div className="p-5 sm:p-6">
+              <span className="text-text-secondary font-mono text-[10px] tracking-[0.2em] uppercase">
+                What we do
+              </span>
+              <p className="text-text mt-2 text-sm leading-relaxed font-medium">
+                Keep logic, styles, and data inside the feature that owns them.
+              </p>
+            </div>
+
+            {/* Center: Arrow */}
+            <div className="border-border/60 relative flex items-center justify-center border-y px-6 py-3 md:border-x md:border-y-0">
+              <ArrowRight className="text-primary size-4 rotate-90 md:rotate-0" />
+            </div>
+
+            {/* Right: Why */}
+            <div className="p-5 sm:p-6">
+              <span className="text-primary font-mono text-[10px] tracking-[0.2em] uppercase">
+                Why it matters
+              </span>
+              <p className="text-text mt-2 text-sm leading-relaxed font-medium">
+                Fewer shared abstractions → faster changes → fewer surprises.
+              </p>
+            </div>
           </div>
         </div>
       </div>
