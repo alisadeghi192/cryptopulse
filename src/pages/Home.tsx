@@ -56,7 +56,7 @@ export function Home() {
           <div className="relative z-10">
             <TopMovers gainers={topGainers} losers={topLosers} />
             {globalStats && <GlobalStats stats={globalStats} />}
-            {trending && <TrendingCoins coins={trending} />}
+            {trending && <TrendingCoins />}
             <MarketsPreview />
           </div>
         </div>
