@@ -127,12 +127,12 @@ export function ThemeToggle({
       onClick={toggleTheme}
       aria-label="Toggle theme"
       className={cn(
-        'flex h-9 w-9 items-center justify-center rounded-lg text-text-secondary transition-colors hover:bg-elevated hover:text-text',
+        'flex h-9 w-9 items-center cursor-pointer justify-center rounded-lg text-text-secondary transition-colors hover:bg-elevated hover:text-text',
         className
       )}
       {...props}
     >
-      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {isDark ? <Sun className="h-4 w-4 text-primary" /> : <Moon className="h-4 w-4 text-blue-900" />}
     </button>
   )
 }
