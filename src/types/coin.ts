@@ -95,3 +95,68 @@ export interface TrendingCoin {
 export interface TrendingResponse {
   coins: TrendingCoin[]
 }
+
+export interface CoinDetail {
+  id: string
+  symbol: string
+  name: string
+  image: {
+    large: string
+    small: string
+    thumb: string
+  }
+  market_cap_rank: number
+  description: {
+    en: string
+  }
+  links: {
+    homepage: string[]
+    blockchain_site: string[]
+    official_forum_url: string[]
+    chat_url: string[]
+    announcement_url: string[]
+    twitter_screen_name: string
+    facebook_username: string
+    subreddit_url: string
+    repos_url: {
+      github: string[]
+    }
+  }
+  categories: string[]
+  market_data: {
+    current_price: { usd: number }
+    market_cap: { usd: number }
+    total_volume: { usd: number }
+    high_24h: { usd: number }
+    low_24h: { usd: number }
+    price_change_percentage_24h: number
+    price_change_percentage_7d: number
+    price_change_percentage_30d: number
+    ath: { usd: number }
+    ath_date: { usd: string }
+    ath_change_percentage: { usd: number }
+    atl: { usd: number }
+    atl_date: { usd: string }
+    atl_change_percentage: { usd: number }
+    circulating_supply: number
+    total_supply: number | null
+    max_supply: number | null
+  }
+  last_updated: string
+  sentiment_votes_up_percentage: number | null
+  sentiment_votes_down_percentage: number | null
+  community_data: {
+    twitter_followers: number | null
+    reddit_subscribers: number | null
+    telegram_channel_user_count: number | null
+  }
+  watchlist_portfolio_users: number | null
+  developer_data: {
+    forks: number | null
+    stars: number | null
+    subscribers: number | null
+    total_issues: number | null
+    closed_issues: number | null
+    commit_count_4_weeks: number | null
+  }
+}
