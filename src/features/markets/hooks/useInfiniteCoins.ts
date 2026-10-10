@@ -5,14 +5,15 @@ const PER_PAGE = 100
 
 export function useInfiniteCoins(maxCoins: number = 5000) {
   const maxPages = Math.ceil(maxCoins / PER_PAGE)
+  const sparkline = maxCoins <= 500
 
   return useInfiniteQuery({
-    queryKey: ['coins', 'infinite', maxCoins],
+    queryKey: ['coins', 'infinite', maxCoins , sparkline],
     queryFn: ({ pageParam = 1 }) =>
       fetchCoins({
         page: pageParam,
         perPage: PER_PAGE,
-        sparkline: true,
+        sparkline
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
