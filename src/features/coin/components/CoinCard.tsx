@@ -1,39 +1,96 @@
 import { Link } from 'react-router'
 import { TrendingUp, TrendingDown, Star } from 'lucide-react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { NumberTicker } from '@/components/ui/NumberTicker'
-import { PriceChart } from '@/components/ui/PriceChart'
+import { FlashValue } from '@/components/ui/FlashValue'
+import { MiniSparkline } from '@/components/ui/MiniSparkline'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { TiltCard } from '@/components/ui/TiltCard'
 import { BorderBeam } from '@/components/ui/BorderBeam'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
 
-interface CoinCardProps {
+// ─── CVA Variants ───
+const coinCardVariants = cva(
+  'group border-border bg-surface/40 relative overflow-hidden rounded-2xl border backdrop-blur-xl transition-colors hover:border-border',
+  {
+    variants: {
+      size: {
+        compact: 'p-4',
+        default: 'p-5',
+      },
+    },
+    defaultVariants: { size: 'default' },
+  },
+)
+
+const headerVariants = cva('flex items-start justify-between', {
+  variants: {
+    size: { compact: 'mb-3', default: 'mb-4' },
+  },
+  defaultVariants: { size: 'default' },
+})
+
+const coinInfoVariants = cva('flex items-center gap-3', {
+  variants: {
+    size: { compact: 'mb-3', default: 'mb-4' },
+  },
+  defaultVariants: { size: 'default' },
+})
+
+const logoVariants = cva('relative rounded-full', {
+  variants: {
+    size: { compact: 'h-9 w-9', default: 'h-10 w-10' },
+  },
+  defaultVariants: { size: 'default' },
+})
+
+const priceVariants = cva('text-text font-mono font-bold tabular-nums', {
+  variants: {
+    size: { compact: 'text-lg', default: 'text-2xl' },
+  },
+  defaultVariants: { size: 'default' },
+})
+
+const sparkVariants = cva('mt-3 w-full', {
+  variants: {
+    size: { compact: 'h-10', default: 'h-14' },
+  },
+  defaultVariants: { size: 'default' },
+})
+
+const footerVariants = cva(
+  'border-border/40 flex items-center justify-between border-t font-mono text-[10px]',
+  {
+    variants: {
+      size: { compact: 'mt-2 pt-2', default: 'mt-3 pt-3' },
+    },
+    defaultVariants: { size: 'default' },
+  },
+)
+
+// ─── Props ───
+export interface CoinCardProps extends VariantProps<typeof coinCardVariants> {
   coin: Coin
-  size?: 'compact' | 'default'
 }
 
-export function CoinCard({ coin, size = 'default' }: CoinCardProps) {
-  const isCompact = size === 'compact'
+// ─── Coin Card ───
+export function CoinCard({ coin, size }: CoinCardProps) {
   const change = coin.price_change_percentage_24h ?? 0
   const isPositive = change >= 0
   const price = coin.current_price
 
-  // Real sparkline from /coins/markets (sparkline_in_7d.price)
   const sparklineData = coin.sparkline_in_7d?.price ?? []
-  const chartData = sparklineData.map((value, i) => ({
-    time: i as any,
-    value,
-  }))
+  const sparklinePositive =
+    sparklineData.length > 1
+      ? sparklineData[sparklineData.length - 1] >= sparklineData[0]
+      : isPositive
 
   const spotlightColor = isPositive
     ? 'rgba(34, 197, 94, 0.12)'
     : 'rgba(239, 68, 68, 0.12)'
 
-  const padding = isCompact ? 'p-4' : 'p-5'
-  const logoSize = isCompact ? 'h-9 w-9' : 'h-10 w-10'
-  const priceSize = isCompact ? 'text-lg' : 'text-2xl'
-  const sparkHeight = isCompact ? 40 : 56
+  const sparkHeight = size === 'compact' ? 40 : 56
 
   return (
     <Link to={`/coin/${coin.id}`}>
@@ -41,19 +98,11 @@ export function CoinCard({ coin, size = 'default' }: CoinCardProps) {
         <BorderBeam thickness={1.5} duration={8} className="rounded-2xl">
           <SpotlightCard
             spotlightColor={spotlightColor}
-            className={cn(
-              'group border-border bg-surface/40 relative h-full overflow-hidden rounded-2xl border backdrop-blur-xl',
-              'transition-colors hover:border-border',
-            )}
+            className={cn(coinCardVariants({ size }))}
           >
-            <div className={cn('relative z-10', padding)}>
+            <div className="relative z-10">
               {/* Header */}
-              <div
-                className={cn(
-                  'flex items-start justify-between',
-                  isCompact ? 'mb-3' : 'mb-4',
-                )}
-              >
+              <div className={cn(headerVariants({ size }))}>
                 <div className="border-border bg-elevated/60 text-text-secondary rounded-md border px-2 py-0.5 font-mono text-[10px]">
                   #{coin.market_cap_rank}
                 </div>
@@ -68,18 +117,13 @@ export function CoinCard({ coin, size = 'default' }: CoinCardProps) {
               </div>
 
               {/* Coin */}
-              <div
-                className={cn(
-                  'flex items-center gap-3',
-                  isCompact ? 'mb-3' : 'mb-4',
-                )}
-              >
+              <div className={cn(coinInfoVariants({ size }))}>
                 <div className="relative shrink-0">
                   <div className="bg-primary/20 absolute inset-0 rounded-full blur-md" />
                   <img
                     src={coin.image}
                     alt={coin.name}
-                    className={cn('relative rounded-full', logoSize)}
+                    className={cn(logoVariants({ size }))}
                   />
                 </div>
                 <div className="min-w-0">
@@ -93,14 +137,8 @@ export function CoinCard({ coin, size = 'default' }: CoinCardProps) {
               </div>
 
               {/* Price */}
-              <p
-                className={cn(
-                  'text-text font-mono font-bold tabular-nums',
-                  priceSize,
-                )}
-              >
-                $
-                <NumberTicker value={price} decimals={price < 1 ? 4 : 2} />
+              <p className={cn(priceVariants({ size }))}>
+                $<NumberTicker value={price} decimals={price < 1 ? 4 : 2} />
               </p>
 
               {/* Change */}
@@ -134,27 +172,21 @@ export function CoinCard({ coin, size = 'default' }: CoinCardProps) {
                 </span>
               </div>
 
-              {/* Sparkline — real data */}
-              {chartData.length > 1 && (
-                <div
-                  className={cn('mt-3 w-full', isCompact ? 'h-10' : 'h-14')}
-                >
-                  <PriceChart
-                    data={chartData}
-                    isPositive={isPositive}
+              {/* Sparkline */}
+              {sparklineData.length > 1 && (
+                <div className={cn(sparkVariants({ size }))}>
+                  <MiniSparkline
+                    data={sparklineData}
+                    isPositive={sparklinePositive}
+                    width={200}
                     height={sparkHeight}
-                    variant="sparkline"
+                    fluid
                   />
                 </div>
               )}
 
               {/* Footer */}
-              <div
-                className={cn(
-                  'border-border/40 flex items-center justify-between border-t font-mono text-[10px]',
-                  isCompact ? 'mt-2 pt-2' : 'mt-3 pt-3',
-                )}
-              >
+              <div className={cn(footerVariants({ size }))}>
                 <div>
                   <p className="text-text-secondary">MCap</p>
                   <p className="text-text font-medium">
@@ -174,4 +206,73 @@ export function CoinCard({ coin, size = 'default' }: CoinCardProps) {
       </TiltCard>
     </Link>
   )
-}   
+}
+
+// ─── Coin Row ───
+export function CoinRow({ coin }: { coin: Coin }) {
+  const isPositive = (coin.price_change_percentage_24h ?? 0) >= 0
+  const sparklineData = coin.sparkline_in_7d?.price ?? []
+  const sparklinePositive =
+    sparklineData.length > 1
+      ? sparklineData[sparklineData.length - 1] >= sparklineData[0]
+      : isPositive
+
+  return (
+    <Link
+      to={`/coin/${coin.id}`}
+      className="group hover:bg-elevated/40 grid grid-cols-[1fr_90px_80px] items-center px-4 py-3 transition-colors md:grid-cols-[60px_1fr_130px_110px_120px_100px]"
+    >
+      <span className="text-text-secondary hidden font-mono text-sm md:block">
+        {coin.market_cap_rank}
+      </span>
+
+      <div className="flex min-w-0 items-center gap-3">
+        <img
+          src={coin.image}
+          alt={coin.name}
+          className="h-7 w-7 shrink-0 rounded-full"
+        />
+        <div className="min-w-0">
+          <p className="text-text truncate text-sm font-medium">
+            {coin.name}
+          </p>
+          <p className="text-text-secondary font-mono text-xs uppercase">
+            {coin.symbol}
+          </p>
+        </div>
+      </div>
+
+      <p className="text-text text-center font-mono text-sm tabular-nums">
+        $
+        <FlashValue
+          value={coin.current_price}
+          decimals={coin.current_price < 1 ? 4 : 2}
+        />
+      </p>
+
+      <p
+        className={cn(
+          'text-center font-mono text-sm tabular-nums',
+          isPositive ? 'text-success' : 'text-error',
+        )}
+      >
+        {isPositive ? '+' : ''}
+        {(coin.price_change_percentage_24h ?? 0).toFixed(2)}%
+      </p>
+
+      {/* Sparkline — با wrapper div */}
+      <div className="hidden justify-center md:flex">
+        <MiniSparkline
+          data={sparklineData}
+          isPositive={sparklinePositive}
+          width={90}
+          height={32}
+        />
+      </div>
+
+      <p className="text-text-secondary hidden text-center font-mono text-sm tabular-nums md:block">
+        ${(coin.market_cap / 1_000_000_000).toFixed(1)}B
+      </p>
+    </Link>
+  )
+}
