@@ -9,7 +9,6 @@ export function useMarketsFilters() {
   const [params, setParams] = useSearchParams()
 
   const filter = (params.get('filter') as MarketsFilter) ?? 'top100'
-  const sort = (params.get('sort') as MarketsSort) ?? 'market_cap_desc'
   const view = (params.get('view') as MarketsView) ?? 'table'
   const search = params.get('q') ?? ''
 
@@ -29,11 +28,6 @@ export function useMarketsFilters() {
     setParams(newParams, { replace: true })
   }
 
-  const setSort = (next: MarketsSort) => {
-    const newParams = new URLSearchParams(params)
-    newParams.set('sort', next)
-    setParams(newParams, { replace: true })
-  }
 
   const setView = (next: MarketsView) => {
     const newParams = new URLSearchParams(params)
@@ -49,8 +43,8 @@ export function useMarketsFilters() {
   }
 
   return {
-    filter, sort, view, search,
+    filter, view, search,
     maxCoins,
-    setFilter, setSort, setView, setSearch,
+    setFilter, setView, setSearch,
   }
 }

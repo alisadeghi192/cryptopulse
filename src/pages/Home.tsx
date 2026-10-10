@@ -57,7 +57,7 @@ export function Home() {
             <TopMovers gainers={topGainers} losers={topLosers} />
             {globalStats && <GlobalStats stats={globalStats} />}
             {trending && <TrendingCoins />}
-            <MarketsPreview coins={top10} />
+            <MarketsPreview />
           </div>
         </div>
         <CTASection />
