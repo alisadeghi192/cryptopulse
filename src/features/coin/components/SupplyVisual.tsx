@@ -19,7 +19,7 @@ export function SupplyVisual({ circulating, max }: SupplyVisualProps) {
   if (!max) {
     return (
       <BlurFade delay={0.3}>
-        <div className="border-border bg-surface/30 rounded-2xl border p-5 shadow-lg md:p-6">
+        <div className="border-border h-full bg-surface/30 rounded-2xl border p-5 shadow-lg md:p-6">
           <h3 className="font-display text-text mb-4 text-sm font-bold">
             Supply
           </h3>
