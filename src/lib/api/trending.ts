@@ -39,7 +39,7 @@ async function fetchTrendingCoins(ids: string[]): Promise<Coin[]> {
 // Main: combine both
 export async function fetchTrending(): Promise<Coin[]> {
   const trendingItems = await fetchTrendingIds()
-  const ids = trendingItems.map((t) => t.id).slice(0, 10)
+  const ids = trendingItems.map((t) => t.id).slice(0, 12)
 
   if (ids.length === 0) return []
 

@@ -115,7 +115,7 @@ export interface CoinDetail {
     official_forum_url: string[]
     chat_url: string[]
     announcement_url: string[]
-    twitter_screen_name: string
+    twitter_screen_name: string | null
     facebook_username: string
     subreddit_url: string
     repos_url: {
