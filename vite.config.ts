@@ -13,6 +13,9 @@ export default defineConfig(({ mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
+    build: {
+      chunkSizeWarningLimit: 600,
+    },
     server: {
       proxy: {
         '/api/coingecko': {
