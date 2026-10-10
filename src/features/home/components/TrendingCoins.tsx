@@ -27,7 +27,7 @@ export function TrendingCoins() {
         </div>
       </BlurFade>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
         {coins.map((coin, i) => (
           <BlurFade key={coin.id} delay={0.1 + i * 0.05}>
             <CoinCard coin={coin} size="compact" />

@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { NumberTicker } from '@/components/ui/NumberTicker'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { TiltCard } from '@/components/ui/TiltCard'
@@ -19,8 +20,8 @@ export function TopMoversCard({
 }: TopMoversCardProps) {
   const spotlightColor =
     variant === 'success'
-      ? 'rgba(34, 197, 94, 0.15)'  
-      : 'rgba(239, 68, 68, 0.15)'  
+      ? 'rgba(34, 197, 94, 0.15)'
+      : 'rgba(239, 68, 68, 0.15)'
 
   return (
     <TiltCard maxTilt={3}>
@@ -31,12 +32,12 @@ export function TopMoversCard({
         {/* Header */}
         <div
           className={cn(
-            'flex items-center gap-2 border-b border-border px-5 py-4',
+            'border-border flex items-center gap-2 border-b px-5 py-4',
             variant === 'success' ? 'text-success' : 'text-error',
           )}
         >
           {icon}
-          <h3 className="font-mono text-sm font-semibold uppercase tracking-wider">
+          <h3 className="font-mono text-sm font-semibold tracking-wider uppercase">
             {title}
           </h3>
         </div>
@@ -44,8 +45,9 @@ export function TopMoversCard({
         {/* List */}
         <div className="divide-border/30 divide-y">
           {coins.map((coin) => (
-            <div
+            <Link
               key={coin.id}
+              to={`/coin/${coin.id}`}
               className="hover:bg-elevated/40 flex items-center justify-between px-5 py-3 transition-colors"
             >
               <div className="flex items-center gap-3">
@@ -82,7 +84,7 @@ export function TopMoversCard({
                   %
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </SpotlightCard>
