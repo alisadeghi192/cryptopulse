@@ -5,13 +5,13 @@ import {
   useReactTable,
   type SortingState,
 } from '@tanstack/react-table'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { useVirtualizer } from '@tanstack/react-virtual'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { DataTableHeader } from './DataTableHeader'
 import { DataTableVirtualBody } from './DataTableVirtualBody'
 import { cn } from '@/utils/cn'
 import type { DataTableProps } from './types'
-import { MobileLoadMore } from './MobileLoadMore'
 
 export function DataTable<TData>({
   data,
@@ -33,6 +33,7 @@ export function DataTable<TData>({
   const setSorting = onSortingChange ?? setInternalSorting
 
   const isMobile = useMediaQuery('(max-width: 767px)')
+  const mobileParentRef = useRef<HTMLDivElement>(null)
 
   const table = useReactTable({
     data,
@@ -47,20 +48,62 @@ export function DataTable<TData>({
     columnResizeMode: 'onChange',
   })
 
- if (isMobile && mobileCardRender) {
-  return (
-    <div className={cn('space-y-2', className)}>
-      {data.map((row, i) => (
-        <div key={i}>{mobileCardRender(row)}</div>
-      ))}
-      <MobileLoadMore
-        onLoadMore={onLoadMore}
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-      />
-    </div>
-  )
-}
+  // ─── Mobile virtualizer (always called, count=0 when not mobile) ───
+  const mobileVirtualizer = useVirtualizer({
+    count: isMobile && mobileCardRender ? data.length : 0,
+    getScrollElement: () => mobileParentRef.current,
+    estimateSize: () => 76,
+    overscan: 5,
+  })
+
+  // ─── Mobile card view ───
+  if (isMobile && mobileCardRender) {
+    const mobileItems = mobileVirtualizer.getVirtualItems()
+
+    return (
+      <div
+        ref={mobileParentRef}
+        className={cn('h-[70vh] overflow-y-auto custom-scroll', className)}
+        onScroll={(e) => {
+          const el = e.currentTarget
+          const nearBottom =
+            el.scrollHeight - el.scrollTop - el.clientHeight < 400
+          if (nearBottom && hasNextPage && !isFetchingNextPage && onLoadMore) {
+            onLoadMore()
+          }
+        }}
+      >
+        <div
+          style={{
+            height: `${mobileVirtualizer.getTotalSize()}px`,
+            width: '100%',
+            position: 'relative',
+          }}
+        >
+          {mobileItems.map((virtualItem) => (
+            <div
+              key={virtualItem.key}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                transform: `translateY(${virtualItem.start}px)`,
+              }}
+            >
+              {mobileCardRender(data[virtualItem.index])}
+            </div>
+          ))}
+        </div>
+
+        {isFetchingNextPage && (
+          <div className="text-text-secondary py-4 text-center font-mono text-xs">
+            Loading more...
+          </div>
+        )}
+      </div>
+    )
+  }
 
   if (isLoading) {
     return (

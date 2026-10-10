@@ -18,10 +18,7 @@ export function PageLoader({ className }: PageLoaderProps) {
         <div className="bg-primary/15 absolute inset-0 rounded-full blur-3xl" />
 
         {/* Radar circular grid */}
-        <svg
-          viewBox="0 0 100 100"
-          className="absolute inset-0 h-full w-full"
-        >
+        <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full">
           {/* Outer circle */}
           <circle
             cx="50"
@@ -78,12 +75,28 @@ export function PageLoader({ className }: PageLoaderProps) {
           {/* Radar sweep (conic gradient-like) */}
           <defs>
             <radialGradient id="radar-sweep" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.1" />
-              <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
+              <stop
+                offset="0%"
+                stopColor="var(--color-primary)"
+                stopOpacity="0.1"
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--color-primary)"
+                stopOpacity="0"
+              />
             </radialGradient>
             <linearGradient id="radar-line" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
+              <stop
+                offset="0%"
+                stopColor="var(--color-primary)"
+                stopOpacity="0.6"
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--color-primary)"
+                stopOpacity="0"
+              />
             </linearGradient>
           </defs>
 
@@ -171,17 +184,51 @@ export function PageLoader({ className }: PageLoaderProps) {
           </span>
         </div>
       </div>
+      {/* ─── Brand ─── */}
+      <div className="flex flex-col items-center gap-3">
+        <p className="font-display text-primary text-lg font-bold tracking-[0.3em]">
+          CRYPTOPULSE
+        </p>
+
+        <div className="flex items-center gap-2">
+          <div className="bg-border h-px w-8" />
+          <p className="text-text-secondary font-mono text-[10px] tracking-[0.2em] uppercase">
+            Tracking Markets
+          </p>
+          <div className="bg-border h-px w-8" />
+        </div>
+      </div>
 
       {/* ─── ECG Heartbeat Line ─── */}
       <div className="relative h-10 w-72">
         <svg viewBox="0 0 500 50" className="h-full w-full" fill="none">
           <defs>
             <linearGradient id="ecg-grad" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0" />
-              <stop offset="15%" stopColor="var(--color-primary)" stopOpacity="0.4" />
-              <stop offset="50%" stopColor="var(--color-primary)" stopOpacity="1" />
-              <stop offset="85%" stopColor="var(--color-primary)" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
+              <stop
+                offset="0%"
+                stopColor="var(--color-primary)"
+                stopOpacity="0"
+              />
+              <stop
+                offset="15%"
+                stopColor="var(--color-primary)"
+                stopOpacity="0.4"
+              />
+              <stop
+                offset="50%"
+                stopColor="var(--color-primary)"
+                stopOpacity="1"
+              />
+              <stop
+                offset="85%"
+                stopColor="var(--color-primary)"
+                stopOpacity="0.4"
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--color-primary)"
+                stopOpacity="0"
+              />
             </linearGradient>
 
             <filter id="ecg-glow">
@@ -213,40 +260,6 @@ export function PageLoader({ className }: PageLoaderProps) {
             style={{ animation: 'ecg-travel 2.5s linear infinite' }}
           />
         </svg>
-
-        {/* Pulsing dot on the line */}
-        <div
-          className="bg-primary shadow-primary absolute top-1/2 size-1.5 -translate-y-1/2 rounded-full shadow-[0_0_8px_var(--color-primary)]"
-          style={{ animation: 'ecg-dot 2.5s linear infinite' }}
-        />
-      </div>
-
-      {/* ─── Brand ─── */}
-      <div className="flex flex-col items-center gap-3">
-        <p className="font-display text-primary text-lg font-bold tracking-[0.3em]">
-          CRYPTOPULSE
-        </p>
-
-        <div className="flex items-center gap-2">
-          <div className="bg-border h-px w-8" />
-          <p className="text-text-secondary font-mono text-[10px] tracking-[0.2em] uppercase">
-            Tracking Markets
-          </p>
-          <div className="bg-border h-px w-8" />
-        </div>
-      </div>
-
-      {/* ─── Status dots ─── */}
-      <div className="flex gap-1.5">
-        {[0, 1, 2].map((i) => (
-          <div
-            key={i}
-            className="bg-primary h-1 w-1 rounded-full"
-            style={{
-              animation: `pulse-dot 1.4s ease-in-out ${i * 0.2}s infinite`,
-            }}
-          />
-        ))}
       </div>
     </div>
   )

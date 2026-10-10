@@ -3,6 +3,7 @@ interface MiniSparklineProps {
   isPositive: boolean
   width?: number
   height?: number
+  fluid?: boolean
   className?: string
 }
 
@@ -11,6 +12,7 @@ export function MiniSparkline({
   isPositive,
   width = 100,
   height = 30,
+  fluid = false,
   className,
 }: MiniSparklineProps) {
   if (data.length < 2) return null
@@ -41,9 +43,10 @@ export function MiniSparkline({
 
   return (
     <svg
-      width={width}
+      width={fluid ? '100%' : width}
       height={height}
       viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio={fluid ? 'none' : 'xMidYMid meet'}
       className={className}
       style={{ display: 'block' }}
     >
