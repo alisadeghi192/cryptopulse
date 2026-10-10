@@ -30,6 +30,7 @@ export function TopBar({
   const navLinks = [
     { label: "Markets", href: "/markets" },
     { label: "About", href: "/about" },
+    { label: 'Converter', href: '/converter' },
   ];
 
   const headerContent = (

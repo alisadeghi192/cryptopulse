@@ -8,6 +8,7 @@ import {
 export const FOOTER_LINKS = {
   Product: [
     { label: 'Markets', href: '/markets' },
+    { label: 'Converter', href: '/converter' },
     { label: 'Watchlist', href: '/watchlist' },
     { label: 'Dashboard', href: '/dashboard' },
   ],

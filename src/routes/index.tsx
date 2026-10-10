@@ -12,6 +12,7 @@ import { Dashboard } from '@/pages/Dashboard'
 import { Watchlist } from '@/pages/Watchlist'
 import { Profile } from '@/pages/Profile'
 import { NotFound } from '@/pages/NotFound'
+import { Converter } from '@/pages/Converter'
 
 export const router = createBrowserRouter([
   // Public pages 
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
       { path: 'markets', element: <Markets /> },
       { path: 'coin/:id', element: <CoinDetail /> },
       { path: 'about', element: <About /> },
+      { path: 'converter', element: <Converter /> },
     ],
   },
   // User pages

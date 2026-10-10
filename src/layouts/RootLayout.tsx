@@ -21,6 +21,7 @@ export function RootLayout() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Markets", href: "/markets" },
+    { label: 'Converter', href: '/converter' },
     ...(isAuthenticated ? [{ label: "Watchlist", href: "/watchlist" }] : []),
     { label: "About", href: "/about" },
   ];
