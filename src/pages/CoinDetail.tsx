@@ -14,13 +14,13 @@ import { CommunityStats } from '@/features/coin/components/CommunityStats'
 import { CoinAbout } from '@/features/coin/components/CoinAbout'
 import { RelatedCoins } from '@/features/coin/components/RelatedCoins'
 import { CoinLinks } from '@/features/coin/components/CoinLinks'
-import { CoinDetailSkeleton } from '@/features/coin/components/CoinDetailSkeleton'
+import { PageLoader } from '@/components/ui/PageLoader'
 
 export function CoinDetail() {
   const { id } = useParams<{ id: string }>()
   const { data: coin, isLoading, isError } = useCoinDetail(id)
 
-  if (isLoading) return <CoinDetailSkeleton />
+  if (isLoading) return <PageLoader  />
 
   if (isError || !coin) {
     return (
@@ -54,7 +54,7 @@ export function CoinDetail() {
           <CoinPriceChart coinId={coin.id} isPositive={isPositive} />
 
           {/* 3. Converter + Historical */}
-          <div className="grid gap-6 itemst lg:grid-cols-2">
+          <div className="grid gap-6 lg:grid-cols-2">
             <CoinConverter
               price={coin.market_data.current_price.usd}
               symbol={coin.symbol.toUpperCase()}

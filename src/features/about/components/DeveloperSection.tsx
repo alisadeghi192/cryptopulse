@@ -15,7 +15,6 @@ export default function DeveloperSection() {
                     className="h-full w-full scale-125 object-cover object-top"
                   />
                 </div>
-                {/* Online dot */}
                 <div className="border-background bg-success absolute right-1 bottom-2 size-4.5 rounded-full border-[2.5px]" />
               </div>
 
