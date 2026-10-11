@@ -20,7 +20,7 @@ export function LoginForm({ onSwitch }: LoginFormProps) {
   }
 
   return (
-    <div>
+    <div className='bg-[/auth1.webp]'> 
       <div className="mb-8 flex justify-center md:hidden">
         <Logo />
       </div>

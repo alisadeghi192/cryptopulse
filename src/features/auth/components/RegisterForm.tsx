@@ -40,7 +40,6 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
           'shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]',
         )}
       >
-        <div className="bg-primary/20 pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full blur-[80px]" />
 
         <div className="relative z-10">
           <div className="mb-8 text-center">

@@ -10,7 +10,7 @@ import { cn } from "@/utils/cn";
 import { Menu } from "lucide-react";
 import { NavigationProgress } from "../ui/NavigationProgress";
 
-const isAuthenticated = true;
+const isAuthenticated = false;
 const user = { name: "Ali" };
 
 interface TopBarProps {
