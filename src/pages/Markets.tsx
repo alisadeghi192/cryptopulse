@@ -12,6 +12,15 @@ import type { Coin } from '@/types/coin'
 import { MarketsGrid } from '@/features/markets/components/MarketsGrid'
 import { MarketsMobileCard } from '@/features/markets/components/MarketsMobileCard'
 import { AmbientLights } from '@/components/ui/AmbientLights'
+
+const FILTER_LABEL: Record<string, string> = {
+  all: 'All',
+  top100: 'Top 100',
+  top500: 'Top 500',
+  top1000: 'Top 1000',
+  top5000: 'Top 5000',
+}
+
 export function Markets() {
   const { filter, view, search, maxCoins, setFilter, setView, setSearch } =
     useMarketsFilters()
@@ -38,15 +47,24 @@ export function Markets() {
     )
   }, [allCoins, debouncedSearch])
 
+  const columns = useMemo(() => {
+    if (maxCoins > 500) {
+      return marketsColumns.filter((c) => c.id !== 'sparkline')
+    }
+    return marketsColumns
+  }, [maxCoins])
+
   if (isLoading) return <MarketsSkeleton />
   if (isError) return <MarketsEmpty variant="error" />
 
   const isSearchEmpty = debouncedSearch.length > 0 && coins.length === 0
+  const searchScope = FILTER_LABEL[filter] ?? 'All'
+  const canExpand = filter !== 'all' && filter !== 'top5000'
 
   return (
     <main className="relative py-8 md:py-12">
       <AmbientLights variant="home" intensity="subtle" />
-      <div className='relative z-10 container'>
+      <div className="relative z-10 container">
         <MarketsHeader totalCoins={coins.length} />
 
         <MarketsToolbar
@@ -56,18 +74,21 @@ export function Markets() {
           onFilterChange={setFilter}
           view={view}
           onViewChange={setView}
+          searchScope={searchScope}
         />
 
         {isSearchEmpty ? (
           <MarketsEmpty
             variant="notFound"
             query={debouncedSearch}
+            scope={searchScope}
             onClear={() => setSearch('')}
+            onExpandScope={canExpand ? () => setFilter('all') : undefined}
           />
         ) : view === 'table' ? (
           <DataTable
             data={coins}
-            columns={marketsColumns}
+            columns={columns}
             virtualize
             estimateSize={56}
             onLoadMore={fetchNextPage}

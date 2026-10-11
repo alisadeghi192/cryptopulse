@@ -17,30 +17,32 @@ interface MarketsToolbarProps {
   onFilterChange: (v: MarketsFilter) => void
   view: MarketsView
   onViewChange: (v: MarketsView) => void
+  searchScope: string
 }
 
 export function MarketsToolbar({
-  search, onSearchChange,
-  filter, onFilterChange,
-  view, onViewChange,
+  search,
+  onSearchChange,
+  filter,
+  onFilterChange,
+  view,
+  onViewChange,
+  searchScope,
 }: MarketsToolbarProps) {
   return (
     <div className="mb-5 flex flex-col gap-3">
-      {/* Row 1: Search */}
       <div className="border-border bg-surface focus-within:border-primary/50 flex h-10 items-center gap-2 rounded-lg border px-3 transition-colors">
         <Search className="text-text-secondary h-4 w-4 shrink-0" />
         <input
           type="text"
-          placeholder="Search coins..."
+          placeholder={`Search in ${searchScope}...`}
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           className="text-text placeholder:text-text-secondary/60 h-full w-full bg-transparent font-mono text-sm outline-none"
         />
       </div>
 
-      {/* Row 2: Filters + View toggle */}
       <div className="flex items-center justify-between gap-3">
-        {/* Filters */}
         <div className="border-border bg-surface no-scrollbar max-md:w-full flex items-center gap-1 overflow-x-auto rounded-lg border p-1">
           {FILTERS.map((f) => (
             <button
@@ -58,7 +60,6 @@ export function MarketsToolbar({
           ))}
         </div>
 
-        {/* View toggle — */}
         <div className="border-border bg-surface hidden shrink-0 items-center rounded-lg border p-1 md:flex">
           <button
             onClick={() => onViewChange('table')}

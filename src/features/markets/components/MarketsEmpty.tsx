@@ -6,15 +6,18 @@ import { cn } from '@/utils/cn'
 interface MarketsEmptyProps {
   variant?: 'empty' | 'error' | 'notFound'
   query?: string
+  scope?: string
   onClear?: () => void
+  onExpandScope?: () => void
 }
 
 export function MarketsEmpty({
   variant = 'empty',
   query,
+  scope,
   onClear,
+  onExpandScope,
 }: MarketsEmptyProps) {
-  // ─── Error ───
   if (variant === 'error') {
     return (
       <div className="flex h-96 flex-col items-center justify-center gap-4">
@@ -32,7 +35,6 @@ export function MarketsEmpty({
     )
   }
 
-  // ─── Not Found (search result empty) ───
   if (variant === 'notFound') {
     return (
       <div className="flex h-96 flex-col items-center justify-center gap-5">
@@ -42,14 +44,14 @@ export function MarketsEmpty({
 
         <div className="flex flex-col items-center gap-1.5 text-center">
           <p className="text-text font-mono text-sm font-medium">
-            No results for "{query}"
+            No results for "{query}"{scope ? ` in ${scope}` : ''}
           </p>
           <p className="text-text-secondary max-w-xs font-mono text-xs">
-            We couldn't find any coins matching your search.
+            The coin may exist outside this range. Try expanding the scope.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-3">
           {onClear && (
             <button
               onClick={onClear}
@@ -59,6 +61,17 @@ export function MarketsEmpty({
               )}
             >
               Clear search
+            </button>
+          )}
+          {onExpandScope && (
+            <button
+              onClick={onExpandScope}
+              className={cn(
+                buttonVariants({ variant: 'outline', size: 'sm' }),
+                'font-mono text-xs',
+              )}
+            >
+              Search all 5000 coins
             </button>
           )}
           <Link
@@ -76,7 +89,6 @@ export function MarketsEmpty({
     )
   }
 
-  // ─── Empty (no data at all) ───
   return (
     <div className="flex h-96 flex-col items-center justify-center gap-4">
       <AlertCircle className="text-text-secondary h-12 w-12" />
