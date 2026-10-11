@@ -6,45 +6,44 @@ import { AmbientLights } from '@/components/ui/AmbientLights'
 import { LoginForm } from '@/features/auth/components/LoginForm'
 import { RegisterForm } from '@/features/auth/components/RegisterForm'
 
-
 type AuthMode = 'login' | 'register'
 
-interface FlipCardProps {
+interface SwapCardProps {
   flipped: boolean
   direction: 'up' | 'down'
   front: React.ReactNode
   back: React.ReactNode
 }
 
-function FlipCard({ flipped, direction, front, back }: FlipCardProps) {
-  const rotate = flipped
-    ? direction === 'up'
-      ? 'rotateX(180deg)'
-      : 'rotateX(-180deg)'
-    : 'rotateX(0deg)'
-
-  const counterRotate =
-    direction === 'up' ? 'rotateX(180deg)' : 'rotateX(-180deg)'
+function SwapCard({ flipped, direction, front, back }: SwapCardProps) {
+  const outY = direction === 'up' ? '-100%' : '100%'
+  const inY = direction === 'up' ? '100%' : '-100%'
 
   return (
-    <div
-      className="relative h-screen w-1/2 transition-transform duration-900 ease-[cubic-bezier(0.22,1,0.36,1)]"
-      style={{ transform: rotate, transformStyle: 'preserve-3d' }}
-    >
+    <div className="relative h-screen w-1/2 overflow-hidden">
       <div
         className={cn(
-          'absolute inset-0 backface-hidden',
-          flipped && 'pointer-events-none',
+          'absolute inset-0 transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          flipped
+            ? 'pointer-events-none opacity-0'
+            : 'pointer-events-auto opacity-100',
         )}
+        style={{
+          transform: flipped ? `translateY(${outY})` : 'translateY(0)',
+        }}
       >
         {front}
       </div>
       <div
         className={cn(
-          'absolute inset-0 backface-hidden',
-          !flipped && 'pointer-events-none',
+          'absolute inset-0 transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          flipped
+            ? 'pointer-events-auto opacity-100'
+            : 'pointer-events-none opacity-0',
         )}
-        style={{ transform: counterRotate, transformStyle: 'preserve-3d' }}
+        style={{
+          transform: flipped ? 'translateY(0)' : `translateY(${inY})`,
+        }}
       >
         {back}
       </div>
@@ -62,11 +61,11 @@ function FormSlot({ isLogin, onSwitch }: FormSlotProps) {
     <div className="relative flex h-full items-center justify-center overflow-hidden">
       <AmbientLights intensity="subtle" variant="auth" />
       <div className="relative z-10 w-full max-w-md px-6">
-          {isLogin ? (
-            <LoginForm onSwitch={onSwitch} />
-          ) : (
-            <RegisterForm onSwitch={onSwitch} />
-          )}
+        {isLogin ? (
+          <LoginForm onSwitch={onSwitch} />
+        ) : (
+          <RegisterForm onSwitch={onSwitch} />
+        )}
       </div>
     </div>
   )
@@ -102,18 +101,15 @@ export function Auth() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-background">
-      <div
-        className="hidden md:flex min-h-screen w-full"
-        style={{ perspective: '2400px', perspectiveOrigin: '50% 50%' }}
-      >
-        <FlipCard
+      <div className="hidden md:flex min-h-screen w-full">
+        <SwapCard
           flipped={!isLogin}
           direction="up"
           front={<AuthImagePanel mode="login" />}
           back={<FormSlot isLogin={false} onSwitch={handleSwitch} />}
         />
 
-        <FlipCard
+        <SwapCard
           flipped={!isLogin}
           direction="down"
           front={<FormSlot isLogin={true} onSwitch={handleSwitch} />}
@@ -127,11 +123,11 @@ export function Auth() {
           key={mode}
           className="relative z-10 w-full max-w-md px-6 animate-[slide-fade_0.5s_ease-out]"
         >
-            {isLogin ? (
-              <LoginForm onSwitch={handleSwitch} />
-            ) : (
-              <RegisterForm onSwitch={handleSwitch} />
-            )}
+          {isLogin ? (
+            <LoginForm onSwitch={handleSwitch} />
+          ) : (
+            <RegisterForm onSwitch={handleSwitch} />
+          )}
         </div>
       </div>
     </div>
