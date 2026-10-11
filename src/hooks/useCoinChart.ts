@@ -7,6 +7,6 @@ export function useCoinChart(coinId: string | undefined, range: TimeRange) {
     queryKey: ['coinChart', coinId, range],
     queryFn: () => fetchCoinChart(coinId!, range),
     enabled: !!coinId,
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 5,
   })
 }

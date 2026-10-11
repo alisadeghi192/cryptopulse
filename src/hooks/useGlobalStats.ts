@@ -5,6 +5,8 @@ export function useGlobalStats() {
   return useQuery({
     queryKey: ['globalStats'],
     queryFn: fetchGlobalStats,
-    staleTime: 1000 * 60 * 5, 
+    staleTime: 1000 * 60 * 5,
+    refetchInterval: 1000 * 60 * 5,
+    refetchIntervalInBackground: false,
   })
 }
