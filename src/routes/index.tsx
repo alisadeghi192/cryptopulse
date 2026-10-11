@@ -4,6 +4,7 @@ import { RootLayout } from '@/layouts/RootLayout'
 import { AppLayout } from '@/layouts/AppLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
 import { PageLoader } from '@/components/ui/PageLoader'
+import { NotFound } from '@/pages/NotFound'
 
 // ─── Lazy loaded pages ───
 const Home = lazy(() =>
@@ -21,11 +22,8 @@ const About = lazy(() =>
 const Converter = lazy(() =>
   import('@/pages/Converter').then((m) => ({ default: m.Converter })),
 )
-const Login = lazy(() =>
-  import('@/pages/Login').then((m) => ({ default: m.Login })),
-)
-const Register = lazy(() =>
-  import('@/pages/Register').then((m) => ({ default: m.Register })),
+const Auth = lazy(() =>
+  import('@/pages/Auth').then((m) => ({ default: m.Auth })),
 )
 const Dashboard = lazy(() =>
   import('@/pages/Dashboard').then((m) => ({ default: m.Dashboard })),
@@ -36,9 +34,6 @@ const Watchlist = lazy(() =>
 const Profile = lazy(() =>
   import('@/pages/Profile').then((m) => ({ default: m.Profile })),
 )
-
-// ─── 404 ───
-import { NotFound } from '@/pages/NotFound'
 
 // ─── Suspense wrapper ───
 function LazyPage({ children }: { children: React.ReactNode }) {
@@ -133,7 +128,7 @@ export const router = createBrowserRouter([
         path: 'login',
         element: (
           <LazyPage>
-            <Login />
+            <Auth />
           </LazyPage>
         ),
       },
@@ -141,7 +136,7 @@ export const router = createBrowserRouter([
         path: 'register',
         element: (
           <LazyPage>
-            <Register />
+            <Auth />
           </LazyPage>
         ),
       },
