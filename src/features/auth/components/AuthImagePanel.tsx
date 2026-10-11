@@ -1,5 +1,4 @@
 import { Logo } from '@/components/ui/Logo'
-import { useThemeStore } from '@/stores/useThemeStore'
 import { cn } from '@/utils/cn'
 
 interface AuthImagePanelProps {
@@ -46,21 +45,12 @@ const CONTENT = {
 }
 
 export function AuthImagePanel({ mode }: AuthImagePanelProps) {
-  const theme = useThemeStore((s) => s.theme)
   const content = CONTENT[mode]
 
-  const imageSrc =
-    theme === 'dark'
-      ? mode === 'login'
-        ? '/auth1.jpg'
-        : '/auth2.jpg'
-      : mode === 'login'
-        ? '/auth2.jpg'
-        : '/auth/register-light.jpg'
+  const imageSrc = mode === 'login' ? '/auth1.webp' : '/auth2.webp'
 
   return (
     <div className="relative h-full w-full overflow-hidden">
-      {/* Background Image */}
       <img
         key={imageSrc}
         src={imageSrc}
@@ -71,28 +61,15 @@ export function AuthImagePanel({ mode }: AuthImagePanelProps) {
         )}
       />
 
-      {/* Overlay */}
-      <div
-        className={cn(
-          'absolute inset-0',
-          theme === 'dark'
-            ? 'from-background/80 via-background/50 to-background/80 bg-linear-to-br'
-            : 'from-background/60 via-background/30 to-background/60 bg-linear-to-br',
-        )}
-      />
-
-      {/* Ambient glow */}
-      <div className="bg-primary/30 absolute -bottom-20 -left-20 h-80 w-80 rounded-full blur-[120px]" />
-
-      {/* Content */}
-      <div className="relative z-10 flex h-full flex-col justify-between p-12">
-        <Logo />
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="relative z-10 flex h-full flex-col justify-between md:px-4 lg:px-12 py-12">
+        <Logo iconClassName="size-20 shrink-0" textClassName="text-4xl" />
 
         <div>
           <h2
             key={mode}
             className={cn(
-              'font-display text-3xl leading-tight font-bold tracking-tight text-white md:text-4xl',
+              'font-display text-4xl leading-tight font-bold tracking-tight telxt-white md:text-5xl',
               'animate-[slide-fade_0.7s_ease-out]',
             )}
           >
@@ -102,7 +79,7 @@ export function AuthImagePanel({ mode }: AuthImagePanelProps) {
           <p
             key={`${mode}-sub`}
             className={cn(
-              'mt-4 max-w-md text-sm leading-7 text-white/70',
+              'mt-4 max-w-md text-base leading-8 text-white/70',
               'animate-[slide-fade_0.7s_ease-out_0.1s_both]',
             )}
           >
@@ -112,13 +89,13 @@ export function AuthImagePanel({ mode }: AuthImagePanelProps) {
           <div
             key={`${mode}-stats`}
             className={cn(
-              'mt-8 flex gap-6',
+              'mt-10 flex gap-8',
               'animate-[slide-fade_0.7s_ease-out_0.2s_both]',
             )}
           >
             {content.stats.map((stat) => (
               <div key={stat.label}>
-                <p className="font-display text-2xl font-bold text-primary">
+                <p className="font-display text-primary text-3xl font-bold">
                   {stat.value}
                 </p>
                 <p className="font-mono text-[10px] tracking-widest text-white/50 uppercase">
@@ -129,7 +106,7 @@ export function AuthImagePanel({ mode }: AuthImagePanelProps) {
           </div>
         </div>
 
-        <p className="font-mono text-[10px] tracking-widest text-white/40 uppercase">
+        <p className="text-primary font-mono text-sm tracking-widest uppercase">
           {content.footer}
         </p>
       </div>
