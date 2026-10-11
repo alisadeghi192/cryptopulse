@@ -37,7 +37,7 @@ export const FOOTER_TEXT = {
 } as const
 
 export const TELEMETRY = {
-  dataSource: 'CoinGecko · 5-min refresh',
+  dataSource: 'CoinGecko · 2-min refresh',
   liveLabel: 'Live Data',
 } as const
 

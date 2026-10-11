@@ -4,7 +4,6 @@ import { useCoins } from '@/hooks/useCoins'
 import { useLiveClock } from '@/hooks/useLiveClock'
 import { TELEMETRY } from '@/constants'
 
-const TELEMETRY_COIN_COUNT = 2
 
 function LiveDot() {
   return (
@@ -43,9 +42,12 @@ function CoinTicker({
 
 export function TelemetryStrip() {
   const time = useLiveClock()
-  const formattedTime = time.toLocaleTimeString('en-US', { hour12: false })
+  const formattedTime = time.toLocaleTimeString('en-US', {
+  hour12: false,
+  timeZone: 'UTC',
+})
 
-  const { data: coins } = useCoins({ perPage: TELEMETRY_COIN_COUNT })
+  const { data: coins } = useCoins({ perPage: 100 })
   const btc = coins?.find((c) => c.id === 'bitcoin')
   const eth = coins?.find((c) => c.id === 'ethereum')
 

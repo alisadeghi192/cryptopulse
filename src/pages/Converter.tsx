@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowDownUp } from 'lucide-react'
 import { AmbientLights } from '@/components/ui/AmbientLights'
 import { BlurFade } from '@/components/ui/BlurFade'
@@ -18,7 +18,7 @@ export function Converter() {
   const [amount, setAmount] = useState('1')
   const [swapKey, setSwapKey] = useState(0)
 
-  useMemo(() => {
+  useEffect(() => {
     if (!from && options.length > 1) {
       const btc = options.find((o) => o.id === 'bitcoin')
       setFrom(btc ?? options[0])
@@ -94,7 +94,7 @@ export function Converter() {
         </BlurFade>
 
         <BlurFade delay={0.2}>
-          <div className="mx-auto max-w-md my-30">
+          <div className="mx-auto my-30 max-w-md">
             <div className="border-border bg-surface/30 rounded-2xl border p-5 shadow-lg backdrop-blur-xl md:p-6">
               <h2 className="font-display text-text mb-5 text-sm font-bold">
                 Converter
@@ -102,7 +102,7 @@ export function Converter() {
 
               <div className="relative" key={swapKey}>
                 {/* FROM CARD —  */}
-                <div className="border-border/50 bg-surface/40 animate-[slide-fade_0.4s_ease-out] relative z-40 rounded-2xl border p-4 backdrop-blur-xl">
+                <div className="border-border/50 bg-surface/40 relative z-40 animate-[slide-fade_0.4s_ease-out] rounded-2xl border p-4 backdrop-blur-xl">
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-text-secondary font-mono text-[10px] tracking-[0.15em] uppercase">
                       From
@@ -116,7 +116,7 @@ export function Converter() {
                       onChange={(e) => setAmount(e.target.value)}
                       min="0"
                       placeholder="0"
-                      className="text-text placeholder:text-text-secondary/40 w-full bg-transparent font-mono text-2xl font-bold tabular-nums outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      className="text-text placeholder:text-text-secondary/40 w-full [appearance:textfield] bg-transparent font-mono text-2xl font-bold tabular-nums outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     />
 
                     <div className="w-40 shrink-0">
@@ -148,7 +148,7 @@ export function Converter() {
                 </div>
 
                 {/* TO CARD — z-0 */}
-                <div className="border-border/50 bg-surface/40 animate-[slide-fade_0.4s_ease-out_0.1s_both] relative z-0 rounded-2xl border p-4 backdrop-blur-xl">
+                <div className="border-border/50 bg-surface/40 relative z-0 animate-[slide-fade_0.4s_ease-out_0.1s_both] rounded-2xl border p-4 backdrop-blur-xl">
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-text-secondary font-mono text-[10px] tracking-[0.15em] uppercase">
                       To
@@ -158,7 +158,7 @@ export function Converter() {
                   <div className="flex items-center justify-between gap-3">
                     <span
                       key={result}
-                      className="text-text animate-[swap-flash_0.5s_ease-out] w-full truncate font-mono text-2xl font-bold tabular-nums"
+                      className="text-text w-full animate-[swap-flash_0.5s_ease-out] truncate font-mono text-2xl font-bold tabular-nums"
                     >
                       {formatValue(result)}
                     </span>

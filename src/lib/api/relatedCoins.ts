@@ -5,7 +5,7 @@ export async function fetchRelatedCoins(
   currentRank: number,
   excludeId: string,
 ): Promise<Coin[]> {
-  const page = Math.max(1, Math.floor(currentRank / 100) + 1)
+  const page = Math.max(1, Math.floor(currentRank / 20) + 1)
 
   const { data } = await apiClient.get<Coin[]>('/coins/markets', {
     params: {
