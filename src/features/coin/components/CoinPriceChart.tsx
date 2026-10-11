@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Command, ZoomIn } from 'lucide-react'
+import { Command, ZoomIn, AlertCircle } from 'lucide-react'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { PriceChart } from '@/components/ui/PriceChart'
 import { useCoinChart } from '@/hooks/useCoinChart'
@@ -16,14 +16,13 @@ interface CoinPriceChartProps {
 
 export function CoinPriceChart({ coinId, isPositive }: CoinPriceChartProps) {
   const [range, setRange] = useState<TimeRange>('24H')
-  const { data, isLoading } = useCoinChart(coinId, range)
+  const { data, isLoading, isError, refetch } = useCoinChart(coinId, range)
   const isDesktop = useMediaQuery('(min-width: 768px)')
+
   return (
     <BlurFade delay={0.15}>
       <div className="border-border shadow-lg bg-surface/40 rounded-2xl border p-2 backdrop-blur-xl md:p-3">
-        {/* Header: Tabs + Hint */}
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-          {/* Range tabs */}
           <div className="border-border bg-surface/60 inline-flex items-center gap-1 rounded-lg border p-1">
             {RANGES.map((r) => (
               <button
@@ -42,7 +41,6 @@ export function CoinPriceChart({ coinId, isPositive }: CoinPriceChartProps) {
             ))}
           </div>
 
-          {/* Hint — Desktop */}
           <div className="text-primary hidden items-center gap-2 font-mono text-[10px] tracking-wider uppercase md:flex">
             <ZoomIn className="size-3" /> :
             <span className="border-border bg-elevated/60 text-primary inline-flex h-5 items-center gap-0.5 rounded border px-1.5">
@@ -52,17 +50,29 @@ export function CoinPriceChart({ coinId, isPositive }: CoinPriceChartProps) {
             <span>+ Scroll</span>
           </div>
 
-          {/* Hint — Mobile */}
           <div className="text-primary flex items-center gap-1.5 font-mono text-[10px] tracking-wider uppercase md:hidden">
             <ZoomIn className="size-3.5" />
             <span>Pinch to zoom</span>
           </div>
         </div>
 
-        {/* Chart */}
         <div className="h-64 md:h-80">
-          {isLoading || !data ? (
+          {isLoading ? (
             <div className="bg-elevated/40 h-full w-full animate-pulse rounded-lg" />
+          ) : isError || !data ? (
+            <div className="flex h-full flex-col items-center justify-center gap-3">
+              <AlertCircle className="text-text-secondary size-8" />
+              <p className="text-text-secondary font-mono text-xs">
+                Failed to load chart data
+              </p>
+              <button
+                type="button"
+                onClick={() => refetch()}
+                className="text-primary hover:text-primary-hover font-mono text-xs underline-offset-4 hover:underline"
+              >
+                Try again
+              </button>
+            </div>
           ) : (
             <PriceChart
               data={data}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { TrendingUp, TrendingDown } from 'lucide-react'
+import { TrendingUp, TrendingDown, AlertCircle } from 'lucide-react'
 import { NumberTicker } from '@/components/ui/NumberTicker'
 import { PriceChart } from '@/components/ui/PriceChart'
 import { StatsGrid } from './StatsGrid'
@@ -16,10 +16,11 @@ const TIME_RANGES: TimeRange[] = ['24H', '7D', '1M', '1Y']
 
 export function MainCoinCard({ bitcoin, isPositive }: MainCoinCardProps) {
   const [range, setRange] = useState<TimeRange>('24H')
-  const { data: chartData, isLoading: chartLoading } = useCoinChart(
-    bitcoin?.id,
-    range
-  )
+  const {
+    data: chartData,
+    isLoading: chartLoading,
+    isError: chartError,
+  } = useCoinChart(bitcoin?.id, range)
 
   return (
     <>
@@ -56,16 +57,22 @@ export function MainCoinCard({ bitcoin, isPositive }: MainCoinCardProps) {
                 <TrendingDown className="h-3 w-3" />
               )}
               {isPositive ? '+' : ''}
-              {bitcoin?.price_change_percentage_24h?.toFixed(2) ?? '0.00'}
-              %
+              {bitcoin?.price_change_percentage_24h?.toFixed(2) ?? '0.00'}%
             </p>
           </div>
         </div>
 
         {/* Chart */}
         <div className="mt-4 h-50">
-          {chartLoading || !chartData ? (
+          {chartLoading ? (
             <div className="bg-elevated h-full w-full animate-pulse rounded-lg" />
+          ) : chartError || !chartData ? (
+            <div className="flex h-full flex-col items-center justify-center gap-2">
+              <AlertCircle className="text-text-secondary size-6" />
+              <p className="text-text-secondary font-mono text-xs">
+                Chart unavailable
+              </p>
+            </div>
           ) : (
             <PriceChart data={chartData} isPositive={isPositive} height={200} />
           )}

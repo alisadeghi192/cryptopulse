@@ -1,3 +1,4 @@
+import { AlertCircle } from 'lucide-react'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { useCoinChart } from '@/hooks/useCoinChart'
 import { cn } from '@/utils/cn'
@@ -7,9 +8,9 @@ interface PriceChangeHeatmapProps {
 }
 
 export function PriceChangeHeatmap({ coinId }: PriceChangeHeatmapProps) {
-  const { data, isLoading } = useCoinChart(coinId, '1M')
+  const { data, isLoading, isError, refetch } = useCoinChart(coinId, '1M')
 
-  if (isLoading || !data || data.length === 0) {
+  if (isLoading) {
     return (
       <BlurFade delay={0.4}>
         <div className="border-border bg-surface/30 rounded-2xl border p-5 md:p-6">
@@ -22,7 +23,28 @@ export function PriceChangeHeatmap({ coinId }: PriceChangeHeatmapProps) {
     )
   }
 
-  // Group data by day
+  if (isError || !data || data.length === 0) {
+    return (
+      <BlurFade delay={0.4}>
+        <div className="border-border shadow-lg bg-surface/30 rounded-2xl border p-5 md:p-6">
+          <h3 className="font-display text-text mb-4 text-sm font-bold">
+            30-Day Heatmap
+          </h3>
+          <div className="flex h-16 flex-col items-center justify-center gap-2">
+            <AlertCircle className="text-text-secondary size-5" />
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="text-primary hover:text-primary-hover font-mono text-[10px] underline-offset-4 hover:underline"
+            >
+              Try again
+            </button>
+          </div>
+        </div>
+      </BlurFade>
+    )
+  }
+
   const dailyData = new Map<string, number[]>()
   data.forEach((point) => {
     const ts =
@@ -34,7 +56,6 @@ export function PriceChangeHeatmap({ coinId }: PriceChangeHeatmapProps) {
     dailyData.get(day)!.push(point.value)
   })
 
-  // Compute daily changes
   const days = Array.from(dailyData.entries()).map(([day, prices]) => {
     const open = prices[0]
     const close = prices[prices.length - 1]
@@ -71,7 +92,6 @@ export function PriceChangeHeatmap({ coinId }: PriceChangeHeatmapProps) {
                   style={{ background: color }}
                 />
 
-                {/* Custom tooltip */}
                 <div className="bg-background border-border pointer-events-none invisible absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 rounded-lg border p-2 text-center opacity-0 shadow-xl transition-all duration-200 group-hover:visible group-hover:-translate-y-1 group-hover:opacity-100">
                   <p className="text-text-secondary font-mono text-[9px] whitespace-nowrap">
                     {day}
@@ -85,7 +105,6 @@ export function PriceChangeHeatmap({ coinId }: PriceChangeHeatmapProps) {
                     {isPositive ? '+' : ''}
                     {change.toFixed(2)}%
                   </p>
-                  {/* Arrow */}
                   <div className="bg-background border-border absolute top-full left-1/2 size-2 -translate-x-1/2 -translate-y-1 rotate-45 border-r border-b" />
                 </div>
               </div>
@@ -93,7 +112,6 @@ export function PriceChangeHeatmap({ coinId }: PriceChangeHeatmapProps) {
           })}
         </div>
 
-        {/* Legend */}
         <div className="mt-4 flex items-center justify-end gap-2 font-mono text-[10px]">
           <span className="text-text-secondary">-{maxAbs.toFixed(1)}%</span>
           <div className="flex gap-0.5">
