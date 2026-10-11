@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { useLocation, useSearchParams } from 'react-router'
 import { cn } from '@/utils/cn'
-import { LoginForm } from '@/features/auth/components/LoginForm'
-import { RegisterForm } from '@/features/auth/components/RegisterForm'
 import { AuthImagePanel } from '@/features/auth/components/AuthImagePanel'
 import { AmbientLights } from '@/components/ui/AmbientLights'
+import { LoginForm } from '@/features/auth/components/LoginForm'
+import { RegisterForm } from '@/features/auth/components/RegisterForm'
+
 
 type AuthMode = 'login' | 'register'
 
@@ -59,13 +60,13 @@ interface FormSlotProps {
 function FormSlot({ isLogin, onSwitch }: FormSlotProps) {
   return (
     <div className="relative flex h-full items-center justify-center overflow-hidden">
-      <AmbientLights intensity="subtle" variant="multi" />
+      <AmbientLights intensity="subtle" variant="auth" />
       <div className="relative z-10 w-full max-w-md px-6">
-        {isLogin ? (
-          <LoginForm onSwitch={onSwitch} />
-        ) : (
-          <RegisterForm onSwitch={onSwitch} />
-        )}
+          {isLogin ? (
+            <LoginForm onSwitch={onSwitch} />
+          ) : (
+            <RegisterForm onSwitch={onSwitch} />
+          )}
       </div>
     </div>
   )
@@ -79,9 +80,7 @@ export function Auth() {
     ? 'register'
     : 'login'
 
-  const mode =
-    (params.get('mode') as AuthMode | null) ?? modeFromPath
-
+  const mode = (params.get('mode') as AuthMode | null) ?? modeFromPath
   const isLogin = mode === 'login'
 
   useEffect(() => {
@@ -90,6 +89,7 @@ export function Auth() {
       next.delete('mode')
       setParams(next, { replace: true })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
   const handleSwitch = () => {
@@ -122,16 +122,16 @@ export function Auth() {
       </div>
 
       <div className="md:hidden relative flex min-h-screen items-center justify-center overflow-hidden">
-        <AmbientLights intensity="subtle" variant="multi" />
+        <AmbientLights intensity="subtle" variant="auth" />
         <div
           key={mode}
           className="relative z-10 w-full max-w-md px-6 animate-[slide-fade_0.5s_ease-out]"
         >
-          {isLogin ? (
-            <LoginForm onSwitch={handleSwitch} />
-          ) : (
-            <RegisterForm onSwitch={handleSwitch} />
-          )}
+            {isLogin ? (
+              <LoginForm onSwitch={handleSwitch} />
+            ) : (
+              <RegisterForm onSwitch={handleSwitch} />
+            )}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { AppLayout } from '@/layouts/AppLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
 import { PageLoader } from '@/components/ui/PageLoader'
 import { NotFound } from '@/pages/NotFound'
+import { Auth } from '@/pages/Auth'
 
 // ─── Lazy loaded pages ───
 const Home = lazy(() =>
@@ -22,9 +23,7 @@ const About = lazy(() =>
 const Converter = lazy(() =>
   import('@/pages/Converter').then((m) => ({ default: m.Converter })),
 )
-const Auth = lazy(() =>
-  import('@/pages/Auth').then((m) => ({ default: m.Auth })),
-)
+
 const Dashboard = lazy(() =>
   import('@/pages/Dashboard').then((m) => ({ default: m.Dashboard })),
 )
@@ -126,19 +125,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: 'login',
-        element: (
-          <LazyPage>
-            <Auth />
-          </LazyPage>
-        ),
+        element: <Auth />,
       },
       {
         path: 'register',
-        element: (
-          <LazyPage>
-            <Auth />
-          </LazyPage>
-        ),
+        element: <Auth />,
       },
     ],
   },
