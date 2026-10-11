@@ -144,13 +144,13 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
                 className="text-text-secondary cursor-pointer text-xs leading-relaxed select-none"
               >
                 I agree to the{' '}
-                <Link to="/terms" className="text-primary hover:text-primary-hover">
+                <span className="text-primary cursor-pointer hover:text-primary-hover">
                   Terms
-                </Link>{' '}
+                </span>{' '}
                 and{' '}
-                <Link to="/privacy" className="text-primary hover:text-primary-hover">
+                <span className="text-primary cursor-pointer hover:text-primary-hover">
                   Privacy Policy
-                </Link>
+                </span>
               </label>
             </div>
 

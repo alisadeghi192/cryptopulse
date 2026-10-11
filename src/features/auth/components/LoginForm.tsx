@@ -66,12 +66,11 @@ export function LoginForm({ onSwitch }: LoginFormProps) {
                 <label className="text-text-secondary block font-mono text-[10px] tracking-widest uppercase">
                   Password
                 </label>
-                <Link
-                  to="/forgot-password"
-                  className="text-primary hover:text-primary-hover font-mono text-[10px] transition-colors"
+                <span
+                  className="text-primary cursor-pointer hover:text-primary-hover font-mono text-[10px] transition-colors"
                 >
                   Forgot?
-                </Link>
+                </span>
               </div>
               <div className="focus-within:border-primary/50 focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)] flex h-11 items-center gap-2 rounded-xl border border-border bg-background/50 px-3 transition-all">
                 <Lock className="text-text-secondary size-4 shrink-0" />
