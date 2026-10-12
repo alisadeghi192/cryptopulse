@@ -1,49 +1,98 @@
-import { useState } from 'react'
-import { ArrowRight, Mail, Lock, User, Eye, EyeOff } from 'lucide-react'
+import { useNavigate } from 'react-router'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
+import { ArrowRight, Mail, Lock, Phone, User, Loader2 } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
 import { Button } from '@/components/ui/Button'
-import { cn } from '@/utils/cn'
 import { Checkbox } from '@/components/ui/Checkbox'
+import { InputField } from '@/components/ui/InputField'
+import { useAuthStore } from '@/stores/useAuthStore'
+import {
+  registerSchema,
+  type RegisterFormData,
+} from '../schemas/registerSchema'
+import { cn } from '@/utils/cn'
+
 interface RegisterFormProps {
   onSwitch: () => void
 }
 
 export function RegisterForm({ onSwitch }: RegisterFormProps) {
-  const [showPassword, setShowPassword] = useState(false)
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+  const navigate = useNavigate()
+  const signUp = useAuthStore((s) => s.signUp)
+  const isLoading = useAuthStore((s) => s.isLoading)
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    mode: 'onChange',
+    defaultValues: {
+      fullName: '',
+      phone: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      agree: false as true,
+    },
   })
-  const [agree, setAgree] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // TODO: connect to auth provider
+  const agree = watch('agree')
+
+  const onSubmit = async (data: RegisterFormData) => {
+    const { error } = await signUp(
+      data.email,
+      data.password,
+      data.fullName,
+      data.phone,
+    )
+
+    if (error) {
+      if (error.toLowerCase().includes('already registered')) {
+        toast.error('Email already in use', {
+          description: 'Try signing in instead',
+        })
+      } else if (error.toLowerCase().includes('password')) {
+        toast.error('Weak password', {
+          description: 'Password must be at least 6 characters',
+        })
+      } else if (error.toLowerCase().includes('rate limit')) {
+        toast.error('Too many attempts', {
+          description: 'Please wait a few minutes and try again',
+        })
+      } else {
+        toast.error('Something went wrong', {
+          description: 'Please try again in a moment',
+        })
+      }
+    } else {
+      toast.success('Account created!', {
+        description: 'Welcome to CryptoPulse',
+      })
+      navigate('/dashboard')
+    }
   }
-
-  const update =
-    (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
-      setForm((f) => ({ ...f, [key]: e.target.value }))
 
   return (
     <div>
       <div className="mb-8 flex justify-center md:hidden">
-        <Logo />
+        <Logo textClassName="text-2xl" iconClassName="h-10" />
       </div>
 
       <div
         className={cn(
-          'relative overflow-hidden rounded-3xl border p-8',
+          'relative overflow-hidden rounded-3xl border p-6',
           'border-border/50 bg-surface/40',
           'shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]',
         )}
       >
-        <div className="pointer-events-none absolute inset-0 -z-10 opacity-0 backdrop-blur-2xl transition-opacity duration-700 ease-out group-hover:opacity-100" />
-
         <div className="relative z-10">
-          <div className="mb-8 text-center">
+          <div className="mb-4 text-center">
             <h1 className="font-display text-2xl font-bold tracking-tight">
               Create account
             </h1>
@@ -52,112 +101,107 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="text-text-secondary mb-2 block font-mono text-[10px] tracking-widest uppercase">
-                Full name
-              </label>
-              <div className="focus-within:border-primary/50 border-border bg-background/50 flex h-11 items-center gap-2 rounded-xl border px-3 transition-all focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]">
-                <User className="text-text-secondary size-4 shrink-0" />
-                <input
-                  type="text"
-                  value={form.name}
-                  onChange={update('name')}
-                  placeholder="Ali Sadeghi"
-                  required
-                  className="text-text placeholder:text-text-secondary/50 h-full w-full bg-transparent font-mono text-sm outline-none"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-text-secondary mb-2 block font-mono text-[10px] tracking-widest uppercase">
-                Email
-              </label>
-              <div className="focus-within:border-primary/50 border-border bg-background/50 flex h-11 items-center gap-2 rounded-xl border px-3 transition-all focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]">
-                <Mail className="text-text-secondary size-4 shrink-0" />
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={update('email')}
-                  placeholder="you@email.com"
-                  required
-                  className="text-text placeholder:text-text-secondary/50 h-full w-full bg-transparent font-mono text-sm outline-none"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-text-secondary mb-2 block font-mono text-[10px] tracking-widest uppercase">
-                Password
-              </label>
-              <div className="focus-within:border-primary/50 border-border bg-background/50 flex h-11 items-center gap-2 rounded-xl border px-3 transition-all focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]">
-                <Lock className="text-text-secondary size-4 shrink-0" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={form.password}
-                  onChange={update('password')}
-                  placeholder="••••••••"
-                  required
-                  className="text-text placeholder:text-text-secondary/50 h-full w-full bg-transparent font-mono text-sm outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((s) => !s)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  className="text-text-secondary hover:text-text shrink-0 transition-colors"
-                >
-                  {showPassword ? (
-                    <EyeOff className="size-4" />
-                  ) : (
-                    <Eye className="size-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-text-secondary mb-2 block font-mono text-[10px] tracking-widest uppercase">
-                Confirm password
-              </label>
-              <div className="focus-within:border-primary/50 border-border bg-background/50 flex h-11 items-center gap-2 rounded-xl border px-3 transition-all focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]">
-                <Lock className="text-text-secondary size-4 shrink-0" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={form.confirmPassword}
-                  onChange={update('confirmPassword')}
-                  placeholder="••••••••"
-                  required
-                  className="text-text placeholder:text-text-secondary/50 h-full w-full bg-transparent font-mono text-sm outline-none"
-                />
-              </div>
-            </div>
-
-            <Checkbox
-              checked={agree}
-              onChange={setAgree}
-              label={
-                <>
-                  I agree to the{' '}
-                  <span className="text-primary hover:text-primary-hover cursor-pointer">
-                    Terms
-                  </span>{' '}
-                  and{' '}
-                  <span className="text-primary hover:text-primary-hover cursor-pointer">
-                    Privacy Policy
-                  </span>
-                </>
-              }
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-2.5"
+            noValidate
+          >
+            <InputField
+              id="register-name"
+              label="Full Name"
+              icon={User}
+              type="text"
+              placeholder="Ali Sadeghi"
+              error={errors.fullName?.message}
+              {...register('fullName')}
             />
+
+            <InputField
+              id="register-phone"
+              label="Phone Number"
+              icon={Phone}
+              type="tel"
+              placeholder="09123456789"
+              error={errors.phone?.message}
+              {...register('phone')}
+            />
+
+            <InputField
+              id="register-email"
+              label="Email"
+              icon={Mail}
+              type="email"
+              placeholder="you@email.com"
+              error={errors.email?.message}
+              {...register('email')}
+            />
+
+            <InputField
+              id="register-password"
+              label="Password"
+              icon={Lock}
+              type="password"
+              placeholder="••••••••"
+              error={errors.password?.message}
+              showPasswordToggle
+              {...register('password')}
+            />
+
+            <InputField
+              id="register-confirm"
+              label="Confirm password"
+              icon={Lock}
+              type="password"
+              placeholder="••••••••"
+              error={errors.confirmPassword?.message}
+              showPasswordToggle
+              {...register('confirmPassword')}
+            />
+
+            <div>
+              <Checkbox
+                checked={agree}
+                onChange={(checked) =>
+                  setValue('agree', checked as true, { shouldValidate: true })
+                }
+                label={
+                  <>
+                    I agree to the{' '}
+                    <span className="text-primary hover:text-primary-hover cursor-pointer">
+                      Terms
+                    </span>{' '}
+                    and{' '}
+                    <span className="text-primary hover:text-primary-hover cursor-pointer">
+                      Privacy Policy
+                    </span>
+                  </>
+                }
+              />
+              {errors.agree && (
+                <p className="text-error mt-1.5 font-mono text-[10px]">
+                  {errors.agree.message}
+                </p>
+              )}
+            </div>
 
             <Button
               type="submit"
               variant="primary"
               size="lg"
+              disabled={isLoading}
               className="group mt-2 w-full gap-2"
             >
-              Create Account
-              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+              {isLoading ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Creating account...
+                </>
+              ) : (
+                <>
+                  Create Account
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </>
+              )}
             </Button>
           </form>
 

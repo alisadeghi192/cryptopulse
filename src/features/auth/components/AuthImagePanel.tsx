@@ -69,7 +69,7 @@ export function AuthImagePanel({ mode }: AuthImagePanelProps) {
           <h2
             key={mode}
             className={cn(
-              'font-display text-4xl leading-tight font-bold tracking-tight telxt-white md:text-5xl',
+              'font-display text-4xl leading-tight font-bold tracking-tight text-white md:text-5xl',
               'animate-[slide-fade_0.7s_ease-out]',
             )}
           >

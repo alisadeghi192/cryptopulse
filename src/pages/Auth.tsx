@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useLocation, useSearchParams } from 'react-router'
 import { cn } from '@/utils/cn'
 import { AuthImagePanel } from '@/features/auth/components/AuthImagePanel'
@@ -19,31 +19,49 @@ function SwapCard({ flipped, direction, front, back }: SwapCardProps) {
   const outY = direction === 'up' ? '-100%' : '100%'
   const inY = direction === 'up' ? '100%' : '-100%'
 
+  const frontRef = useRef<HTMLDivElement>(null)
+  const backRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (frontRef.current) {
+      if (flipped) {
+        frontRef.current.setAttribute('inert', '')
+      } else {
+        frontRef.current.removeAttribute('inert')
+      }
+    }
+    if (backRef.current) {
+      if (!flipped) {
+        backRef.current.setAttribute('inert', '')
+      } else {
+        backRef.current.removeAttribute('inert')
+      }
+    }
+  }, [flipped])
+
   return (
     <div className="relative h-screen w-1/2 overflow-hidden">
       <div
+        ref={frontRef}
         className={cn(
           'absolute inset-0 transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)]',
           flipped
             ? 'pointer-events-none opacity-0'
             : 'pointer-events-auto opacity-100',
         )}
-        style={{
-          transform: flipped ? `translateY(${outY})` : 'translateY(0)',
-        }}
+        style={{ transform: flipped ? `translateY(${outY})` : 'translateY(0)' }}
       >
         {front}
       </div>
       <div
+        ref={backRef}
         className={cn(
           'absolute inset-0 transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)]',
           flipped
             ? 'pointer-events-auto opacity-100'
             : 'pointer-events-none opacity-0',
         )}
-        style={{
-          transform: flipped ? 'translateY(0)' : `translateY(${inY})`,
-        }}
+        style={{ transform: flipped ? 'translateY(0)' : `translateY(${inY})` }}
       >
         {back}
       </div>
@@ -100,8 +118,8 @@ export function Auth() {
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-background">
-      <div className="hidden md:flex min-h-screen w-full">
+    <div className="bg-background relative min-h-screen w-full overflow-hidden">
+      <div className="hidden min-h-screen w-full md:flex">
         <SwapCard
           flipped={!isLogin}
           direction="up"
@@ -117,11 +135,11 @@ export function Auth() {
         />
       </div>
 
-      <div className="md:hidden relative flex min-h-screen items-center justify-center overflow-hidden">
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden md:hidden">
         <AmbientLights intensity="subtle" variant="auth" />
         <div
           key={mode}
-          className="relative z-10 w-full max-w-md px-6 animate-[slide-fade_0.5s_ease-out]"
+          className="relative z-10 w-full max-w-md animate-[slide-fade_0.5s_ease-out] px-6"
         >
           {isLogin ? (
             <LoginForm onSwitch={handleSwitch} />
