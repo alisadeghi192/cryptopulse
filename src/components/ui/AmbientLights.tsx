@@ -315,17 +315,14 @@ coin: [
     animation: 'cta-light-1 28s ease-in-out infinite',
   },
 ],
-  auth: [
-    { position: 'top-[8%] left-[12%]', size: 'h-72 w-72', blur: 'blur-[100px]', color: 'var(--color-error)', opacity: 0.28, animation: 'cta-light-1 18s ease-in-out infinite' },
-    { position: 'top-[3%] right-[15%]', size: 'h-64 w-64', blur: 'blur-[90px]', color: '#7C3AED', opacity: 0.26, animation: 'cta-light-2 20s ease-in-out infinite' },
-    { position: 'top-[30%] left-1/2 -translate-x-1/2', size: 'h-80 w-80', blur: 'blur-[120px]', color: 'var(--color-success)', opacity: 0.2, animation: 'cta-light-3 22s ease-in-out infinite' },
-    { position: 'top-[25%] right-[8%]', size: 'h-72 w-72', blur: 'blur-[100px]', color: '#3B82F6', opacity: 0.22, animation: 'cta-light-1 24s ease-in-out infinite' },
-    { position: 'top-1/2 left-[5%] -translate-y-1/2', size: 'h-72 w-72', blur: 'blur-[100px]', color: '#F7931A', opacity: 0.24, animation: 'cta-light-2 26s ease-in-out infinite' },
-    { position: 'top-1/2 right-[5%] -translate-y-1/2', size: 'h-80 w-80', blur: 'blur-[110px]', color: 'var(--color-primary)', opacity: 0.26, animation: 'cta-light-3 24s ease-in-out infinite' },
-    { position: 'bottom-[8%] left-[18%]', size: 'h-72 w-72', blur: 'blur-[100px]', color: '#06B6D4', opacity: 0.22, animation: 'cta-light-1 22s ease-in-out infinite' },
-    { position: 'bottom-[3%] left-1/2 -translate-x-1/2', size: 'h-80 w-80', blur: 'blur-[110px]', color: 'var(--color-primary)', opacity: 0.3, animation: 'cta-light-2 20s ease-in-out infinite' },
-    { position: 'bottom-[12%] right-[10%]', size: 'h-64 w-64', blur: 'blur-[90px]', color: 'var(--color-error)', opacity: 0.16, animation: 'cta-light-3 28s ease-in-out infinite' },
-  ],
+auth: [
+  { position: 'top-[8%] left-[12%]', size: 'h-72 w-72', blur: 'blur-[100px]', color: 'var(--color-primary)', opacity: 0.26, animation: 'cta-light-1 18s ease-in-out infinite' },
+  { position: 'top-[3%] right-[15%]', size: 'h-64 w-64', blur: 'blur-[90px]', color: '#7C3AED', opacity: 0.24, animation: 'cta-light-2 20s ease-in-out infinite' },
+  { position: 'top-[30%] left-1/2 -translate-x-1/2', size: 'h-80 w-80', blur: 'blur-[120px]', color: 'var(--color-success)', opacity: 0.18, animation: 'cta-light-3 22s ease-in-out infinite' },
+  { position: 'top-1/2 left-[5%] -translate-y-1/2', size: 'h-72 w-72', blur: 'blur-[100px]', color: '#F7931A', opacity: 0.22, animation: 'cta-light-2 26s ease-in-out infinite' },
+  { position: 'top-1/2 right-[5%] -translate-y-1/2', size: 'h-80 w-80', blur: 'blur-[110px]', color: '#06B6D4', opacity: 0.2, animation: 'cta-light-3 24s ease-in-out infinite' },
+  { position: 'bottom-[8%] left-1/2 -translate-x-1/2', size: 'h-80 w-80', blur: 'blur-[110px]', color: 'var(--color-primary)', opacity: 0.28, animation: 'cta-light-2 20s ease-in-out infinite' },
+],
 } as const
 
 export function AmbientLights({
