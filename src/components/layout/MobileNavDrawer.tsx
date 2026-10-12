@@ -41,6 +41,8 @@ export function MobileNavDrawer({
   userName,
   onClose,
 }: MobileNavDrawerProps) {
+  const initial = userName?.[0]?.toUpperCase() ?? 'U'
+
   return (
     <>
       {/* Backdrop */}
@@ -108,10 +110,10 @@ export function MobileNavDrawer({
               className="hover:bg-elevated flex items-center gap-3 rounded-lg px-3 py-2 transition-colors"
             >
               <div className="bg-primary text-background flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold">
-                {userName[0]}
+                {initial}
               </div>
-              <div className="flex flex-col">
-                <span className="text-text text-sm font-medium">
+              <div className="flex min-w-0 flex-col">
+                <span className="text-text truncate text-sm font-medium">
                   {userName}
                 </span>
                 <span className="text-text text-xs">View Dashboard</span>

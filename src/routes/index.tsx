@@ -7,7 +7,6 @@ import { PageLoader } from '@/components/ui/PageLoader'
 import { NotFound } from '@/pages/NotFound'
 import { Auth } from '@/pages/Auth'
 
-// ─── Lazy loaded pages ───
 const Home = lazy(() =>
   import('@/pages/Home').then((m) => ({ default: m.Home })),
 )
@@ -23,7 +22,6 @@ const About = lazy(() =>
 const Converter = lazy(() =>
   import('@/pages/Converter').then((m) => ({ default: m.Converter })),
 )
-
 const Dashboard = lazy(() =>
   import('@/pages/Dashboard').then((m) => ({ default: m.Dashboard })),
 )
@@ -34,13 +32,11 @@ const Profile = lazy(() =>
   import('@/pages/Profile').then((m) => ({ default: m.Profile })),
 )
 
-// ─── Suspense wrapper ───
 function LazyPage({ children }: { children: React.ReactNode }) {
   return <Suspense fallback={<PageLoader />}>{children}</Suspense>
 }
 
 export const router = createBrowserRouter([
-  // Public pages
   {
     path: '/',
     element: <RootLayout />,
@@ -87,7 +83,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  // User pages
   {
     path: '/',
     element: <AppLayout />,
@@ -118,7 +113,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  // Auth pages
   {
     path: '/',
     element: <AuthLayout />,
@@ -133,6 +127,5 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  // 404
   { path: '*', element: <NotFound /> },
 ])
