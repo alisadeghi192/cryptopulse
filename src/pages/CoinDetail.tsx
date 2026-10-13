@@ -44,6 +44,7 @@ export function CoinDetail() {
           <CoinHeader
             name={coin.name}
             symbol={coin.symbol}
+            coinId={coin.id}
             image={coin.image.large}
             rank={coin.market_cap_rank}
             price={coin.market_data.current_price.usd}

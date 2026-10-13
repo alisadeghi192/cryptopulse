@@ -1,10 +1,11 @@
-import { Star, TrendingUp, TrendingDown } from 'lucide-react'
+import { TrendingUp, TrendingDown } from 'lucide-react'
 import { FlashValue } from '@/components/ui/FlashValue'
 import { BlurFade } from '@/components/ui/BlurFade'
+import { WatchlistButton } from '@/components/ui/WatchlistButton'
 import { cn } from '@/utils/cn'
-import { BorderBeam } from '@/components/ui/BorderBeam'
 
 interface CoinHeaderProps {
+  coinId: string
   name: string
   symbol: string
   image: string
@@ -13,7 +14,15 @@ interface CoinHeaderProps {
   change24h: number
 }
 
-export function CoinHeader({ name, symbol, image, rank, price, change24h }: CoinHeaderProps) {
+export function CoinHeader({
+  name,
+  symbol,
+  image,
+  rank,
+  price,
+  change24h,
+  coinId,
+}: CoinHeaderProps) {
   const isPositive = change24h >= 0
 
   return (
@@ -43,7 +52,7 @@ export function CoinHeader({ name, symbol, image, rank, price, change24h }: Coin
             </div>
 
             <div className="mt-2 flex items-center gap-3">
-              <span className="text-text font-mono text-4xl max-md:text-3xl max-[400px]:text-2xl! font-bold tabular-nums">
+              <span className="text-text font-mono text-4xl font-bold tabular-nums max-[400px]:text-2xl! max-md:text-3xl">
                 $<FlashValue value={price} decimals={price < 1 ? 6 : 2} />
               </span>
               <span
@@ -66,15 +75,11 @@ export function CoinHeader({ name, symbol, image, rank, price, change24h }: Coin
           </div>
         </div>
 
-        <BorderBeam className="w-fit rounded-lg">
-          <button
-            type="button"
-            className="border-border bg-surface/40 hover:text-primary text-text-secondary flex items-center gap-2 self-start rounded-lg border px-4 py-2 text-sm transition-colors"
-          >
-            <Star className="h-4 w-4" />
-            Add to Watchlist
-          </button>
-        </BorderBeam>
+        <WatchlistButton
+          coinId={coinId}
+          size="md"
+          variant="full"
+        />
       </div>
     </BlurFade>
   )

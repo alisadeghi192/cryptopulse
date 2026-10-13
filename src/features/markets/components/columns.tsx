@@ -1,8 +1,8 @@
 import { Link } from 'react-router'
-import { Star } from 'lucide-react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { FlashValue } from '@/components/ui/FlashValue'
 import { MiniSparkline } from '@/components/ui/MiniSparkline'
+import { WatchlistButton } from '@/components/ui/WatchlistButton'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
 
@@ -159,15 +159,9 @@ export const marketsColumns: ColumnDef<Coin, any>[] = [
     header: 'Watch',
     size: 70,
     meta: { align: 'center' },
-    cell: () => (
+    cell: ({ row }) => (
       <div className="flex w-full items-center justify-center">
-        <button
-          type="button"
-          aria-label="Add to watchlist"
-          className="text-text-secondary hover:text-primary flex h-8 w-8 items-center justify-center rounded-lg transition-colors"
-        >
-          <Star className="h-4 w-4" />
-        </button>
+        <WatchlistButton coinId={row.original.id} size="sm" />
       </div>
     ),
   },

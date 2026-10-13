@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
-import { Star } from 'lucide-react'
 import { FlashValue } from '@/components/ui/FlashValue'
+import { WatchlistButton } from '@/components/ui/WatchlistButton'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
 
@@ -31,9 +31,7 @@ export function MarketsMobileCard({ coin }: MarketsMobileCardProps) {
 
       {/* Name + Symbol */}
       <div className="min-w-0 flex-1">
-        <p className="text-text truncate text-sm font-medium">
-          {coin.name}
-        </p>
+        <p className="text-text truncate text-sm font-medium">{coin.name}</p>
         <p className="text-text-secondary font-mono text-[10px] uppercase">
           {coin.symbol}
         </p>
@@ -42,7 +40,11 @@ export function MarketsMobileCard({ coin }: MarketsMobileCardProps) {
       {/* Price + Change */}
       <div className="shrink-0 text-right">
         <p className="text-text font-mono text-sm tabular-nums">
-          $<FlashValue value={coin.current_price} decimals={coin.current_price < 1 ? 4 : 2} />
+          $
+          <FlashValue
+            value={coin.current_price}
+            decimals={coin.current_price < 1 ? 4 : 2}
+          />
         </p>
         <p
           className={cn(
@@ -56,17 +58,7 @@ export function MarketsMobileCard({ coin }: MarketsMobileCardProps) {
       </div>
 
       {/* Star */}
-      <button
-        type="button"
-        aria-label="Add to watchlist"
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        }}
-        className="text-text-secondary hover:text-primary shrink-0 transition-colors"
-      >
-        <Star className="h-4 w-4" />
-      </button>
+      <WatchlistButton coinId={coin.id} size="sm" />
     </Link>
   )
 }

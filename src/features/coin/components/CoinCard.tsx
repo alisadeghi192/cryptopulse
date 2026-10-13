@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { TrendingUp, TrendingDown, Star } from 'lucide-react'
+import { TrendingUp, TrendingDown } from 'lucide-react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { NumberTicker } from '@/components/ui/NumberTicker'
 import { FlashValue } from '@/components/ui/FlashValue'
@@ -7,6 +7,7 @@ import { MiniSparkline } from '@/components/ui/MiniSparkline'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { TiltCard } from '@/components/ui/TiltCard'
 import { BorderBeam } from '@/components/ui/BorderBeam'
+import { WatchlistButton } from '@/components/ui/WatchlistButton'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
 
@@ -106,14 +107,7 @@ export function CoinCard({ coin, size }: CoinCardProps) {
                 <div className="border-border bg-elevated/60 text-text-secondary rounded-md border px-2 py-0.5 font-mono text-[10px]">
                   #{coin.market_cap_rank}
                 </div>
-                <button
-                  type="button"
-                  aria-label="Add to watchlist"
-                  onClick={(e) => e.preventDefault()}
-                  className="text-text-secondary hover:text-primary transition-colors"
-                >
-                  <Star className="h-4 w-4" />
-                </button>
+                <WatchlistButton coinId={coin.id} size="sm" />
               </div>
 
               {/* Coin */}
@@ -233,9 +227,7 @@ export function CoinRow({ coin }: { coin: Coin }) {
           className="h-7 w-7 shrink-0 rounded-full"
         />
         <div className="min-w-0">
-          <p className="text-text truncate text-sm font-medium">
-            {coin.name}
-          </p>
+          <p className="text-text truncate text-sm font-medium">{coin.name}</p>
           <p className="text-text-secondary font-mono text-xs uppercase">
             {coin.symbol}
           </p>
