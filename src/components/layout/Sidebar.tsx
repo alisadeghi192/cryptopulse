@@ -55,7 +55,7 @@ export function Sidebar({
       {/* Sidebar */}
       <aside
         className={cn(
-          'border-border/40 bg-surface/30 fixed top-0 bottom-0 left-0 z-60 flex flex-col border-r shadow-[8px_0_24px_-4px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 ease-out md:shadow-xl',
+          'border-border/40 bg-background fixed top-0 bottom-0 left-0 z-60 flex flex-col border-r shadow-[8px_0_24px_-4px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 ease-out md:shadow-xl',
           'lg:sticky lg:top-12 lg:z-0 lg:h-[calc(100vh-3rem)] lg:translate-x-0',
           collapsed ? 'lg:w-16' : 'lg:w-64',
           'w-72',
