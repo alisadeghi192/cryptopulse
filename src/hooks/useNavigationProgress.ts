@@ -26,13 +26,21 @@ export function useNavigationProgress() {
     return () => {
       if (hideTimerRef.current) clearTimeout(hideTimerRef.current)
     }
-  }, [location.pathname, location.search]) 
+  }, [location.pathname, location.search])
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       if (event.defaultPrevented) return
 
       const target = event.target as HTMLElement
+      // Ignore if user clicked on an interactive element inside a link
+      if (
+        target.closest(
+          'button, input, select, textarea, [role="button"], [data-no-progress]',
+        )
+      ) {
+        return
+      }
       const link = target.closest('a')
       if (!link) return
 
