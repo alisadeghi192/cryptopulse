@@ -752,3 +752,18 @@ input:-webkit-autofill:active {
 .animate-error-pulse {
   animation: error-pulse 1s ease-in-out infinite;
 }
+
+@keyframes glow-breathe {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+.animate-glow-breathe {
+  animation: glow-breathe 5s ease-in-out infinite;
+}

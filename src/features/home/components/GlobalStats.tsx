@@ -68,12 +68,11 @@ export function GlobalStats({ stats }: GlobalStatsProps) {
   ]
 
   return (
-    <section className="relative py-12 md:py-16 container">
-
+    <section className="relative container py-12 md:py-16">
       <BlurFade delay={0.1}>
         <div className="mb-8 flex items-end justify-between">
           <div>
-            <div className="text-text-secondary mb-2 flex items-center gap-2 font-mono text-xs uppercase tracking-widest">
+            <div className="text-text-secondary mb-2 flex items-center gap-2 font-mono text-xs tracking-widest uppercase">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="bg-success absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" />
                 <span className="bg-success relative inline-flex h-1.5 w-1.5 rounded-full" />
@@ -99,8 +98,8 @@ export function GlobalStats({ stats }: GlobalStatsProps) {
               <SpotlightCard
                 spotlightColor={card.color.spotlight}
                 className={cn(
-                  'group border-border shadow-md bg-surface relative h-35 overflow-hidden rounded-2xl border backdrop-blur-xl',
-                  'transition-colors hover:border-border',
+                  'group border-border bg-surface relative h-35 overflow-hidden rounded-2xl border shadow-md backdrop-blur-xl',
+                  'hover:border-border transition-colors',
                 )}
               >
                 <div
@@ -109,18 +108,16 @@ export function GlobalStats({ stats }: GlobalStatsProps) {
                     card.color.line,
                   )}
                 />
-
                 <Icon
                   className={cn(
-                    'absolute -right-4 -bottom-4 h-28 w-28 opacity-[0.05] transition-opacity duration-300 group-hover:opacity-[0.1]',
+                    'absolute -right-4 -bottom-4 h-28 w-28 opacity-20 transition-opacity duration-300 group-hover:opacity-30 dark:opacity-5 dark:group-hover:opacity-10',
                     card.color.watermark,
                   )}
                   strokeWidth={1.5}
                 />
-
                 <div className="relative z-10 flex h-full flex-col items-center justify-center p-5 text-center">
                   {/* Label */}
-                  <p className="text-text-secondary mb-3 font-mono text-[10px] uppercase tracking-widest">
+                  <p className="text-text-secondary mb-3 font-mono text-[10px] tracking-widest uppercase">
                     {card.label}
                   </p>
 

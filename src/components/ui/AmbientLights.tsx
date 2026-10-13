@@ -11,6 +11,12 @@ interface AmbientLightsProps {
     | 'about'
     | 'coin'
     | 'auth'
+    | 'blue'
+    | 'red'
+    | 'yellow'
+    | 'hero'
+    | 'green'
+    | 'lightblue'
   intensity?: 'subtle' | 'normal'
   className?: string
 }
@@ -42,6 +48,13 @@ const LIGHTS = {
       animation: 'aurora-3 20s ease-in-out infinite',
     },
   ],
+  hero: [
+    { position: 'top-1/2 left-[5%] -translate-y-1/2', size: 'h-80 w-80', blur: 'blur-[100px]', color: '#7C3AED', opacity: 0.45, animation: 'cta-light-1 20s ease-in-out infinite' },
+    { position: 'top-[20%] left-[25%]', size: 'h-72 w-72', blur: 'blur-[90px]', color: '#3B82F6', opacity: 0.4, animation: 'cta-light-2 22s ease-in-out infinite' },
+    { position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2', size: 'h-80 w-80', blur: 'blur-[100px]', color: '#EF4444', opacity: 0.4, animation: 'cta-light-3 24s ease-in-out infinite' },
+    { position: 'top-[20%] right-[25%]', size: 'h-72 w-72', blur: 'blur-[90px]', color: '#FACC15', opacity: 0.45, animation: 'cta-light-1 18s ease-in-out infinite' },
+    { position: 'top-1/2 right-[5%] -translate-y-1/2', size: 'h-80 w-80', blur: 'blur-[100px]', color: '#EC4899', opacity: 0.45, animation: 'cta-light-2 20s ease-in-out infinite' },
+  ],
   gold: [
     {
       position: 'top-1/3 left-1/4',
@@ -50,6 +63,56 @@ const LIGHTS = {
       color: 'var(--color-primary)',
       opacity: 0.4,
       animation: 'cta-light-1 14s ease-in-out infinite',
+    },
+  ],
+  yellow: [
+    {
+      position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+      size: 'h-72 w-72',
+      blur: 'blur-[90px]',
+      color: '#FACC15',
+      opacity: 0.45,
+      animation: 'cta-light-1 18s ease-in-out infinite',
+    },
+  ],
+  green: [
+    {
+      position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+      size: 'h-72 w-72',
+      blur: 'blur-[90px]',
+      color: 'var(--color-success)',
+      opacity: 0.45,
+      animation: 'cta-light-2 18s ease-in-out infinite',
+    },
+  ],
+  lightblue: [
+    {
+      position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+      size: 'h-72 w-72',
+      blur: 'blur-[90px]',
+      color: '#3B82F6',
+      opacity: 0.45,
+      animation: 'cta-light-3 18s ease-in-out infinite',
+    },
+  ],
+  blue: [
+    {
+      position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+      size: 'h-80 w-80',
+      blur: 'blur-[100px]',
+      color: '#3B82F6',
+      opacity: 0.45,
+      animation: 'cta-light-1 20s ease-in-out infinite',
+    },
+  ],
+  red: [
+    {
+      position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+      size: 'h-80 w-80',
+      blur: 'blur-[100px]',
+      color: '#EF4444',
+      opacity: 0.4,
+      animation: 'cta-light-2 20s ease-in-out infinite',
     },
   ],
   success: [
@@ -107,7 +170,6 @@ const LIGHTS = {
       opacity: 0.35,
       animation: 'cta-light-1 16s ease-in-out infinite',
     },
-
     {
       position: 'top-[15%] right-[10%]',
       size: 'h-80 w-80',
@@ -116,7 +178,6 @@ const LIGHTS = {
       opacity: 0.25,
       animation: 'cta-light-2 18s ease-in-out infinite',
     },
-
     {
       position: 'top-[45%] left-[5%]',
       size: 'h-72 w-72',
@@ -125,7 +186,6 @@ const LIGHTS = {
       opacity: 0.25,
       animation: 'cta-light-3 20s ease-in-out infinite',
     },
-
     {
       position: 'top-[55%] right-[8%]',
       size: 'h-72 w-72',
@@ -134,7 +194,6 @@ const LIGHTS = {
       opacity: 0.22,
       animation: 'cta-light-1 22s ease-in-out infinite',
     },
-
     {
       position: 'bottom-[5%] left-1/2 -translate-x-1/2',
       size: 'h-80 w-80',
@@ -143,7 +202,6 @@ const LIGHTS = {
       opacity: 0.3,
       animation: 'cta-light-2 20s ease-in-out infinite',
     },
-
     {
       position: 'top-[30%] left-1/2 -translate-x-1/2',
       size: 'h-64 w-64',
@@ -154,7 +212,6 @@ const LIGHTS = {
     },
   ],
   about: [
-    // Row 1: Hero
     {
       position: 'top-[3%] left-[8%]',
       size: 'h-80 w-80',
@@ -171,8 +228,6 @@ const LIGHTS = {
       opacity: 0.14,
       animation: 'cta-light-2 20s ease-in-out infinite',
     },
-
-    // Row 2: Mission / Tech
     {
       position: 'top-[18%] left-[15%]',
       size: 'h-72 w-72',
@@ -197,8 +252,6 @@ const LIGHTS = {
       opacity: 0.16,
       animation: 'cta-light-2 26s ease-in-out infinite',
     },
-
-    // Row 3: Features / Capabilities
     {
       position: 'top-[45%] left-[10%]',
       size: 'h-72 w-72',
@@ -223,8 +276,6 @@ const LIGHTS = {
       opacity: 0.14,
       animation: 'cta-light-2 24s ease-in-out infinite',
     },
-
-    // Row 4: Developer / Bottom
     {
       position: 'top-[74%] left-[15%]',
       size: 'h-72 w-72',
@@ -250,79 +301,72 @@ const LIGHTS = {
       animation: 'cta-light-2 28s ease-in-out infinite',
     },
   ],
-coin: [
-  // 1. Top-left (gold)
-  {
-    position: 'top-[3%] left-[10%]',
-    size: 'h-80 w-80',
-    blur: 'blur-[110px]',
-    color: 'var(--color-primary)',
-    opacity: 0.2,
-    animation: 'cta-light-1 18s ease-in-out infinite',
-  },
-  // 2. Top-right (green)
-  {
-    position: 'top-[8%] right-[10%]',
-    size: 'h-72 w-72',
-    blur: 'blur-[100px]',
-    color: 'var(--color-success)',
-    opacity: 0.12,
-    animation: 'cta-light-2 20s ease-in-out infinite',
-  },
-  // 3. Middle-center (blue)
-  {
-    position: 'top-[28%] left-1/2 -translate-x-1/2',
-    size: 'h-80 w-80',
-    blur: 'blur-[120px]',
-    color: '#3B82F6',
-    opacity: 0.12,
-    animation: 'cta-light-3 22s ease-in-out infinite',
-  },
-  // 4. Middle-left (purple)
-  {
-    position: 'top-[45%] left-[8%]',
-    size: 'h-72 w-72',
-    blur: 'blur-[100px]',
-    color: '#7C3AED',
-    opacity: 0.1,
-    animation: 'cta-light-1 24s ease-in-out infinite',
-  },
-  // 5. Middle-right (cyan)
-  {
-    position: 'top-[52%] right-[8%]',
-    size: 'h-72 w-72',
-    blur: 'blur-[100px]',
-    color: '#06B6D4',
-    opacity: 0.1,
-    animation: 'cta-light-2 22s ease-in-out infinite',
-  },
-  // 6. Bottom-left (error)
-  {
-    position: 'top-[70%] left-[12%]',
-    size: 'h-72 w-72',
-    blur: 'blur-[100px]',
-    color: 'var(--color-error)',
-    opacity: 0.08,
-    animation: 'cta-light-3 26s ease-in-out infinite',
-  },
-  // 7. Bottom-right (gold)
-  {
-    position: 'top-[82%] right-[12%]',
-    size: 'h-80 w-80',
-    blur: 'blur-[110px]',
-    color: 'var(--color-primary)',
-    opacity: 0.12,
-    animation: 'cta-light-1 28s ease-in-out infinite',
-  },
-],
-auth: [
-  { position: 'top-[8%] left-[12%]', size: 'h-72 w-72', blur: 'blur-[100px]', color: 'var(--color-primary)', opacity: 0.26, animation: 'cta-light-1 18s ease-in-out infinite' },
-  { position: 'top-[3%] right-[15%]', size: 'h-64 w-64', blur: 'blur-[90px]', color: '#7C3AED', opacity: 0.24, animation: 'cta-light-2 20s ease-in-out infinite' },
-  { position: 'top-[30%] left-1/2 -translate-x-1/2', size: 'h-80 w-80', blur: 'blur-[120px]', color: 'var(--color-success)', opacity: 0.18, animation: 'cta-light-3 22s ease-in-out infinite' },
-  { position: 'top-1/2 left-[5%] -translate-y-1/2', size: 'h-72 w-72', blur: 'blur-[100px]', color: '#F7931A', opacity: 0.22, animation: 'cta-light-2 26s ease-in-out infinite' },
-  { position: 'top-1/2 right-[5%] -translate-y-1/2', size: 'h-80 w-80', blur: 'blur-[110px]', color: '#06B6D4', opacity: 0.2, animation: 'cta-light-3 24s ease-in-out infinite' },
-  { position: 'bottom-[8%] left-1/2 -translate-x-1/2', size: 'h-80 w-80', blur: 'blur-[110px]', color: 'var(--color-primary)', opacity: 0.28, animation: 'cta-light-2 20s ease-in-out infinite' },
-],
+  coin: [
+    {
+      position: 'top-[3%] left-[10%]',
+      size: 'h-80 w-80',
+      blur: 'blur-[110px]',
+      color: 'var(--color-primary)',
+      opacity: 0.2,
+      animation: 'cta-light-1 18s ease-in-out infinite',
+    },
+    {
+      position: 'top-[8%] right-[10%]',
+      size: 'h-72 w-72',
+      blur: 'blur-[100px]',
+      color: 'var(--color-success)',
+      opacity: 0.12,
+      animation: 'cta-light-2 20s ease-in-out infinite',
+    },
+    {
+      position: 'top-[28%] left-1/2 -translate-x-1/2',
+      size: 'h-80 w-80',
+      blur: 'blur-[120px]',
+      color: '#3B82F6',
+      opacity: 0.12,
+      animation: 'cta-light-3 22s ease-in-out infinite',
+    },
+    {
+      position: 'top-[45%] left-[8%]',
+      size: 'h-72 w-72',
+      blur: 'blur-[100px]',
+      color: '#7C3AED',
+      opacity: 0.1,
+      animation: 'cta-light-1 24s ease-in-out infinite',
+    },
+    {
+      position: 'top-[52%] right-[8%]',
+      size: 'h-72 w-72',
+      blur: 'blur-[100px]',
+      color: '#06B6D4',
+      opacity: 0.1,
+      animation: 'cta-light-2 22s ease-in-out infinite',
+    },
+    {
+      position: 'top-[70%] left-[12%]',
+      size: 'h-72 w-72',
+      blur: 'blur-[100px]',
+      color: 'var(--color-error)',
+      opacity: 0.08,
+      animation: 'cta-light-3 26s ease-in-out infinite',
+    },
+    {
+      position: 'top-[82%] right-[12%]',
+      size: 'h-80 w-80',
+      blur: 'blur-[110px]',
+      color: 'var(--color-primary)',
+      opacity: 0.12,
+      animation: 'cta-light-1 28s ease-in-out infinite',
+    },
+  ],
+  auth: [
+    { position: 'top-[8%] left-[12%]', size: 'h-72 w-72', blur: 'blur-[100px]', color: 'var(--color-primary)', opacity: 0.26, animation: 'cta-light-1 18s ease-in-out infinite' },
+    { position: 'top-[3%] right-[15%]', size: 'h-64 w-64', blur: 'blur-[90px]', color: '#7C3AED', opacity: 0.24, animation: 'cta-light-2 20s ease-in-out infinite' },
+    { position: 'top-[30%] left-1/2 -translate-x-1/2', size: 'h-80 w-80', blur: 'blur-[120px]', color: 'var(--color-success)', opacity: 0.18, animation: 'cta-light-3 22s ease-in-out infinite' },
+    { position: 'top-1/2 left-[5%] -translate-y-1/2', size: 'h-72 w-72', blur: 'blur-[100px]', color: '#F7931A', opacity: 0.22, animation: 'cta-light-2 26s ease-in-out infinite' },
+    { position: 'top-1/2 right-[5%] -translate-y-1/2', size: 'h-80 w-80', blur: 'blur-[110px]', color: '#06B6D4', opacity: 0.2, animation: 'cta-light-3 24s ease-in-out infinite' },
+    { position: 'bottom-[8%] left-1/2 -translate-x-1/2', size: 'h-80 w-80', blur: 'blur-[110px]', color: 'var(--color-primary)', opacity: 0.28, animation: 'cta-light-2 20s ease-in-out infinite' },
+  ],
 } as const
 
 export function AmbientLights({
