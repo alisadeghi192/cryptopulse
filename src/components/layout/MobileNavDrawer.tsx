@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router'
+import { NavLink, useNavigate } from 'react-router'
 import {
   X,
   Home,
@@ -8,10 +8,13 @@ import {
   Info,
   LogIn,
   Wallet,
+  LogOut,
   type LucideIcon,
 } from 'lucide-react'
+import { toast } from 'sonner'
 import { cn } from '@/utils/cn'
 import { Logo } from '../ui/Logo'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 interface NavLinkItem {
   label: string
@@ -43,6 +46,15 @@ export function MobileNavDrawer({
   onClose,
 }: MobileNavDrawerProps) {
   const initial = userName?.[0]?.toUpperCase() ?? 'U'
+  const navigate = useNavigate()
+  const signOut = useAuthStore((s) => s.signOut)
+
+  const handleSignOut = async () => {
+    onClose()
+    await signOut()
+    toast.success('Signed out')
+    navigate('/')
+  }
 
   return (
     <>
@@ -102,24 +114,40 @@ export function MobileNavDrawer({
           })}
         </nav>
 
-        {/* Bottom: Auth */}
+        {/* Bottom: Sign Out + User */}
         <div className="border-border border-t p-3">
           {isAuthenticated ? (
-            <NavLink
-              to="/dashboard"
-              onClick={onClose}
-              className="hover:bg-elevated flex items-center gap-3 rounded-lg px-3 py-2 transition-colors"
-            >
-              <div className="bg-primary text-background flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold">
-                {initial}
-              </div>
-              <div className="flex min-w-0 flex-col">
-                <span className="text-text truncate text-sm font-medium">
-                  {userName}
-                </span>
-                <span className="text-text text-xs">View Dashboard</span>
-              </div>
-            </NavLink>
+            <div className="space-y-2">
+              {/* Sign Out */}
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="text-error hover:bg-error/10 flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-left text-sm font-medium transition-colors"
+              >
+                <LogOut className="h-4 w-4 shrink-0" />
+                <span>Sign Out</span>
+              </button>
+
+              {/* Divider */}
+              <div className="bg-border/40 h-px" />
+
+              {/* User Profile */}
+              <NavLink
+                to="/dashboard"
+                onClick={onClose}
+                className="hover:bg-elevated flex items-center gap-3 rounded-lg px-3 py-2 transition-colors"
+              >
+                <div className="bg-primary text-background flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold">
+                  {initial}
+                </div>
+                <div className="flex min-w-0 flex-col">
+                  <span className="text-text truncate text-sm font-medium">
+                    {userName}
+                  </span>
+                  <span className="text-text text-xs">View Dashboard</span>
+                </div>
+              </NavLink>
+            </div>
           ) : (
             <NavLink
               to="/login"

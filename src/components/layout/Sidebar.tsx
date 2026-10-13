@@ -17,7 +17,6 @@ interface SidebarProps {
   onToggleCollapse: () => void
   mobileOpen: boolean
   onMobileClose: () => void
-  isAuthenticated: boolean
   onSignOut: () => void
 }
 
@@ -39,7 +38,6 @@ export function Sidebar({
   onToggleCollapse,
   mobileOpen,
   onMobileClose,
-  isAuthenticated,
   onSignOut,
 }: SidebarProps) {
   return (
@@ -108,19 +106,17 @@ export function Sidebar({
 
         {/* Bottom */}
         <div className="border-border/40 space-y-1 border-t p-3">
-          {isAuthenticated && (
-            <button
+           <button
               type="button"
               onClick={onSignOut}
               className={cn(
-                'text-text dark:hover:bg-elevated/40 hover:text-error flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-all duration-200 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]',
+                'text-error hover:bg-error/10 flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-colors',
                 collapsed && 'lg:justify-center lg:px-0',
               )}
             >
               <LogOut className="h-5 w-5 shrink-0" />
               <span className={cn(collapsed && 'lg:hidden')}>Sign Out</span>
             </button>
-          )}
 
           <button
             type="button"
