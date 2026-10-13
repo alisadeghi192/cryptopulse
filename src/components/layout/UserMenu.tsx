@@ -1,15 +1,74 @@
-import { Link } from 'react-router'
-import { ChevronDown } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router'
+import {
+  ChevronDown,
+  LayoutDashboard,
+  Wallet,
+  Star,
+  User as UserIcon,
+  LogOut,
+} from 'lucide-react'
 import { buttonVariants } from '@/components/ui/Button'
 import { useAuthStore } from '@/stores/useAuthStore'
+import { toast } from 'sonner'
 import { cn } from '@/utils/cn'
 
 interface UserMenuProps {
   isAuthenticated: boolean
 }
 
+const MENU_ITEMS = [
+  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Wallet', href: '/wallet', icon: Wallet },
+  { label: 'Watchlist', href: '/watchlist', icon: Star },
+  { label: 'Profile', href: '/profile', icon: UserIcon },
+]
+
+// مسیرهایی که سایدبار دارن → submenu لازم نیست
+const APP_ROUTES = ['/dashboard', '/wallet', '/watchlist', '/profile']
+
 export function UserMenu({ isAuthenticated }: UserMenuProps) {
   const user = useAuthStore((s) => s.user)
+  const signOut = useAuthStore((s) => s.signOut)
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  const [open, setOpen] = useState(false)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const isAppRoute = APP_ROUTES.some((r) => pathname.startsWith(r))
+
+  useEffect(() => {
+    if (!open) return
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!wrapperRef.current?.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [open])
+
+  const handleMouseEnter = () => {
+    if (isAppRoute) return
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    setOpen(true)
+  }
+
+  const handleMouseLeave = () => {
+    if (isAppRoute) return
+    timeoutRef.current = setTimeout(() => setOpen(false), 200)
+  }
+
+  const handleSignOut = async () => {
+    setOpen(false)
+    await signOut()
+    toast.success('Signed out')
+    navigate('/')
+  }
 
   if (isAuthenticated && user) {
     const displayName =
@@ -18,17 +77,84 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
       'User'
     const initial = displayName[0].toUpperCase()
 
+    // ─── App routes (dashboard/wallet/...)───
+    if (isAppRoute) {
+      return (
+        <Link
+          to="/profile"
+          className="hover:bg-elevated hidden items-center gap-2 rounded-lg px-2 py-1.5 transition-colors lg:flex"
+        >
+          <div className="bg-primary text-background flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
+            {initial}
+          </div>
+          <span className="text-text text-sm font-medium">{displayName}</span>
+        </Link>
+      )
+    }
+
+    // ─── Public routes → dropdown ───
     return (
-      <Link
-        to="/dashboard"
-        className="hover:bg-elevated hidden items-center gap-2 rounded-lg px-2 py-1.5 transition-colors lg:flex"
+      <div
+        ref={wrapperRef}
+        className="relative hidden lg:block"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        <div className="bg-primary text-background flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
-          {initial}
+        <Link
+          to="/dashboard"
+          className="hover:bg-elevated flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 transition-colors"
+          aria-haspopup="menu"
+          aria-expanded={open}
+        >
+          <div className="bg-primary text-background flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
+            {initial}
+          </div>
+          <span className="text-text text-sm font-medium">{displayName}</span>
+          <ChevronDown
+            className={cn(
+              'text-text-secondary h-3 w-3 transition-transform duration-200',
+              open && 'rotate-180',
+            )}
+          />
+        </Link>
+
+        <div
+          className={cn(
+            'absolute top-full right-0 mt-2 w-52 origin-top-right transition-all duration-200',
+            open
+              ? 'pointer-events-auto scale-100 opacity-100'
+              : 'pointer-events-none scale-95 opacity-0',
+          )}
+        >
+          <div className="border-border/60 bg-surface overflow-hidden rounded-xl border p-1.5 shadow-sm">
+            {MENU_ITEMS.map((item) => {
+              const Icon = item.icon
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setOpen(false)}
+                  className="text-text-secondary hover:bg-elevated/60 hover:text-text flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span>{item.label}</span>
+                </Link>
+              )
+            })}
+
+            <div className="bg-border/40 my-1.5 h-px" />
+
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="text-error hover:bg-error/10 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
+            >
+              <LogOut className="h-4 w-4 shrink-0" />
+              <span>Sign Out</span>
+            </button>
+          </div>
         </div>
-        <span className="text-text text-sm font-medium">{displayName}</span>
-        <ChevronDown className="text-text-secondary h-3 w-3" />
-      </Link>
+      </div>
     )
   }
 

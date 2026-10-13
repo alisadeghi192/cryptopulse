@@ -12,7 +12,6 @@ export function AppLayout() {
   const user = useAuthStore((s) => s.user)
   const initialized = useAuthStore((s) => s.initialized)
   const signOut = useAuthStore((s) => s.signOut)
-  const isAuthenticated = !!user
   const navigate = useNavigate()
 
   const handleSignOut = async () => {
@@ -43,7 +42,6 @@ export function AppLayout() {
           onToggleCollapse={() => setCollapsed(!collapsed)}
           mobileOpen={mobileOpen}
           onMobileClose={() => setMobileOpen(false)}
-          isAuthenticated={isAuthenticated}
           onSignOut={handleSignOut}
         />
 

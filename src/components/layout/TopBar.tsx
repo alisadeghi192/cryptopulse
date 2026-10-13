@@ -47,7 +47,7 @@ export function TopBar({
         className={cn(
           "container mx-auto flex h-14 w-full items-center justify-between px-4 transition-all duration-300 ease-out md:h-12",
           {
-            "md:px-2": scrolled && useBorderBeam,
+            "lg:px-2": scrolled && useBorderBeam,
           },
         )}
       >
