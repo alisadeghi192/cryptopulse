@@ -47,7 +47,7 @@ export function AppLayout() {
           onSignOut={handleSignOut}
         />
 
-        <main className="min-w-0 flex-1 overflow-y-auto custom-scroll">
+        <main className="min-w-0 flex-1 overflow-y-auto custom-scroll p-8">
           <Outlet />
         </main>
       </div>
