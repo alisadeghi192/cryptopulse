@@ -26,7 +26,6 @@ interface MobileNavDrawerProps {
   onClose: () => void
 }
 
-// ─── Map label → icon ───
 const LINK_ICONS: Record<string, LucideIcon> = {
   Home: Home,
   Markets: LineChart,
@@ -51,7 +50,7 @@ export function MobileNavDrawer({
       <div
         onClick={onClose}
         className={cn(
-          'fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-opacity duration-300 md:hidden',
+          'fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-opacity duration-300 lg:hidden',
           open ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         aria-hidden="true"
@@ -60,7 +59,7 @@ export function MobileNavDrawer({
       {/* Drawer */}
       <aside
         className={cn(
-          'border-border/40 bg-surface/30 fixed top-0 right-0 bottom-0 z-60 flex w-72 flex-col border-l shadow-[-8px_0_24px_-4px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-transform duration-300 ease-out md:hidden',
+          'border-border/40 bg-surface/30 fixed top-0 right-0 bottom-0 z-60 flex w-72 flex-col border-l shadow-[-8px_0_24px_-4px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-transform duration-300 ease-out lg:hidden',
           open ? 'translate-x-0' : 'translate-x-full',
         )}
       >

@@ -53,7 +53,7 @@ export function TopBar({
       >
         <Logo />
 
-        {showNav && <NavLinks links={navLinks} className="hidden md:flex" />}
+        {showNav && <NavLinks links={navLinks} className="hidden lg:flex" />}
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
@@ -64,7 +64,7 @@ export function TopBar({
               size="icon"
               variant="outline"
               onClick={onMenuClick}
-              className="md:hidden"
+              className="lg:hidden"
               aria-label="Open menu"
             >
               <Menu className="h-5 w-5" />
@@ -84,7 +84,7 @@ export function TopBar({
       className={cn(
         "sticky top-0 z-50 mx-auto w-full max-w-full transition-all duration-300 ease-out",
         {
-          "top-2 max-w-[calc(100%-1rem)] md:top-4 md:max-w-4xl rounded-3xl":
+          "top-2 max-w-[calc(100%-1rem)] md:top-4 md:max-w-7/10 rounded-3xl":
             scrolled,
         },
       )}

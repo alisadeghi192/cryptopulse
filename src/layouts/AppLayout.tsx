@@ -29,7 +29,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className="flex container h-screen flex-col overflow-hidden bg-background">
+    <div className="container flex h-screen flex-col overflow-hidden bg-background">
       <TopBar
         onMenuClick={() => setMobileOpen(true)}
         showNav={true}
@@ -47,7 +47,7 @@ export function AppLayout() {
           onSignOut={handleSignOut}
         />
 
-        <main className="min-w-0 flex-1 overflow-y-auto custom-scroll p-8">
+        <main className="custom-scroll min-w-0 flex-1 overflow-y-auto p-2 md:p-8">
           <Outlet />
         </main>
       </div>
