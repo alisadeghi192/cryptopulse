@@ -7,6 +7,7 @@ import {
   Star,
   Info,
   LogIn,
+  Wallet,
   type LucideIcon,
 } from 'lucide-react'
 import { cn } from '@/utils/cn'
@@ -32,6 +33,7 @@ const LINK_ICONS: Record<string, LucideIcon> = {
   Converter: ArrowLeftRight,
   Watchlist: Star,
   About: Info,
+  Wallet: Wallet,
 }
 
 export function MobileNavDrawer({

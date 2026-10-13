@@ -13,6 +13,9 @@ const Home = lazy(() =>
 const Markets = lazy(() =>
   import('@/pages/Markets').then((m) => ({ default: m.Markets })),
 )
+const WalletPage = lazy(() =>
+  import('@/pages/Wallet').then((m) => ({ default: m.Wallet })),
+)
 const CoinDetail = lazy(() =>
   import('@/pages/CoinDetail').then((m) => ({ default: m.CoinDetail })),
 )
@@ -108,6 +111,14 @@ export const router = createBrowserRouter([
         element: (
           <LazyPage>
             <Profile />
+          </LazyPage>
+        ),
+      },
+      {
+        path: 'wallet',
+        element: (
+          <LazyPage>
+            <WalletPage />
           </LazyPage>
         ),
       },

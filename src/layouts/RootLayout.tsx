@@ -23,13 +23,14 @@ export function RootLayout() {
     user?.email?.split('@')[0] ??
     'User';
 
-  const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "Markets", href: "/markets" },
-    { label: 'Converter', href: '/converter' },
-    ...(isAuthenticated ? [{ label: "Watchlist", href: "/watchlist" }] : []),
-    { label: "About", href: "/about" },
-  ];
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "Markets", href: "/markets" },
+  { label: 'Converter', href: '/converter' },
+  ...(isAuthenticated ? [{ label: "Wallet", href: "/wallet" }] : []),
+  ...(isAuthenticated ? [{ label: "Watchlist", href: "/watchlist" }] : []),
+  { label: "About", href: "/about" },
+];
 
   return (
     <div className="min-h-screen  bg-background">

@@ -7,6 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  Wallet,
 } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import { Logo } from '@/components/ui/Logo'
@@ -28,10 +29,10 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Wallet', href: '/wallet', icon: Wallet },
   { label: 'Watchlist', href: '/watchlist', icon: Star },
   { label: 'Profile', href: '/profile', icon: User },
 ]
-
 export function Sidebar({
   collapsed,
   onToggleCollapse,
