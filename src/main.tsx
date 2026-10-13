@@ -9,6 +9,7 @@ import { AuthInitializer } from "./components/providers/AuthInitializer";
 import "./lib/fonts";
 import "./index.css";
 import { Toaster } from "./components/ui/Toaster";
+import { WatchlistInitializer } from "./components/providers/WatchlistInitializer";
 
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual'
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <ThemeInitializer />
       <AuthInitializer />
+      <WatchlistInitializer />
       <App />
       <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />
