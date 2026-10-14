@@ -1,4 +1,4 @@
-import { CreditCard, LinkIcon } from 'lucide-react'
+import { LinkIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { useAuthStore } from '@/stores/useAuthStore'
@@ -7,8 +7,8 @@ import { ProfileHeader } from '@/features/profile/components/ProfileHeader'
 import { InfoCard } from '@/features/profile/components/InfoCard'
 import { BalanceCard } from '@/features/profile/components/BalanceCard'
 import { SecuritySection } from '@/features/profile/components/SecuritySection'
+import { CardNumberCard } from '@/features/profile/components/CardNumberCard'
 
-const MOCK_CARD_NUMBER = '4587 9231 6548 1237'
 
 const shortWallet = (id: string) => id.replace(/-/g, '').slice(0, 16)
 
@@ -61,17 +61,7 @@ export function Profile() {
 
         <div className="mt-6 flex flex-col items-stretch justify-between gap-6 *:basis-1/3 md:flex-row">
           <BlurFade delay={0.1}>
-            <InfoCard
-              label="Card Number"
-              value={MOCK_CARD_NUMBER}
-              sublabel="Withdrawals go here"
-              icon={CreditCard}
-              ambientVariant="lightblue"
-              spotlightColor="rgba(59, 130, 246, 0.15)"
-              accent="blue"
-              copyValue={MOCK_CARD_NUMBER.replace(/\s/g, '')}
-              copyLabel="Card number copied to clipboard"
-            />
+            <CardNumberCard />
           </BlurFade>
 
           <BlurFade delay={0.15}>
