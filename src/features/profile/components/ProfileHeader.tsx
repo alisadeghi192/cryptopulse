@@ -133,7 +133,11 @@ export function ProfileHeader({
                   )}
                 </div>
 
-                <div className="border-background bg-success pointer-events-none absolute right-1 bottom-1 size-5 rounded-full border-[3px]">
+                <div
+                  className={`border-background bg-success pointer-events-none absolute right-1 bottom-1 size-5 rounded-full border-[3px] transition-opacity duration-200 ${
+                    busy ? 'opacity-0' : 'opacity-100'
+                  }`}
+                >
                   <span className="bg-success absolute inset-0 animate-ping rounded-full opacity-75" />
                 </div>
 
