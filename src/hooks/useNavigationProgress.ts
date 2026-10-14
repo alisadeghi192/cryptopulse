@@ -52,7 +52,8 @@ export function useNavigationProgress() {
         href.startsWith('https://') ||
         href.startsWith('//') ||
         href.startsWith('mailto:') ||
-        href.startsWith('tel:')
+        href.startsWith('tel:') ||
+        href.startsWith('blob:')
       ) {
         return
       }
