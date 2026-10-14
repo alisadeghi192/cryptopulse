@@ -5,6 +5,7 @@ import { Camera, Trash2, Loader2, Mail, Phone, Calendar } from 'lucide-react'
 import { EditableName } from './EditableName'
 import { uploadAvatar, removeAvatar } from '@/lib/api/avatar'
 import { useAuthStore } from '@/stores/useAuthStore'
+import { confirm } from '@/lib/confirm'
 
 interface ProfileHeaderProps {
   displayName: string
@@ -68,46 +69,39 @@ export function ProfileHeader({
     toast.success('Avatar updated')
   }
 
-  const handleAvatarRemove = () => {
+  const handleAvatarRemove = async () => {
     if (!user || !avatarUrl) return
 
-    toast('Remove avatar?', {
+    const ok = await confirm({
+      title: 'Remove avatar?',
       description: 'This will delete your profile picture permanently.',
-      duration: 8000,
-      action: {
-        label: 'Remove',
-        onClick: async () => {
-          setRemoving(true)
-
-          const { error: removeError } = await removeAvatar(user.id)
-
-          if (removeError) {
-            toast.error('Failed to remove avatar', {
-              description: removeError,
-            })
-            setRemoving(false)
-            return
-          }
-
-          const { error: updateError } = await updateProfile({ avatar_url: '' })
-
-          setRemoving(false)
-
-          if (updateError) {
-            toast.error('Failed to update profile', {
-              description: updateError,
-            })
-            return
-          }
-
-          toast.success('Avatar removed')
-        },
-      },
-      cancel: {
-        label: 'Cancel',
-        onClick: () => {},
-      },
+      confirmLabel: 'Remove',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
     })
+
+    if (!ok) return
+
+    setRemoving(true)
+
+    const { error: removeError } = await removeAvatar(user.id)
+
+    if (removeError) {
+      toast.error('Failed to remove avatar', { description: removeError })
+      setRemoving(false)
+      return
+    }
+
+    const { error: updateError } = await updateProfile({ avatar_url: '' })
+
+    setRemoving(false)
+
+    if (updateError) {
+      toast.error('Failed to update profile', { description: updateError })
+      return
+    }
+
+    toast.success('Avatar removed')
   }
 
   const busy = uploading || removing
