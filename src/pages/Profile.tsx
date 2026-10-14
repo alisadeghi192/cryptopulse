@@ -1,6 +1,8 @@
 import { CreditCard, LinkIcon } from 'lucide-react'
+import { toast } from 'sonner'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { useAuthStore } from '@/stores/useAuthStore'
+import { useWatchlistStore } from '@/stores/useWatchlistStore'
 import { ProfileHeader } from '@/features/profile/components/ProfileHeader'
 import { InfoCard } from '@/features/profile/components/InfoCard'
 import { BalanceCard } from '@/features/profile/components/BalanceCard'
@@ -12,6 +14,9 @@ const shortWallet = (id: string) => id.replace(/-/g, '').slice(0, 16)
 
 export function Profile() {
   const user = useAuthStore((s) => s.user)
+  const updateProfile = useAuthStore((s) => s.updateProfile)
+  const watchlistCount = useWatchlistStore((s) => s.coinIds.length)
+
   const displayName = (user?.user_metadata?.full_name as string) ?? 'User'
   const email = user?.email ?? 'user@email.com'
   const phone = (user?.user_metadata?.phone_number as string) ?? '—'
@@ -25,10 +30,20 @@ export function Profile() {
   const userId = user?.id ?? '—'
   const initial = displayName[0]?.toUpperCase() ?? 'U'
 
+  const handleSaveName = async (newName: string) => {
+    const { error } = await updateProfile({ full_name: newName })
+
+    if (error) {
+      toast.error('Failed to update name', { description: error })
+      return
+    }
+
+    toast.success('Name updated')
+  }
+
   return (
     <main className="bg-background relative min-h-full">
       <div className="mx-auto w-full">
-        {/* ═══ Header Card ═══ */}
         <BlurFade>
           <ProfileHeader
             displayName={displayName}
@@ -36,13 +51,12 @@ export function Profile() {
             phone={phone}
             memberSince={memberSince}
             initial={initial}
-            onSaveName={() => {
-              // TODO: supabase updateUser
-            }}
+            watchlistCount={watchlistCount}
+            tradesCount={0}
+            onSaveName={handleSaveName}
           />
         </BlurFade>
 
-        {/* ═══ Account Info Grid ═══ */}
         <div className="mt-6 flex flex-col items-stretch justify-between gap-6 *:basis-1/3 md:flex-row">
           <BlurFade delay={0.1}>
             <InfoCard
@@ -58,7 +72,7 @@ export function Profile() {
             />
           </BlurFade>
 
-      <BlurFade delay={0.15}>
+          <BlurFade delay={0.15}>
             <InfoCard
               label="Wallet Address"
               value={shortWallet(userId)}
@@ -78,7 +92,6 @@ export function Profile() {
           </BlurFade>
         </div>
 
-        {/* ═══ Security Section ═══ */}
         <BlurFade delay={0.25}>
           <SecuritySection />
         </BlurFade>

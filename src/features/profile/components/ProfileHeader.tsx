@@ -8,7 +8,9 @@ interface ProfileHeaderProps {
   phone: string
   memberSince: string
   initial: string
-  onSaveName: (value: string) => void
+  watchlistCount: number
+  tradesCount: number
+  onSaveName: (value: string) => void | Promise<void>
 }
 
 export function ProfileHeader({
@@ -17,6 +19,8 @@ export function ProfileHeader({
   phone,
   memberSince,
   initial,
+  watchlistCount,
+  tradesCount,
   onSaveName,
 }: ProfileHeaderProps) {
   return (
@@ -27,7 +31,6 @@ export function ProfileHeader({
       <div className="border-border/40 bg-surface/40 relative rounded-3xl border shadow-2xl backdrop-blur-3xl">
         <div className="px-6 pt-8 pb-6 md:px-8 md:pt-10 md:pb-8">
           <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:gap-8">
-            {/* Avatar */}
             <div className="group/avatar relative shrink-0">
               <div className="bg-primary/40 absolute inset-0 rounded-full blur-2xl" />
               <div className="border-background/30 bg-primary text-background relative flex size-20 items-center justify-center rounded-full border-[3px] text-2xl font-bold shadow-xl md:size-24 md:text-3xl">
@@ -46,7 +49,6 @@ export function ProfileHeader({
               </button>
             </div>
 
-            {/* Info */}
             <div className="min-w-0 flex-1">
               <EditableName value={displayName} onSave={onSaveName} />
 
@@ -66,11 +68,10 @@ export function ProfileHeader({
               </div>
             </div>
 
-            {/* Stats */}
             <div className="border-border/60 flex w-full shrink-0 items-center justify-around gap-4 border-t pt-6 md:w-auto md:justify-end md:gap-8 md:border-t-0 md:border-l md:pt-0 md:pl-8">
               <div className="text-center md:text-left">
                 <p className="text-text font-mono text-2xl font-bold tabular-nums">
-                  0
+                  {watchlistCount}
                 </p>
                 <p className="text-text/60 mt-0.5 font-mono text-[10px] tracking-widest uppercase">
                   Watchlist
@@ -78,7 +79,7 @@ export function ProfileHeader({
               </div>
               <div className="text-center md:text-left">
                 <p className="text-text font-mono text-2xl font-bold tabular-nums">
-                  0
+                  {tradesCount}
                 </p>
                 <p className="text-text/60 mt-0.5 font-mono text-[10px] tracking-widest uppercase">
                   Trades

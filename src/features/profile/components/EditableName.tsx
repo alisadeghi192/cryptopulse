@@ -1,18 +1,30 @@
 import { useState } from 'react'
-import { Pencil, X, Check } from 'lucide-react'
+import { Pencil, X, Check, Loader2 } from 'lucide-react'
 
 interface EditableNameProps {
   value: string
-  onSave: (value: string) => void
+  onSave: (value: string) => void | Promise<void>
 }
 
 export function EditableName({ value, onSave }: EditableNameProps) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(value)
+  const [saving, setSaving] = useState(false)
 
-  const save = () => {
-    onSave(draft)
-    setEditing(false)
+  const save = async () => {
+    const trimmed = draft.trim()
+    if (!trimmed || trimmed === value) {
+      cancel()
+      return
+    }
+
+    setSaving(true)
+    try {
+      await onSave(trimmed)
+      setEditing(false)
+    } finally {
+      setSaving(false)
+    }
   }
 
   const cancel = () => {
@@ -28,7 +40,8 @@ export function EditableName({ value, onSave }: EditableNameProps) {
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           autoFocus
-          className="font-display text-text border-primary/40 focus:border-primary w-full border-b-2 bg-transparent text-2xl font-bold tracking-tight outline-none md:text-3xl"
+          disabled={saving}
+          className="font-display text-text border-primary/40 focus:border-primary w-full border-b-2 bg-transparent text-2xl font-bold tracking-tight outline-none disabled:opacity-50 md:text-3xl"
           onKeyDown={(e) => {
             if (e.key === 'Enter') save()
             if (e.key === 'Escape') cancel()
@@ -37,15 +50,21 @@ export function EditableName({ value, onSave }: EditableNameProps) {
         <button
           type="button"
           onClick={save}
-          className="text-success hover:text-success/80 shrink-0"
+          disabled={saving}
+          className="text-success cursor-pointer hover:text-success/80 shrink-0 disabled:opacity-50"
           aria-label="Save name"
         >
-          <Check className="size-5" />
+          {saving ? (
+            <Loader2 className="size-5 animate-spin" />
+          ) : (
+            <Check className="size-5" />
+          )}
         </button>
         <button
           type="button"
           onClick={cancel}
-          className="text-text/70 hover:text-text shrink-0"
+          disabled={saving}
+          className="text-text/70 cursor-pointer hover:text-text shrink-0 disabled:opacity-50"
           aria-label="Cancel"
         >
           <X className="size-5" />
@@ -61,7 +80,10 @@ export function EditableName({ value, onSave }: EditableNameProps) {
       </h1>
       <button
         type="button"
-        onClick={() => setEditing(true)}
+        onClick={() => {
+          setDraft(value)
+          setEditing(true)
+        }}
         className="text-text/40 hover:text-primary shrink-0 opacity-0 transition-opacity group-hover/name:opacity-100"
         aria-label="Edit name"
       >

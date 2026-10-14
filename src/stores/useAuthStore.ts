@@ -17,9 +17,17 @@ interface AuthState {
     phone: string,
   ) => Promise<{ error: string | null }>
   signOut: () => Promise<void>
+  signOutAll: () => Promise<{ error: string | null }>
+  updateProfile: (data: {
+    full_name?: string
+  }) => Promise<{ error: string | null }>
+  changePassword: (
+    currentPassword: string,
+    newPassword: string,
+  ) => Promise<{ error: string | null }>
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   session: null,
   isLoading: false,
@@ -95,5 +103,55 @@ export const useAuthStore = create<AuthState>((set) => ({
   signOut: async () => {
     await supabase.auth.signOut()
     set({ user: null, session: null })
+  },
+
+  signOutAll: async () => {
+    const { error } = await supabase.auth.signOut({ scope: 'global' })
+
+    if (error) {
+      return { error: error.message }
+    }
+
+    set({ user: null, session: null })
+    return { error: null }
+  },
+
+  updateProfile: async (data) => {
+    const { data: res, error } = await supabase.auth.updateUser({ data })
+
+    if (error) {
+      return { error: error.message }
+    }
+
+    set({ user: res.user })
+    return { error: null }
+  },
+
+  changePassword: async (currentPassword, newPassword) => {
+    const user = get().user
+    if (!user?.email) {
+      return { error: 'No user signed in' }
+    }
+
+    // check current password
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: currentPassword,
+    })
+
+    if (signInError) {
+      return { error: 'Current password is incorrect' }
+    }
+
+    // update user password
+    const { error: updateError } = await supabase.auth.updateUser({
+      password: newPassword,
+    })
+
+    if (updateError) {
+      return { error: updateError.message }
+    }
+
+    return { error: null }
   },
 }))
