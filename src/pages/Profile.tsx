@@ -17,6 +17,7 @@ export function Profile() {
   const updateProfile = useAuthStore((s) => s.updateProfile)
   const watchlistCount = useWatchlistStore((s) => s.coinIds.length)
 
+  const avatarUrl = (user?.user_metadata?.avatar_url as string) ?? null
   const displayName = (user?.user_metadata?.full_name as string) ?? 'User'
   const email = user?.email ?? 'user@email.com'
   const phone = (user?.user_metadata?.phone_number as string) ?? '—'
@@ -51,6 +52,7 @@ export function Profile() {
             phone={phone}
             memberSince={memberSince}
             initial={initial}
+            avatarUrl={avatarUrl}
             watchlistCount={watchlistCount}
             tradesCount={0}
             onSaveName={handleSaveName}
