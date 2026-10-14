@@ -2,6 +2,42 @@
 
 A modern cryptocurrency tracking platform built with React, TypeScript, and Supabase.
 
+## 📸 UI Preview
+
+A glimpse of the interface — some screenshots from the current build:
+
+### Home
+
+![Home Desktop](./screenshots/home-desktop.png)
+![Home Mobile](./screenshots/home-mobile.png)
+
+### Markets
+
+![Markets Desktop](./screenshots/markets-desktop.png)
+![Markets Mobile](./screenshots/markets-mobile.png)
+
+### Trending
+
+![Trending](./screenshots/trending-desktop.png)
+
+### Coin Detail
+
+![Coin Mobile](./screenshots/coin-mobile.png)
+
+### Converter
+
+![Converter](./screenshots/converter.png)
+
+### Auth
+
+![Login](./screenshots/login.png)
+
+## 🚧 Coming Soon
+
+Full documentation, setup guide, and architecture notes will be published soon.
+
+---
+
 ## 🛠️ Tech Stack
 
 - **React 19** + **TypeScript**
@@ -15,12 +51,3 @@ A modern cryptocurrency tracking platform built with React, TypeScript, and Supa
 - **ECharts** — Charts
 - **Sonner** — Notifications
 - **Axios** — HTTP client
-
-## 🚀 Getting Started
-
-```bash
-# Install dependencies
-pnpm install
-
-# Run dev server
-pnpm dev
