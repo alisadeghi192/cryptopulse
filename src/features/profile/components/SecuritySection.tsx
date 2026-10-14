@@ -134,7 +134,7 @@ export function SecuritySection() {
             <button
               type="button"
               onClick={() => setPasswordOpen((o) => !o)}
-              className="group hover:bg-elevated/30 flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors"
+              className="group hover:bg-elevated/30 cursor-pointer flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors"
               aria-expanded={passwordOpen}
             >
               <div className="flex items-center gap-3">
@@ -228,7 +228,7 @@ export function SecuritySection() {
             type="button"
             onClick={handleSignOutAll}
             disabled={signingOut}
-            className="group hover:bg-error/5 border-border/30 flex w-full items-center justify-between gap-4 border-b px-5 py-4 text-left transition-colors disabled:opacity-50"
+            className="group hover:bg-error/5 border-border/30 cursor-pointer flex w-full items-center justify-between gap-4 border-b px-5 py-4 text-left transition-colors disabled:opacity-50"
           >
             <div className="flex items-center gap-3">
               <div className="border-error/30 bg-error/10 text-error flex size-9 shrink-0 items-center justify-center rounded-lg border backdrop-blur-sm">
@@ -254,7 +254,7 @@ export function SecuritySection() {
           <button
             type="button"
             onClick={handleExport}
-            className="group hover:bg-elevated/30 flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors"
+            className="group hover:bg-elevated/30 cursor-pointer flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors"
           >
             <div className="flex items-center gap-3">
               <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[#3B82F6] backdrop-blur-sm">

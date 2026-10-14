@@ -92,7 +92,7 @@ export function InfoCard({
                 accentClass.hover,
               )}
             >
-              <Copy className="size-3.5" />
+              <Copy className="size-3.5 cursor-pointer" />
             </button>
           </div>
           <p
