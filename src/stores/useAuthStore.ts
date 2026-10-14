@@ -20,6 +20,7 @@ interface AuthState {
   signOutAll: () => Promise<{ error: string | null }>
   updateProfile: (data: {
     full_name?: string
+    avatar_url?: string
   }) => Promise<{ error: string | null }>
   changePassword: (
     currentPassword: string,
