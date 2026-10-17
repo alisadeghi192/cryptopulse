@@ -1,85 +1,135 @@
 import { useCallback } from 'react'
+import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useWalletStore } from '@/stores/useWalletStore'
 import {
-  updateCashBalance,
-  createTransaction,
-  generateTxnId,
+  fetchWallet,
+  fetchHoldings,
+  fetchTransactions,
 } from '@/lib/api/wallet'
 
 const WITHDRAW_FEE = 0.5
+const TRADE_FEE_RATE = 0.001
 
 export function useWalletActions() {
   const user = useAuthStore((s) => s.user)
-  const wallet = useWalletStore((s) => s.wallet)
   const setWallet = useWalletStore((s) => s.setWallet)
-  const addTransaction = useWalletStore((s) => s.addTransaction)
+  const setHoldings = useWalletStore((s) => s.setHoldings)
+  const setTransactions = useWalletStore((s) => s.setTransactions)
+
+  const refreshWallet = useCallback(async () => {
+    if (!user) return
+    try {
+      const [walletData, holdingsData, transactionsData] = await Promise.all([
+        fetchWallet(user.id),
+        fetchHoldings(user.id),
+        fetchTransactions(user.id),
+      ])
+      if (walletData) setWallet(walletData)
+      setHoldings(holdingsData)
+      setTransactions(transactionsData)
+    } catch (err) {
+      console.error('Failed to refresh wallet:', err)
+    }
+  }, [user, setWallet, setHoldings, setTransactions])
 
   const deposit = useCallback(
     async (amount: number): Promise<{ error: string | null }> => {
-      if (!user || !wallet) return { error: 'Wallet not loaded' }
-      if (amount < 10) return { error: 'Minimum deposit is $10' }
-      if (amount > 100_000) return { error: 'Maximum deposit is $100,000' }
+      if (!user) return { error: 'Not authenticated' }
 
-      const txnId = generateTxnId()
-      const newBalance = wallet.cash_balance + amount
+      const { error } = await supabase.rpc('deposit_funds', {
+        p_amount: amount,
+      })
 
-      try {
-        await updateCashBalance(user.id, newBalance)
-
-        const txn = await createTransaction({
-          userId: user.id,
-          type: 'deposit',
-          amount,
-          totalUsd: amount,
-          fee: 0,
-          txnId,
-        })
-
-        setWallet({ ...wallet, cash_balance: newBalance })
-        addTransaction(txn)
-        return { error: null }
-      } catch (err) {
-        console.error('Deposit failed:', err)
-        return { error: 'Failed to process deposit' }
+      if (error) {
+        return { error: error.message }
       }
+
+      await refreshWallet()
+      return { error: null }
     },
-    [user, wallet, setWallet, addTransaction],
+    [user, refreshWallet],
   )
 
   const withdraw = useCallback(
     async (amount: number): Promise<{ error: string | null }> => {
-      if (!user || !wallet) return { error: 'Wallet not loaded' }
-      if (amount < 10) return { error: 'Minimum withdrawal is $10' }
-      if (amount > wallet.cash_balance) {
-        return { error: 'Insufficient balance' }
+      if (!user) return { error: 'Not authenticated' }
+
+      const { error } = await supabase.rpc('withdraw_funds', {
+        p_amount: amount,
+      })
+
+      if (error) {
+        return { error: error.message }
       }
 
-      const txnId = generateTxnId()
-      const newBalance = wallet.cash_balance - amount
-
-      try {
-        await updateCashBalance(user.id, newBalance)
-
-        const txn = await createTransaction({
-          userId: user.id,
-          type: 'withdraw',
-          amount,
-          totalUsd: amount,
-          fee: WITHDRAW_FEE,
-          txnId,
-        })
-
-        setWallet({ ...wallet, cash_balance: newBalance })
-        addTransaction(txn)
-        return { error: null }
-      } catch (err) {
-        console.error('Withdraw failed:', err)
-        return { error: 'Failed to process withdrawal' }
-      }
+      await refreshWallet()
+      return { error: null }
     },
-    [user, wallet, setWallet, addTransaction],
+    [user, refreshWallet],
   )
 
-  return { deposit, withdraw, WITHDRAW_FEE }
+  const buyCoin = useCallback(
+    async (
+      coinId: string,
+      coinSymbol: string,
+      coinAmount: number,
+      price: number,
+    ): Promise<{ error: string | null }> => {
+      if (!user) return { error: 'Not authenticated' }
+
+      const { error } = await supabase.rpc('buy_coin', {
+        p_coin_id: coinId,
+        p_coin_symbol: coinSymbol,
+        p_coin_amount: coinAmount,
+        p_price: price,
+        p_fee_rate: TRADE_FEE_RATE,
+      })
+
+      if (error) {
+        return { error: error.message }
+      }
+
+      await refreshWallet()
+      return { error: null }
+    },
+    [user, refreshWallet],
+  )
+
+  const sellCoin = useCallback(
+    async (
+      coinId: string,
+      coinSymbol: string,
+      coinAmount: number,
+      price: number,
+    ): Promise<{ error: string | null }> => {
+      if (!user) return { error: 'Not authenticated' }
+
+      const { error } = await supabase.rpc('sell_coin', {
+        p_coin_id: coinId,
+        p_coin_symbol: coinSymbol,
+        p_coin_amount: coinAmount,
+        p_price: price,
+        p_fee_rate: TRADE_FEE_RATE,
+      })
+
+      if (error) {
+        return { error: error.message }
+      }
+
+      await refreshWallet()
+      return { error: null }
+    },
+    [user, refreshWallet],
+  )
+
+  return {
+    deposit,
+    withdraw,
+    buyCoin,
+    sellCoin,
+    refreshWallet,
+    WITHDRAW_FEE,
+    TRADE_FEE_RATE,
+  }
 }

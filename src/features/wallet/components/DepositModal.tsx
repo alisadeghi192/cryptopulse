@@ -6,7 +6,6 @@ import {
   Check,
   Copy,
   AlertTriangle,
-  ArrowRight,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { AmbientLights } from '@/components/ui/AmbientLights'
@@ -34,7 +33,6 @@ export function DepositModal({
   const [step, setStep] = useState<Step>('input')
   const [txnId, setTxnId] = useState('')
 
-  // Reset on open
   useEffect(() => {
     if (open) {
       setAmount('')
@@ -43,7 +41,6 @@ export function DepositModal({
     }
   }, [open])
 
-  // Escape to close (except during processing)
   useEffect(() => {
     if (!open) return
     const handleKey = (e: KeyboardEvent) => {
@@ -65,9 +62,7 @@ export function DepositModal({
   const handleConfirm = async () => {
     setStep('processing')
 
-    // Simulate payment gateway delay
-    await new Promise((r) => setTimeout(r, 2000))
-
+    // 1. Execute transaction (DB updates + Realtime pushes to all tabs/devices instantly)
     const { error } = await deposit(numericAmount)
 
     if (error) {
@@ -76,7 +71,10 @@ export function DepositModal({
       return
     }
 
-    // Read the last transaction (already added to store by deposit)
+    // 2. Purely cosmetic delay (transaction is ALREADY done in DB)
+    await new Promise((r) => setTimeout(r, 1500))
+
+    // 3. Read txn_id from store (Realtime has synced by now)
     const txn = useWalletStore.getState().transactions[0]
     setTxnId(txn?.txn_id ?? '')
     setStep('success')
@@ -91,14 +89,12 @@ export function DepositModal({
 
   return (
     <>
-      {/* Backdrop */}
       <div
         className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
         onClick={() => step !== 'processing' && onClose()}
         aria-hidden="true"
       />
 
-      {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
           onClick={(e) => e.stopPropagation()}
@@ -131,7 +127,7 @@ export function DepositModal({
                     type="button"
                     onClick={onClose}
                     aria-label="Close"
-                    className="text-text/60 hover:bg-elevated hover:text-text flex size-8 shrink-0 items-center justify-center rounded-lg transition-colors"
+                    className="text-text/60 hover:bg-elevated hover:text-text flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg transition-colors"
                   >
                     <X className="size-4" />
                   </button>
@@ -160,7 +156,8 @@ export function DepositModal({
                       </span>
                       <input
                         id="deposit-amount"
-                        type="number"
+                        type="text"
+                        inputMode="decimal"
                         value={amount}
                         onChange={(e) => {
                           const val = e.target.value
@@ -169,11 +166,8 @@ export function DepositModal({
                           }
                         }}
                         placeholder="0"
-                        min="10"
-                        max="100000"
-                        step="0.01"
                         autoFocus
-                        className="text-text placeholder:text-text/40 h-full w-full [appearance:textfield] bg-transparent font-mono text-lg font-semibold tabular-nums outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        className="text-text placeholder:text-text/40 h-full w-full bg-transparent font-mono text-lg font-semibold tabular-nums outline-none"
                       />
                     </div>
                     <p className="text-text/50 mt-1.5 font-mono text-[10px]">
@@ -211,10 +205,9 @@ export function DepositModal({
                       variant="primary"
                       size="lg"
                       disabled={!isValid}
-                      className="group/continue flex-1 cursor-pointer gap-2"
+                      className="flex-1 cursor-pointer"
                     >
                       Continue
-                      <ArrowRight className="size-4 transition-transform duration-300 group-hover/continue:translate-x-1" />
                     </Button>
                   </div>
                 </form>
@@ -261,8 +254,8 @@ export function DepositModal({
                 <div className="border-primary/20 bg-primary/5 mb-5 flex items-start gap-2 rounded-lg border p-3">
                   <AlertTriangle className="text-primary mt-0.5 size-4 shrink-0" />
                   <p className="text-text/70 font-mono text-[11px] leading-relaxed">
-                    This is a simulated payment. No real money will be charged.
-                    You will be redirected to a mock payment gateway.
+                    This is a simulated payment. No real money will be
+                    charged. You will be redirected to a mock payment gateway.
                   </p>
                 </div>
 
@@ -279,10 +272,9 @@ export function DepositModal({
                     variant="primary"
                     size="lg"
                     onClick={handleConfirm}
-                    className="group/confirm flex-1 cursor-pointer gap-2"
+                    className="flex-1 cursor-pointer"
                   >
                     Confirm Payment
-                    <ArrowRight className="size-4 transition-transform duration-300 group-hover/confirm:translate-x-1" />
                   </Button>
                 </div>
               </>
@@ -340,7 +332,7 @@ export function DepositModal({
                         type="button"
                         onClick={handleCopyTxnId}
                         aria-label="Copy"
-                        className="text-text/60 hover:text-primary shrink-0 transition-colors"
+                        className="text-text/60 hover:text-primary shrink-0 cursor-pointer transition-colors"
                       >
                         <Copy className="size-3.5" />
                       </button>

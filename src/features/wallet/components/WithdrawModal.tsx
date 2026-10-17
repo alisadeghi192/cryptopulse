@@ -43,7 +43,6 @@ export function WithdrawModal({
   const [step, setStep] = useState<Step>(hasCard ? 'input' : 'no-card')
   const [txnId, setTxnId] = useState('')
 
-  // Reset on open
   useEffect(() => {
     if (open) {
       setAmount('')
@@ -52,7 +51,6 @@ export function WithdrawModal({
     }
   }, [open, hasCard])
 
-  // Escape to close (except during processing)
   useEffect(() => {
     if (!open) return
     const handleKey = (e: KeyboardEvent) => {
@@ -63,7 +61,8 @@ export function WithdrawModal({
   }, [open, step, onClose])
 
   const numericAmount = parseFloat(amount) || 0
-  const isValid = numericAmount >= 10 && numericAmount <= currentBalance
+  const total = numericAmount + WITHDRAW_FEE
+  const isValid = numericAmount >= 10 && total <= currentBalance
 
   const handleGoToConfirm = (e: React.FormEvent) => {
     e.preventDefault()
@@ -74,9 +73,7 @@ export function WithdrawModal({
   const handleConfirm = async () => {
     setStep('processing')
 
-    // Simulate payment gateway delay
-    await new Promise((r) => setTimeout(r, 2000))
-
+    // 1. Execute transaction (DB updates + Realtime pushes to all tabs/devices instantly)
     const { error } = await withdraw(numericAmount)
 
     if (error) {
@@ -85,6 +82,10 @@ export function WithdrawModal({
       return
     }
 
+    // 2. Purely cosmetic delay (transaction is ALREADY done in DB)
+    await new Promise((r) => setTimeout(r, 1500))
+
+    // 3. Read txn_id from store (Realtime has synced by now)
     const txn = useWalletStore.getState().transactions[0]
     setTxnId(txn?.txn_id ?? '')
     setStep('success')
@@ -104,14 +105,12 @@ export function WithdrawModal({
 
   return (
     <>
-      {/* Backdrop */}
       <div
         className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
         onClick={() => step !== 'processing' && onClose()}
         aria-hidden="true"
       />
 
-      {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
           onClick={(e) => e.stopPropagation()}
@@ -203,7 +202,6 @@ export function WithdrawModal({
                   </button>
                 </div>
 
-                {/* Balance + Card */}
                 <div className="border-border/40 bg-background/40 mb-5 space-y-2 rounded-lg border p-3">
                   <div className="flex items-center justify-between">
                     <span className="text-text/60 font-mono text-[10px] tracking-widest uppercase">
@@ -239,14 +237,18 @@ export function WithdrawModal({
                       </span>
                       <input
                         id="withdraw-amount"
-                        type="number"
+                        type="text"
+                        inputMode="decimal"
                         value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        onChange={(e) => {
+                          const val = e.target.value
+                          if (val === '' || /^\d*\.?\d*$/.test(val)) {
+                            setAmount(val)
+                          }
+                        }}
                         placeholder="0"
-                        min="10"
-                        step="0.01"
                         autoFocus
-                        className="text-text placeholder:text-text/40 h-full w-full [appearance:textfield] bg-transparent font-mono text-lg font-semibold tabular-nums outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        className="text-text placeholder:text-text/40 h-full w-full bg-transparent font-mono text-lg font-semibold tabular-nums outline-none"
                       />
                     </div>
                     <p className="text-text/50 mt-1.5 font-mono text-[10px]">
@@ -271,9 +273,9 @@ export function WithdrawModal({
                     ))}
                   </div>
 
-                  {numericAmount > 0 && numericAmount > currentBalance && (
+                  {numericAmount > 0 && total > currentBalance && (
                     <p className="text-error font-mono text-[11px]">
-                      Insufficient balance
+                      Insufficient balance (need ${total.toFixed(2)})
                     </p>
                   )}
 
@@ -326,7 +328,9 @@ export function WithdrawModal({
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-text/60 font-mono text-xs">Fee</span>
+                    <span className="text-text/60 font-mono text-xs">
+                      Fee
+                    </span>
                     <span className="text-error font-mono text-xs font-semibold tabular-nums">
                       -${WITHDRAW_FEE.toFixed(2)}
                     </span>
@@ -414,8 +418,8 @@ export function WithdrawModal({
                     Withdrawal Successful
                   </h2>
                   <p className="text-text/70 mt-2 font-mono text-xs">
-                    {formatBalance(numericAmount)} has been sent to {maskedCard}
-                    .
+                    {formatBalance(numericAmount)} has been sent to{' '}
+                    {maskedCard}.
                   </p>
                 </div>
 
