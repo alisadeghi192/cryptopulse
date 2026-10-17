@@ -2,6 +2,7 @@ import { useParams } from 'react-router'
 import { useCoinDetail } from '@/features/coin/hooks/useCoinDetail'
 import { AmbientLights } from '@/components/ui/AmbientLights'
 import { CoinHeader } from '@/features/coin/components/CoinHeader'
+import { BuySellButtons } from '@/features/coin/components/BuySellButtons'
 import { CoinPriceChart } from '@/features/coin/components/CoinPriceChart'
 import { CoinConverter } from '@/features/coin/components/CoinConverter'
 import { CoinStatsGrid } from '@/features/coin/components/CoinStatsGrid'
@@ -20,7 +21,7 @@ export function CoinDetail() {
   const { id } = useParams<{ id: string }>()
   const { data: coin, isLoading, isError } = useCoinDetail(id)
 
-  if (isLoading) return <PageLoader  />
+  if (isLoading) return <PageLoader />
 
   if (isError || !coin) {
     return (
@@ -34,6 +35,12 @@ export function CoinDetail() {
 
   const isPositive = (coin.market_data.price_change_percentage_24h ?? 0) >= 0
 
+  const tradeCoin = {
+    id: coin.id,
+    symbol: coin.symbol,
+    current_price: coin.market_data.current_price.usd,
+  }
+
   return (
     <main className="relative">
       <AmbientLights variant="coin" intensity="subtle" />
@@ -42,19 +49,22 @@ export function CoinDetail() {
         <div className="flex flex-col gap-6">
           {/* 1. Header */}
           <CoinHeader
+            coinId={coin.id}
             name={coin.name}
             symbol={coin.symbol}
-            coinId={coin.id}
             image={coin.image.large}
             rank={coin.market_cap_rank}
             price={coin.market_data.current_price.usd}
             change24h={coin.market_data.price_change_percentage_24h ?? 0}
           />
 
-          {/* 2. Chart */}
+          {/* 2. Buy/Sell Buttons */}
+          <BuySellButtons coin={tradeCoin} />
+
+          {/* 3. Chart */}
           <CoinPriceChart coinId={coin.id} isPositive={isPositive} />
 
-          {/* 3. Converter + Historical */}
+          {/* 4. Converter + Historical */}
           <div className="grid gap-6 lg:grid-cols-2">
             <CoinConverter
               price={coin.market_data.current_price.usd}
@@ -68,10 +78,10 @@ export function CoinDetail() {
             />
           </div>
 
-          {/* 4. Stats Grid */}
+          {/* 5. Stats Grid */}
           <CoinStatsGrid marketData={coin.market_data} />
 
-          {/* 5. ATH/ATL */}
+          {/* 6. ATH/ATL */}
           <ATHATLVisual
             current={coin.market_data.current_price.usd}
             ath={coin.market_data.ath.usd}
@@ -79,7 +89,7 @@ export function CoinDetail() {
             athChangePercentage={coin.market_data.ath_change_percentage.usd ?? 0}
           />
 
-          {/* 6. Sentiment + Heatmap */}
+          {/* 7. Sentiment + Heatmap */}
           <div className="grid gap-6 lg:grid-cols-2">
             <SentimentMeter
               up={coin.sentiment_votes_up_percentage}
@@ -88,7 +98,7 @@ export function CoinDetail() {
             <PriceChangeHeatmap coinId={coin.id} />
           </div>
 
-          {/* 7. Supply + Community */}
+          {/* 8. Supply + Community */}
           <div className="grid items-stretch gap-6 lg:grid-cols-2">
             <SupplyVisual
               circulating={coin.market_data.circulating_supply}
