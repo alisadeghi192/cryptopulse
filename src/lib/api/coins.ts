@@ -7,6 +7,7 @@ export interface FetchCoinsParams {
   order?: 'market_cap_desc' | 'market_cap_asc' | 'volume_desc'
   currency?: string
   sparkline?: boolean
+  ids?: string
 }
 
 export async function fetchCoins({
@@ -15,6 +16,7 @@ export async function fetchCoins({
   order = 'market_cap_desc',
   currency = 'usd',
   sparkline = false,
+  ids,
 }: FetchCoinsParams = {}): Promise<Coin[]> {
   const { data } = await apiClient.get<Coin[]>('/coins/markets', {
     params: {
@@ -24,6 +26,7 @@ export async function fetchCoins({
       page,
       sparkline,
       price_change_percentage: '1h,24h,7d',
+      ...(ids && { ids }),
     },
   })
 
