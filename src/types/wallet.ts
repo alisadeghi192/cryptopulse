@@ -32,17 +32,10 @@ export interface Transaction {
 }
 
 export interface HoldingWithPrice extends Holding {
+  image: string
   current_price: number
   current_value: number
   cost_basis: number
   pnl: number
   pnl_percent: number
-}
-
-export interface TradePreview {
-  amount: number        
-  price: number         
-  subtotal: number      
-  fee: number           
-  total: number        
 }
