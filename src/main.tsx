@@ -10,6 +10,7 @@ import "./lib/fonts";
 import "./index.css";
 import { Toaster } from "./components/ui/Toaster";
 import { WatchlistInitializer } from "./components/providers/WatchlistInitializer";
+import { WalletInitializer } from "./components/providers/WalletInitializer";
 
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual'
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")!).render(
       <ThemeInitializer />
       <AuthInitializer />
       <WatchlistInitializer />
+      <WalletInitializer />
       <App />
       <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />
