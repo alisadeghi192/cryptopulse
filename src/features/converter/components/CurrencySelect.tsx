@@ -144,7 +144,7 @@ export function CurrencySelect({
 
           {/* Options */}
           <div className="custom-scroll max-h-64 overflow-y-auto">
-            {/* USD — فقط اگه exclude نباشه */}
+            {/* USD — only if not excluded */}
             {exclude !== 'usd' && (
               <button
                 type="button"

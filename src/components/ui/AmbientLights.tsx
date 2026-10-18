@@ -53,6 +53,7 @@ const LIGHTS = {
       animation: 'aurora-3 20s ease-in-out infinite',
     },
   ],
+  // Modal variants: static (no animation) to keep modals lightweight
   'modal-buy': [
     {
       position: '-top-20 -left-20',

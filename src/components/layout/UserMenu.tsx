@@ -12,6 +12,7 @@ import { buttonVariants } from '@/components/ui/Button'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { toast } from 'sonner'
 import { cn } from '@/utils/cn'
+import { Z_LAYERS } from '@/constants'
 
 interface UserMenuProps {
   isAuthenticated: boolean
@@ -24,7 +25,7 @@ const MENU_ITEMS = [
   { label: 'Profile', href: '/profile', icon: UserIcon },
 ]
 
-// مسیرهایی که سایدبار دارن → submenu لازم نیست
+// App routes don't need a dropdown
 const APP_ROUTES = ['/dashboard', '/wallet', '/watchlist', '/profile']
 
 export function UserMenu({ isAuthenticated }: UserMenuProps) {
@@ -77,7 +78,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
       'User'
     const initial = displayName[0].toUpperCase()
 
-    // ─── App routes (dashboard/wallet/...)───
+    // App routes: simple link to profile
     if (isAppRoute) {
       return (
         <Link
@@ -92,7 +93,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
       )
     }
 
-    // ─── Public routes → dropdown ───
+    // Public routes: hover dropdown
     return (
       <div
         ref={wrapperRef}
@@ -103,8 +104,6 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
         <Link
           to="/dashboard"
           className="hover:bg-elevated flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 transition-colors"
-          aria-haspopup="menu"
-          aria-expanded={open}
         >
           <div className="bg-primary text-background flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
             {initial}
@@ -119,6 +118,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
         </Link>
 
         <div
+          style={{ zIndex: Z_LAYERS.dropdown }}
           className={cn(
             'absolute top-full right-0 mt-2 w-52 origin-top-right transition-all duration-200',
             open

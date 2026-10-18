@@ -252,7 +252,7 @@ export function CoinRow({ coin }: { coin: Coin }) {
         {(coin.price_change_percentage_24h ?? 0).toFixed(2)}%
       </p>
 
-      {/* Sparkline — با wrapper div */}
+      {/* Sparkline — wrapped in a div */}
       <div className="hidden justify-center md:flex">
         <MiniSparkline
           data={sparklineData}
