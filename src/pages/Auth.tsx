@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useLocation, useSearchParams } from 'react-router'
+import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import { cn } from '@/utils/cn'
 import { AuthImagePanel } from '@/features/auth/components/AuthImagePanel'
 import { AmbientLights } from '@/components/ui/AmbientLights'
@@ -92,6 +92,7 @@ function FormSlot({ isLogin, onSwitch }: FormSlotProps) {
 export function Auth() {
   const { pathname } = useLocation()
   const [params, setParams] = useSearchParams()
+  const navigate = useNavigate()
 
   const modeFromPath: AuthMode = pathname.includes('register')
     ? 'register'
@@ -113,8 +114,7 @@ export function Auth() {
     const next = new URLSearchParams(params)
     next.delete('mode')
     setParams(next, { replace: true })
-    window.history.pushState(null, '', isLogin ? '/register' : '/login')
-    window.dispatchEvent(new PopStateEvent('popstate'))
+    navigate(isLogin ? '/register' : '/login', { replace: true })
   }
 
   return (
