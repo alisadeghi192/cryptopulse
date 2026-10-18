@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import { Logo } from '@/components/ui/Logo'
+import { Z_LAYERS } from '@/constants'
 
 interface SidebarProps {
   collapsed: boolean
@@ -46,21 +47,23 @@ export function Sidebar({
       <div
         onClick={onMobileClose}
         className={cn(
-          'fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-opacity duration-300 lg:hidden',
+          'fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 lg:hidden',
           mobileOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
+        style={{ zIndex: Z_LAYERS.drawer }}
         aria-hidden="true"
       />
 
       {/* Sidebar */}
       <aside
         className={cn(
-          'border-border/40 bg-background fixed top-0 bottom-0 left-0 z-60 flex flex-col border-r shadow-[8px_0_24px_-4px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 ease-out md:shadow-xl',
-          'lg:sticky lg:top-12 lg:z-0 lg:h-[calc(100vh-3rem)] lg:translate-x-0',
+          'border-border/40 bg-background fixed top-0 bottom-0 left-0 flex flex-col border-r shadow-[8px_0_24px_-4px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 ease-out md:shadow-xl',
+          'lg:sticky lg:top-12 lg:h-[calc(100vh-3rem)] lg:translate-x-0',
           collapsed ? 'lg:w-16' : 'lg:w-64',
           'w-72',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
         )}
+        style={{ zIndex: Z_LAYERS.drawer + 1 }}
       >
         {/* Mobile Header */}
         <div className="border-border flex h-14 items-center justify-between border-b px-4 lg:hidden">
@@ -106,17 +109,17 @@ export function Sidebar({
 
         {/* Bottom */}
         <div className="border-border/40 space-y-1 border-t p-3">
-           <button
-              type="button"
-              onClick={onSignOut}
-              className={cn(
-                'text-error hover:bg-error/10 flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-colors',
-                collapsed && 'lg:justify-center lg:px-0',
-              )}
-            >
-              <LogOut className="h-5 w-5 shrink-0" />
-              <span className={cn(collapsed && 'lg:hidden')}>Sign Out</span>
-            </button>
+          <button
+            type="button"
+            onClick={onSignOut}
+            className={cn(
+              'text-error hover:bg-error/10 flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-colors',
+              collapsed && 'lg:justify-center lg:px-0',
+            )}
+          >
+            <LogOut className="h-5 w-5 shrink-0" />
+            <span className={cn(collapsed && 'lg:hidden')}>Sign Out</span>
+          </button>
 
           <button
             type="button"

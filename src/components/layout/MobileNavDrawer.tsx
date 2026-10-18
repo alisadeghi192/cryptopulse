@@ -15,6 +15,7 @@ import { toast } from 'sonner'
 import { cn } from '@/utils/cn'
 import { Logo } from '../ui/Logo'
 import { useAuthStore } from '@/stores/useAuthStore'
+import { Z_LAYERS } from '@/constants'
 
 interface NavLinkItem {
   label: string
@@ -62,18 +63,20 @@ export function MobileNavDrawer({
       <div
         onClick={onClose}
         className={cn(
-          'fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-opacity duration-300 lg:hidden',
+          'fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 lg:hidden',
           open ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
+        style={{ zIndex: Z_LAYERS.drawer }}
         aria-hidden="true"
       />
 
       {/* Drawer */}
       <aside
         className={cn(
-          'border-border/40 bg-surface/30 fixed top-0 right-0 bottom-0 z-60 flex w-72 flex-col border-l shadow-[-8px_0_24px_-4px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-transform duration-300 ease-out lg:hidden',
+          'border-border/40 bg-surface/30 fixed top-0 right-0 bottom-0 flex w-72 flex-col border-l shadow-[-8px_0_24px_-4px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-transform duration-300 ease-out lg:hidden',
           open ? 'translate-x-0' : 'translate-x-full',
         )}
+        style={{ zIndex: Z_LAYERS.drawer + 1 }}
       >
         {/* Header */}
         <div className="border-border flex h-14 items-center justify-between border-b px-4">
