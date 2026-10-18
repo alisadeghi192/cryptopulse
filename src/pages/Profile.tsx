@@ -1,14 +1,16 @@
+import { useMemo } from 'react'
 import { LinkIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useWatchlistStore } from '@/stores/useWatchlistStore'
+import { useWalletStore } from '@/stores/useWalletStore'
+import { useHoldingsWithPrice } from '@/features/wallet/hooks/useHoldingsWithPrice'
 import { ProfileHeader } from '@/features/profile/components/ProfileHeader'
 import { InfoCard } from '@/features/profile/components/InfoCard'
 import { BalanceCard } from '@/features/profile/components/BalanceCard'
 import { SecuritySection } from '@/features/profile/components/SecuritySection'
 import { CardNumberCard } from '@/features/profile/components/CardNumberCard'
-
 
 const shortWallet = (id: string) => id.replace(/-/g, '').slice(0, 16)
 
@@ -16,6 +18,17 @@ export function Profile() {
   const user = useAuthStore((s) => s.user)
   const updateProfile = useAuthStore((s) => s.updateProfile)
   const watchlistCount = useWatchlistStore((s) => s.coinIds.length)
+  const transactions = useWalletStore((s) => s.transactions)
+  const cashBalance = useWalletStore((s) => s.wallet?.cash_balance ?? 0)
+
+  const { holdingsValue } = useHoldingsWithPrice()
+  const totalPortfolio = cashBalance + holdingsValue
+
+  const tradesCount = useMemo(
+    () =>
+      transactions.filter((t) => t.type === 'buy' || t.type === 'sell').length,
+    [transactions],
+  )
 
   const avatarUrl = (user?.user_metadata?.avatar_url as string) ?? null
   const displayName = (user?.user_metadata?.full_name as string) ?? 'User'
@@ -54,7 +67,7 @@ export function Profile() {
             initial={initial}
             avatarUrl={avatarUrl}
             watchlistCount={watchlistCount}
-            tradesCount={0}
+            tradesCount={tradesCount}
             onSaveName={handleSaveName}
           />
         </BlurFade>
@@ -80,7 +93,7 @@ export function Profile() {
           </BlurFade>
 
           <BlurFade delay={0.2}>
-            <BalanceCard />
+            <BalanceCard totalPortfolio={totalPortfolio} />
           </BlurFade>
         </div>
 
