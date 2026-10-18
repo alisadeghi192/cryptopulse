@@ -21,7 +21,7 @@ export function useTransactionFlow() {
         setStep('input')
         return error
       }
-
+      // Cosmetic delay — DB write already completed via RPC
       await new Promise((r) => setTimeout(r, 1500))
       const txn = useWalletStore.getState().transactions[0]
       setTxnId(txn?.txn_id ?? '')
