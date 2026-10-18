@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react'
 import {
   Loader2,
@@ -14,11 +15,8 @@ import { Modal } from '@/components/ui/Modal'
 import { useWalletStore } from '@/stores/useWalletStore'
 import { useWalletActions } from '@/hooks/useWalletActions'
 import { useTransactionFlow } from '@/hooks/useTransactionFlow'
-import {
-  formatBalance,
-  formatCoinPrice,
-  formatCoinAmount,
-} from '@/utils/format'
+import { formatBalance, formatCoinPrice, formatCoinAmount } from '@/utils/format'
+import { floorTo, maxBuyCoin, maxBuyUsd, maxSellCoin } from '@/utils/trade'
 import { cn } from '@/utils/cn'
 
 type TradeCoin = {
@@ -88,17 +86,20 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
 
   const handleMax = () => {
     if (isBuy) {
-      const rawMaxUsd = cashBalance / (1 + TRADE_FEE_RATE)
-      const maxCoin = Math.floor((rawMaxUsd / price) * 1e8) / 1e8
-      setAmount(
-        inputMode === 'coin' ? maxCoin.toString() : rawMaxUsd.toFixed(2),
-      )
+      if (inputMode === 'coin') {
+        const maxCoin = maxBuyCoin(cashBalance, price, TRADE_FEE_RATE)
+        setAmount(maxCoin.toString())
+      } else {
+        const maxUsd = maxBuyUsd(cashBalance, TRADE_FEE_RATE)
+        setAmount(maxUsd.toFixed(2))
+      }
     } else {
-      setAmount(
-        inputMode === 'coin'
-          ? holdingAmount.toString()
-          : (holdingAmount * price).toFixed(2),
-      )
+      const maxCoin = maxSellCoin(holdingAmount)
+      if (inputMode === 'coin') {
+        setAmount(maxCoin.toString())
+      } else {
+        setAmount(floorTo(maxCoin * price, 2).toFixed(2))
+      }
     }
   }
 
@@ -116,13 +117,16 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
       <div className="pointer-events-none absolute inset-0">
         <AmbientLights
           variant={
-            step === 'success' ? 'green' : isBuy ? 'modal-buy' : 'modal-sell'
+            step === 'success'
+              ? 'modal-success'
+              : isBuy
+                ? 'modal-buy'
+                : 'modal-sell'
           }
           intensity="normal"
         />
       </div>
 
-      {/* ─── INPUT ─── */}
       {step === 'input' && (
         <>
           <div className="mb-6">
@@ -300,7 +304,6 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
         </>
       )}
 
-      {/* ─── CONFIRM ─── */}
       {step === 'confirm' && (
         <>
           <div className="mb-6 flex items-center gap-3">
@@ -375,7 +378,6 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
         </>
       )}
 
-      {/* ─── PROCESSING ─── */}
       {step === 'processing' && (
         <div className="py-8 text-center">
           <div className="mb-6 flex justify-center">
@@ -392,7 +394,6 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
         </div>
       )}
 
-      {/* ─── SUCCESS ─── */}
       {step === 'success' && (
         <>
           <div className="py-4 text-center">
@@ -424,7 +425,6 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                 <button
                   type="button"
                   onClick={copyTxn}
-                  aria-label="Copy"
                   className="text-text/60 hover:text-primary shrink-0 cursor-pointer transition-colors"
                 >
                   <Copy className="size-3.5" />
@@ -438,7 +438,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
             variant="primary"
             size="lg"
             onClick={onClose}
-            className="w-full cursor-pointer"
+            className="flex-1 cursor-pointer"
           >
             Done
           </Button>
