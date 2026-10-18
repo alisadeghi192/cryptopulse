@@ -25,14 +25,17 @@ export function Watchlist() {
   const isLoaded = useWatchlistStore((s) => s.isLoaded)
   const isMobile = useMediaQuery('(max-width: 767px)')
 
-  const { data: allCoins, isLoading } = useCoins({ perPage: 250 })
+  const ids = useMemo(() => [...coinIds].sort().join(','), [coinIds])
+
+  const { data: allCoins, isLoading } = useCoins(
+    { ids },
+    isLoaded && coinIds.length > 0,
+  )
 
   const watchlistCoins = useMemo(() => {
     if (!allCoins) return []
     const byId = new Map(allCoins.map((c) => [c.id, c]))
-    return coinIds
-      .map((id) => byId.get(id))
-      .filter((c): c is Coin => !!c)
+    return coinIds.map((id) => byId.get(id)).filter((c): c is Coin => !!c)
   }, [allCoins, coinIds])
 
   const coins = useMemo(() => {
