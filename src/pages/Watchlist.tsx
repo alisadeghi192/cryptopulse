@@ -257,30 +257,35 @@ function WatchlistRow({ coin }: { coin: Coin }) {
 function EmptyState() {
   return (
     <BlurFade delay={0.1}>
-      <div className="border-border bg-surface/30 flex flex-col items-center gap-6 rounded-2xl border p-12 text-center backdrop-blur-xl">
-        <div className="border-border bg-elevated/60 flex size-16 items-center justify-center rounded-2xl border">
-          <Star className="text-text-secondary h-7 w-7" />
+      <div className="border-border bg-surface/30 relative overflow-hidden rounded-2xl border backdrop-blur-xl">
+        <div className="pointer-events-none absolute inset-0">
+          <AmbientLights variant="gold" intensity="subtle" />
         </div>
+        <div className="relative flex flex-col items-center gap-6 p-12 text-center">
+          <div className="border-border bg-elevated/60 flex size-16 items-center justify-center rounded-2xl border shadow-sm">
+            <Star className="text-text-secondary h-7 w-7" />
+          </div>
 
-        <div>
-          <p className="text-text font-mono text-sm font-medium">
-            Your watchlist is empty
-          </p>
-          <p className="text-text-secondary mt-1.5 font-mono text-xs">
-            Add coins you want to track — they'll appear here
-          </p>
+          <div>
+            <p className="text-text font-mono text-sm font-medium">
+              Your watchlist is empty
+            </p>
+            <p className="text-text-secondary mt-1.5 font-mono text-xs">
+              Add coins you want to track — they'll appear here
+            </p>
+          </div>
+
+          <Link
+            to="/markets"
+            className={cn(
+              buttonVariants({ variant: 'primary', size: 'md' }),
+              'gap-2',
+            )}
+          >
+            <Compass className="h-4 w-4" />
+            Explore Markets
+          </Link>
         </div>
-
-        <Link
-          to="/markets"
-          className={cn(
-            buttonVariants({ variant: 'primary', size: 'md' }),
-            'gap-2',
-          )}
-        >
-          <Compass className="h-4 w-4" />
-          Explore Markets
-        </Link>
       </div>
     </BlurFade>
   )
