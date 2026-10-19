@@ -14,8 +14,20 @@ import { Modal, ModalBody, ModalContent } from '@/components/ui/AnimatedModal'
 import { useWalletStore } from '@/stores/useWalletStore'
 import { useWalletActions } from '@/hooks/useWalletActions'
 import { useTransactionFlow } from '@/hooks/useTransactionFlow'
-import { formatBalance, formatCoinPrice, formatCoinAmount } from '@/utils/format'
-import { floorTo, maxBuyCoin, maxBuyUsd, maxSellCoin } from '@/utils/trade'
+import {
+  formatBalance,
+  formatCoinPrice,
+  formatCoinAmount,
+  formatFee,
+} from '@/utils/format'
+import {
+  lte,
+  gte,
+  maxBuyCoin,
+  maxSellCoin,
+  calculateTradeTotals,
+} from '@/utils/trade'
+import { TRADE_LIMITS } from '@/constants/fees'
 import { cn } from '@/utils/cn'
 
 type TradeCoin = {
@@ -31,49 +43,92 @@ interface TradeModalProps {
   mode: 'buy' | 'sell'
 }
 
-type InputMode = 'coin' | 'usd'
-
 export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
   const wallet = useWalletStore((s) => s.wallet)
   const holdings = useWalletStore((s) => s.holdings)
   const { buyCoin, sellCoin, TRADE_FEE_RATE } = useWalletActions()
   const { step, setStep, txnId, reset, run } = useTransactionFlow()
 
-  const [amount, setAmount] = useState('')
-  const [inputMode, setInputMode] = useState<InputMode>('coin')
+  const [coinInput, setCoinInput] = useState('')
+  const [usdInput, setUsdInput] = useState('')
 
   const isBuy = mode === 'buy'
   const price = coin.current_price
   const cashBalance = wallet?.cash_balance ?? 0
   const holdingAmount = holdings.find((h) => h.coin_id === coin.id)?.amount ?? 0
 
-  const numericInput = parseFloat(amount) || 0
-  const coinAmount = inputMode === 'coin' ? numericInput : numericInput / price
-  const usdAmount = inputMode === 'coin' ? numericInput * price : numericInput
+  const coinAmount = parseFloat(coinInput) || 0
 
-  const subtotal = usdAmount
-  const fee = subtotal * TRADE_FEE_RATE
-  const total = isBuy ? subtotal + fee : subtotal - fee
+  const { subtotal, fee, total } = calculateTradeTotals(
+    coinAmount,
+    price,
+    TRADE_FEE_RATE,
+    isBuy,
+  )
+
+  const safeCoinAmount =
+    !isBuy && coinAmount > holdingAmount ? holdingAmount : coinAmount
+
+  const minUsd = isBuy ? TRADE_LIMITS.MIN_BUY_USD : TRADE_LIMITS.MIN_SELL_USD
+  const isSellingAll =
+    !isBuy &&
+    coinAmount > 0 &&
+    lte(coinAmount, holdingAmount) &&
+    gte(coinAmount, holdingAmount)
+  const meetsMin = gte(subtotal, minUsd) || isSellingAll
 
   const isValid =
-    numericInput > 0 &&
+    coinAmount > 0 &&
+    meetsMin &&
     (isBuy
-      ? total <= cashBalance && total >= 1
-      : coinAmount <= holdingAmount && coinAmount > 0)
+      ? lte(total, cashBalance)
+      : lte(safeCoinAmount, holdingAmount) && safeCoinAmount > 0)
 
   useEffect(() => {
     if (open) {
-      setAmount('')
-      setInputMode('coin')
+      setCoinInput('')
+      setUsdInput('')
       reset()
     }
   }, [open, reset])
+
+  const handleCoinChange = (val: string) => {
+    if (val !== '' && !/^\d*\.?\d*$/.test(val)) return
+    setCoinInput(val)
+    const n = parseFloat(val) || 0
+    if (n > 0) {
+      setUsdInput((n * price).toFixed(2))
+    } else {
+      setUsdInput('')
+    }
+  }
+
+  const handleUsdChange = (val: string) => {
+    if (val !== '' && !/^\d*\.?\d*$/.test(val)) return
+    setUsdInput(val)
+    const n = parseFloat(val) || 0
+    if (n > 0 && price > 0) {
+      setCoinInput((n / price).toFixed(8))
+    } else {
+      setCoinInput('')
+    }
+  }
+
+  const handleMax = () => {
+    if (isBuy) {
+      const max = maxBuyCoin(cashBalance, price, TRADE_FEE_RATE)
+      handleCoinChange(max.toString())
+    } else {
+      const max = maxSellCoin(holdingAmount)
+      handleCoinChange(max.toString())
+    }
+  }
 
   const handleConfirm = async () => {
     const error = await run(() =>
       isBuy
         ? buyCoin(coin.id, coin.symbol, coinAmount, price)
-        : sellCoin(coin.id, coin.symbol, coinAmount, price),
+        : sellCoin(coin.id, coin.symbol, safeCoinAmount, price),
     )
     if (error) toast.error('Trade failed', { description: error })
   }
@@ -83,34 +138,6 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
     toast.success('Transaction ID copied')
   }
 
-  const handleMax = () => {
-    if (isBuy) {
-      if (inputMode === 'coin') {
-        const maxCoin = maxBuyCoin(cashBalance, price, TRADE_FEE_RATE)
-        setAmount(maxCoin.toString())
-      } else {
-        const maxUsd = maxBuyUsd(cashBalance, TRADE_FEE_RATE)
-        setAmount(maxUsd.toFixed(2))
-      }
-    } else {
-      const maxCoin = maxSellCoin(holdingAmount)
-      if (inputMode === 'coin') {
-        setAmount(maxCoin.toString())
-      } else {
-        setAmount(floorTo(maxCoin * price, 2).toFixed(2))
-      }
-    }
-  }
-
-  const handleModeChange = (next: InputMode) => {
-    if (next === inputMode) return
-    if (amount) {
-      if (next === 'usd') setAmount((numericInput * price).toFixed(2))
-      else setAmount((numericInput / price).toFixed(8))
-    }
-    setInputMode(next)
-  }
-
   return (
     <Modal
       open={open}
@@ -118,7 +145,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
         if (!next && step !== 'processing') onClose()
       }}
     >
-      <ModalBody dismissible={step !== 'processing'}>
+      <ModalBody dismissible={step !== 'processing'} className="max-w-md">
         <div className="pointer-events-none absolute inset-0">
           <AmbientLights
             variant={
@@ -132,17 +159,17 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
           />
         </div>
 
-        <ModalContent>
+        <ModalContent className="p-5">
           {step === 'input' && (
             <>
-              <div className="mb-6">
+              <div className="mb-4">
                 <div className="mb-1 flex items-center gap-2">
                   {isBuy ? (
                     <TrendingUp className="text-success size-4" />
                   ) : (
                     <TrendingDown className="text-primary size-4" />
                   )}
-                  <h2 className="font-display text-text text-xl font-bold">
+                  <h2 className="font-display text-text text-lg font-bold">
                     {isBuy ? 'Buy' : 'Sell'} {coin.symbol.toUpperCase()}
                   </h2>
                 </div>
@@ -151,7 +178,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                 </p>
               </div>
 
-              <div className="border-border/40 bg-background/40 mb-5 space-y-2 rounded-lg border p-3">
+              <div className="border-border/40 bg-background/40 mb-4 flex flex-col gap-1.5 rounded-lg border px-3 py-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-text/60 font-mono text-[10px] tracking-widest uppercase">
                     {isBuy ? 'Cash Balance' : 'You Own'}
@@ -162,6 +189,16 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                       : `${formatCoinAmount(holdingAmount)} ${coin.symbol.toUpperCase()}`}
                   </span>
                 </div>
+                {!isBuy && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-text/60 font-mono text-[10px] tracking-widest uppercase">
+                      Value
+                    </span>
+                    <span className="text-text/60 font-mono text-xs font-semibold tabular-nums">
+                      ≈ {formatBalance(holdingAmount * price)}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <form
@@ -169,36 +206,13 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                   e.preventDefault()
                   if (isValid) setStep('confirm')
                 }}
-                className="space-y-4"
+                className="space-y-3"
               >
                 <div>
-                  <div className="mb-2 flex items-center justify-between">
-                    <div className="border-border/40 bg-surface/40 inline-flex rounded-lg border p-1">
-                      <button
-                        type="button"
-                        onClick={() => handleModeChange('coin')}
-                        className={cn(
-                          'cursor-pointer rounded-md px-3 py-1 font-mono text-xs font-medium transition-colors',
-                          inputMode === 'coin'
-                            ? 'bg-primary/15 text-primary'
-                            : 'text-text/60 hover:text-text',
-                        )}
-                      >
-                        {coin.symbol.toUpperCase()}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleModeChange('usd')}
-                        className={cn(
-                          'cursor-pointer rounded-md px-3 py-1 font-mono text-xs font-medium transition-colors',
-                          inputMode === 'usd'
-                            ? 'bg-primary/15 text-primary'
-                            : 'text-text/60 hover:text-text',
-                        )}
-                      >
-                        USD
-                      </button>
-                    </div>
+                  <div className="mb-1.5 flex items-center justify-between">
+                    <span className="text-text/60 font-mono text-[10px] tracking-widest uppercase">
+                      Amount ({coin.symbol.toUpperCase()})
+                    </span>
                     <button
                       type="button"
                       onClick={handleMax}
@@ -210,46 +224,67 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
 
                   <div
                     className={cn(
-                      'bg-background/50 flex h-14 items-center gap-2 rounded-xl border px-4 transition-all',
+                      'bg-background/50 flex h-12 items-center gap-2 rounded-xl border px-3 transition-all',
                       isBuy
                         ? 'border-border focus-within:border-success/50 focus-within:shadow-[0_0_0_3px_rgba(34,197,94,0.1)]'
                         : 'border-border focus-within:border-primary/50 focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]',
                     )}
                   >
-                    {inputMode === 'usd' && (
-                      <span className="text-text/60 shrink-0 font-mono text-lg">
-                        $
-                      </span>
-                    )}
                     <input
                       type="text"
                       inputMode="decimal"
-                      value={amount}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        if (val === '' || /^\d*\.?\d*$/.test(val)) setAmount(val)
-                      }}
-                      placeholder={inputMode === 'coin' ? '0.0' : '0'}
-                      className="text-text placeholder:text-text/40 h-full w-full bg-transparent font-mono text-lg font-semibold tabular-nums outline-none"
+                      value={coinInput}
+                      onChange={(e) => handleCoinChange(e.target.value)}
+                      placeholder="0.0"
+                      className="text-text placeholder:text-text/40 h-full w-full bg-transparent font-mono text-base font-semibold tabular-nums outline-none"
                     />
-                    {inputMode === 'coin' && (
-                      <span className="text-text/60 shrink-0 font-mono text-sm">
-                        {coin.symbol.toUpperCase()}
-                      </span>
-                    )}
+                    <span className="text-text/60 shrink-0 font-mono text-xs">
+                      {coin.symbol.toUpperCase()}
+                    </span>
                   </div>
                 </div>
 
-                {numericInput > 0 && (
-                  <div className="border-border/40 bg-background/40 space-y-2 rounded-lg border p-3">
+                <div>
+                  <div className="mb-1.5 flex items-center justify-between">
+                    <span className="text-text/60 font-mono text-[10px] tracking-widest uppercase">
+                      Amount (USD)
+                    </span>
+                  </div>
+
+                  <div
+                    className={cn(
+                      'bg-background/50 flex h-12 items-center gap-2 rounded-xl border px-3 transition-all',
+                      isBuy
+                        ? 'border-border focus-within:border-success/50 focus-within:shadow-[0_0_0_3px_rgba(34,197,94,0.1)]'
+                        : 'border-border focus-within:border-primary/50 focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]',
+                    )}
+                  >
+                    <span className="text-text/60 shrink-0 font-mono text-base">
+                      $
+                    </span>
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={usdInput}
+                      onChange={(e) => handleUsdChange(e.target.value)}
+                      placeholder="0.00"
+                      className="text-text placeholder:text-text/40 h-full w-full bg-transparent font-mono text-base font-semibold tabular-nums outline-none"
+                    />
+                    <span className="text-text/60 shrink-0 font-mono text-xs">
+                      USD
+                    </span>
+                  </div>
+                </div>
+
+                {/* Only show summary if input has value */}
+                {coinAmount > 0 && (
+                  <div className="border-border/40 bg-background/40 space-y-1.5 rounded-lg border p-2.5">
                     <div className="flex items-center justify-between">
                       <span className="text-text/60 font-mono text-[10px]">
-                        {inputMode === 'coin' ? 'Subtotal' : 'You get'}
+                        Subtotal
                       </span>
                       <span className="text-text font-mono text-xs tabular-nums">
-                        {inputMode === 'coin'
-                          ? formatBalance(subtotal)
-                          : `${formatCoinAmount(coinAmount)} ${coin.symbol.toUpperCase()}`}
+                        {formatBalance(subtotal)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
@@ -257,7 +292,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                         Fee (0.1%)
                       </span>
                       <span className="text-error font-mono text-xs tabular-nums">
-                        -{formatBalance(fee)}
+                        -{formatFee(fee)}
                       </span>
                     </div>
                     <div className="bg-border/40 h-px" />
@@ -277,22 +312,27 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                   </div>
                 )}
 
-                {numericInput > 0 && isBuy && total > cashBalance && (
+                {coinAmount > 0 && !meetsMin && (
+                  <p className="text-error font-mono text-[11px]">
+                    Minimum order is ${minUsd.toFixed(2)}
+                  </p>
+                )}
+                {coinAmount > 0 && isBuy && !lte(total, cashBalance) && (
                   <p className="text-error font-mono text-[11px]">
                     Insufficient balance
                   </p>
                 )}
-                {numericInput > 0 && !isBuy && coinAmount > holdingAmount && (
+                {coinAmount > 0 && !isBuy && !lte(coinAmount, holdingAmount) && (
                   <p className="text-error font-mono text-[11px]">
                     Insufficient {coin.symbol.toUpperCase()}
                   </p>
                 )}
 
-                <div className="flex gap-3 pt-2">
+                <div className="flex gap-3 pt-1">
                   <button
                     type="button"
                     onClick={onClose}
-                    className="bg-surface/40 text-text/70 hover:bg-elevated/60 hover:text-text flex-1 cursor-pointer rounded-lg py-3 font-mono text-sm font-medium transition-colors"
+                    className="bg-surface/40 text-text/70 hover:bg-elevated/60 hover:text-text flex-1 cursor-pointer rounded-lg py-2.5 font-mono text-sm font-medium transition-colors"
                   >
                     Cancel
                   </button>
@@ -312,7 +352,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
 
           {step === 'confirm' && (
             <>
-              <div className="mb-6 flex items-center gap-3">
+              <div className="mb-5 flex items-center gap-3">
                 <div className="border-primary/30 bg-primary/10 text-primary flex size-10 items-center justify-center rounded-lg border">
                   <AlertTriangle className="size-5" />
                 </div>
@@ -332,7 +372,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                     {isBuy ? 'Buying' : 'Selling'}
                   </span>
                   <span className="text-text font-mono text-sm font-semibold tabular-nums">
-                    {formatCoinAmount(coinAmount)} {coin.symbol.toUpperCase()}
+                    {formatCoinAmount(safeCoinAmount)} {coin.symbol.toUpperCase()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -346,7 +386,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                     Fee (0.1%)
                   </span>
                   <span className="text-error font-mono text-xs tabular-nums">
-                    -{formatBalance(fee)}
+                    -{formatFee(fee)}
                   </span>
                 </div>
                 <div className="bg-border/40 h-px" />
