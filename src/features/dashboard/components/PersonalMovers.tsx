@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { TrendingUp, TrendingDown, ArrowRight } from 'lucide-react'
+import { AmbientLights } from '@/components/ui/AmbientLights'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { cn } from '@/utils/cn'
 
@@ -22,7 +23,10 @@ export function PersonalMovers({ gainers, losers }: PersonalMoversProps) {
   return (
     <BlurFade delay={0.1}>
       <div className="border-border/40 bg-surface/40 relative h-full overflow-hidden rounded-3xl border shadow-xl backdrop-blur-3xl">
-        <div className="border-border/40 flex items-center justify-between border-b px-5 py-4">
+        <div className="pointer-events-none absolute inset-0">
+          <AmbientLights variant="multi" intensity="subtle" />
+        </div>
+        <div className="relative border-border/40 flex items-center justify-between border-b px-5 py-4">
           <div className="flex items-center gap-2">
             <TrendingUp className="text-primary size-4" />
             <span className="text-text font-mono text-xs font-semibold tracking-widest uppercase">
@@ -35,13 +39,13 @@ export function PersonalMovers({ gainers, losers }: PersonalMoversProps) {
         </div>
 
         {isEmpty ? (
-          <div className="p-8 text-center">
+          <div className="relative p-8 text-center">
             <p className="text-text/60 font-mono text-xs">
               No holdings to track yet
             </p>
           </div>
         ) : (
-          <div className="p-3">
+          <div className="relative p-3">
             {gainers.length > 0 && (
               <div className="mb-2">
                 <p className="text-text/50 mb-1 px-2 font-mono text-[10px] tracking-widest uppercase">

@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { Flame, ArrowRight } from 'lucide-react'
+import { AmbientLights } from '@/components/ui/AmbientLights'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { FlashValue } from '@/components/ui/FlashValue'
 import { cn } from '@/utils/cn'
@@ -17,7 +18,10 @@ export function TrendingNow({ coins }: TrendingNowProps) {
   return (
     <BlurFade delay={0.2}>
       <div className="border-border/40 bg-surface/40 relative h-full overflow-hidden rounded-3xl border shadow-xl backdrop-blur-3xl">
-        <div className="border-border/40 flex items-center justify-between border-b px-5 py-4">
+        <div className="pointer-events-none absolute inset-0">
+          <AmbientLights variant="purple" intensity="subtle" />
+        </div>
+        <div className="relative border-border/40 flex items-center justify-between border-b px-5 py-4">
           <div className="flex items-center gap-2">
             <Flame className="text-primary size-4" />
             <span className="text-text font-mono text-xs font-semibold tracking-widest uppercase">
@@ -33,7 +37,7 @@ export function TrendingNow({ coins }: TrendingNowProps) {
           </Link>
         </div>
 
-        <div className="divide-border/30 divide-y">
+        <div className="relative divide-border/30 divide-y">
           {top.map((coin) => {
             const change = coin.price_change_percentage_24h ?? 0
             const isPositive = change >= 0

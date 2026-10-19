@@ -1,10 +1,7 @@
-import { Link, useNavigate } from 'react-router'
-import {
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  TrendingUp,
-  Compass,
-} from 'lucide-react'
+import { useNavigate } from 'react-router'
+import { ArrowDownToLine, ArrowUpFromLine, TrendingUp } from 'lucide-react'
+import { AmbientLights } from '@/components/ui/AmbientLights'
+import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { cn } from '@/utils/cn'
 
@@ -18,108 +15,126 @@ export function QuickActions({ onDeposit, onWithdraw }: QuickActionsProps) {
 
   return (
     <BlurFade delay={0.15}>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <ActionButton
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <ActionCard
           label="Deposit"
+          sublabel="Add funds to your wallet"
           icon={ArrowDownToLine}
-          onClick={onDeposit}
+          ambientVariant="green"
+          spotlightColor="rgba(34, 197, 94, 0.15)"
           accent="success"
+          onClick={onDeposit}
         />
-        <ActionButton
+        <ActionCard
           label="Withdraw"
+          sublabel="Send funds to your card"
           icon={ArrowUpFromLine}
+          ambientVariant="yellow"
+          spotlightColor="rgba(250, 204, 21, 0.15)"
+          accent="yellow"
           onClick={onWithdraw}
-          accent="primary"
         />
-        <ActionButton
+        <ActionCard
           label="Trade"
+          sublabel="Buy and sell crypto"
           icon={TrendingUp}
-          onClick={() => navigate('/markets?view=table')}
+          ambientVariant="lightblue"
+          spotlightColor="rgba(59, 130, 246, 0.15)"
           accent="blue"
-        />
-        <ActionButton
-          label="Explore"
-          icon={Compass}
-          to="/"
-          accent="purple"
+          onClick={() => navigate('/markets?view=table')}
         />
       </div>
     </BlurFade>
   )
 }
 
-type Accent = 'success' | 'primary' | 'blue' | 'purple'
+type AmbientVariant = 'green' | 'yellow' | 'lightblue'
+type AccentColor = 'success' | 'yellow' | 'blue'
 
-const ACCENT: Record<
-  Accent,
-  { iconBg: string; iconText: string; hover: string }
-> = {
-  success: {
-    iconBg: 'bg-success/10',
-    iconText: 'text-success',
-    hover: 'hover:border-success/40',
-  },
-  primary: {
-    iconBg: 'bg-primary/10',
-    iconText: 'text-primary',
-    hover: 'hover:border-primary/40',
-  },
-  blue: {
-    iconBg: 'bg-[#3B82F6]/10',
-    iconText: 'text-[#3B82F6]',
-    hover: 'hover:border-[#3B82F6]/40',
-  },
-  purple: {
-    iconBg: 'bg-[#7C3AED]/10',
-    iconText: 'text-[#7C3AED]',
-    hover: 'hover:border-[#7C3AED]/40',
-  },
-}
-
-interface ActionButtonProps {
+interface ActionCardProps {
   label: string
-  icon: React.ComponentType<{ className?: string }>
-  accent: Accent
-  onClick?: () => void
-  to?: string
+  sublabel: string
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>
+  ambientVariant: AmbientVariant
+  spotlightColor: string
+  accent: AccentColor
+  onClick: () => void
 }
 
-function ActionButton({
+const ACCENT_CLASSES: Record<AccentColor, { text: string; hover: string }> = {
+  success: { text: 'text-success', hover: 'hover:text-success' },
+  yellow: { text: 'text-[#FACC15]', hover: 'hover:text-[#FACC15]' },
+  blue: { text: 'text-[#3B82F6]', hover: 'hover:text-[#3B82F6]' },
+}
+
+function ActionCard({
   label,
+  sublabel,
   icon: Icon,
+  ambientVariant,
+  spotlightColor,
   accent,
   onClick,
-  to,
-}: ActionButtonProps) {
-  const styles = ACCENT[accent]
-
-  const inner = (
-    <div
-      className={cn(
-        'border-border/40 bg-surface/40 group flex h-full w-full cursor-pointer flex-col items-start gap-3 rounded-xl border p-4 shadow-md backdrop-blur-xl transition-all duration-200 hover:-translate-y-0.5',
-        styles.hover,
-      )}
-    >
-      <div
-        className={cn(
-          'flex size-9 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110',
-          styles.iconBg,
-          styles.iconText,
-        )}
-      >
-        <Icon className="size-4" />
-      </div>
-      <span className="text-text font-mono text-sm font-medium">{label}</span>
-    </div>
-  )
-
-  if (to) {
-    return <Link to={to}>{inner}</Link>
-  }
+}: ActionCardProps) {
+  const accentClass = ACCENT_CLASSES[accent]
 
   return (
-    <button type="button" onClick={onClick} className="cursor-pointer text-left">
-      {inner}
+    <button
+      type="button"
+      onClick={onClick}
+      className="group/action relative block h-full w-full cursor-pointer overflow-hidden rounded-2xl text-left transition-transform hover:-translate-y-0.5"
+    >
+      <div className="pointer-events-none absolute inset-0">
+        <AmbientLights variant={ambientVariant} intensity="subtle" />
+      </div>
+      <SpotlightCard
+        spotlightColor={spotlightColor}
+        className="border-border/40 bg-surface/40 relative h-full rounded-2xl border p-5 shadow-lg backdrop-blur-3xl"
+      >
+        {/* Watermark Icon */}
+        <Icon
+          className={cn(
+            'pointer-events-none absolute -right-4 -bottom-4 h-28 w-28 opacity-20 transition-opacity duration-300 group-hover/action:opacity-30 dark:opacity-5 dark:group-hover/action:opacity-10',
+            accentClass.text,
+          )}
+          strokeWidth={1.5}
+        />
+
+        <div className="relative z-10">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Icon className={cn('size-4', accentClass.text)} />
+              <span className="text-text/70 font-mono text-[10px] tracking-widest uppercase">
+                {label}
+              </span>
+            </div>
+            <div
+              className={cn(
+                'flex size-7 items-center justify-center rounded-full bg-background/50 opacity-0 transition-all duration-300 group-hover/action:translate-x-1 group-hover/action:opacity-100',
+                accentClass.text,
+              )}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="size-3.5"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+          <p className="text-text mt-3 truncate font-mono text-base font-semibold">
+            {label}
+          </p>
+          <p className="text-text/60 mt-1 font-mono text-[10px]">{sublabel}</p>
+        </div>
+      </SpotlightCard>
     </button>
   )
 }

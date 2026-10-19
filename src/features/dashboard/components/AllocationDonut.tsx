@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { PieChart } from 'lucide-react'
+import { AmbientLights } from '@/components/ui/AmbientLights'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { BalanceValue } from '@/components/ui/BalanceValue'
 import { cn } from '@/utils/cn'
@@ -40,7 +41,11 @@ export function AllocationDonut({ slices, total }: AllocationDonutProps) {
   return (
     <BlurFade delay={0.05}>
       <div className="border-border/40 bg-surface/40 relative h-full overflow-hidden rounded-3xl border shadow-xl backdrop-blur-3xl">
-        <div className="flex items-center justify-between border-b border-border/40 px-5 py-4">
+        <div className="pointer-events-none absolute inset-0">
+          <AmbientLights variant="gold" intensity="subtle" />
+          <AmbientLights variant="blue" intensity="subtle" />
+        </div>
+        <div className="relative flex items-center justify-between border-b border-border/40 px-5 py-4">
           <div className="flex items-center gap-2">
             <PieChart className="text-primary size-4" />
             <span className="text-text font-mono text-xs font-semibold tracking-widest uppercase">
@@ -53,7 +58,7 @@ export function AllocationDonut({ slices, total }: AllocationDonutProps) {
         </div>
 
         {total <= 0 ? (
-          <div className="flex flex-col items-center gap-3 p-8 text-center">
+          <div className="relative flex flex-col items-center gap-3 p-8 text-center">
             <div className="border-border/40 bg-elevated/40 flex size-12 items-center justify-center rounded-xl border">
               <PieChart className="text-text/40 size-5" />
             </div>
@@ -62,7 +67,7 @@ export function AllocationDonut({ slices, total }: AllocationDonutProps) {
             </p>
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-4 p-5 md:flex-row md:items-center md:gap-6 md:p-6">
+          <div className="relative flex flex-col items-center gap-4 p-5 md:flex-row md:items-center md:gap-6 md:p-6">
             <div className="relative shrink-0">
               <svg
                 width={SIZE}
