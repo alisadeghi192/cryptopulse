@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import { useWalletStore } from '@/stores/useWalletStore'
 import { useWatchlistStore } from '@/stores/useWatchlistStore'
 import { useHoldingsWithPrice } from '@/features/wallet/hooks/useHoldingsWithPrice'
+import { useCoins } from '@/hooks/useCoins'
 import { useTrending } from '@/hooks/useTrending'
 
 export interface AllocationSlice {
@@ -31,6 +32,7 @@ export function useDashboardData() {
   const { holdingsWithPrice, holdingsValue, totalPnl } = useHoldingsWithPrice()
   const { data: trending } = useTrending()
 
+  // Daily P&L: reconstruct 24h-ago value from each holding's 24h change.
   const dailyPnl = useMemo(() => {
     let currentValue = 0
     let previousValue = 0
@@ -50,6 +52,7 @@ export function useDashboardData() {
     return { value, percent, previousValue }
   }, [holdingsWithPrice])
 
+  // Allocation slices: cash + each holding, sorted by value desc.
   const allocation = useMemo<AllocationSlice[]>(() => {
     const slices: AllocationSlice[] = []
 
@@ -78,6 +81,7 @@ export function useDashboardData() {
     return slices
   }, [cashBalance, holdingsWithPrice])
 
+  // Personal movers: biggest 24h changes among holdings.
   const personalMovers = useMemo(() => {
     const withChange = holdingsWithPrice
       .filter((h) => h.change24h !== undefined)
@@ -102,8 +106,29 @@ export function useDashboardData() {
     return { gainers, losers }
   }, [holdingsWithPrice])
 
+  // Fetch coin images for transaction list
+  const transactionCoinIds = useMemo(() => {
+    const ids = new Set<string>()
+    transactions.forEach((t) => {
+      if (t.coin_id) ids.add(t.coin_id)
+    })
+    return Array.from(ids).join(',')
+  }, [transactions])
+
+  const { data: transactionCoins } = useCoins(
+    { ids: transactionCoinIds },
+    !!transactionCoinIds,
+  )
+
+  const coinImages = useMemo(() => {
+    const map: Record<string, string> = {}
+    transactionCoins?.forEach((c) => {
+      map[c.id] = c.image
+    })
+    return map
+  }, [transactionCoins])
+
   const totalPortfolio = cashBalance + holdingsValue
-  const recentTransactions = transactions.slice(0, 3)
 
   const displayName =
     (user?.user_metadata?.full_name as string) ??
@@ -126,6 +151,8 @@ export function useDashboardData() {
     watchlistCount: coinIds.length,
     personalMovers,
     trending: trending ?? [],
-    recentTransactions,
+    recentTransactions: transactions.slice(0, 3),
+    allTransactions: transactions,
+    coinImages,
   }
 }

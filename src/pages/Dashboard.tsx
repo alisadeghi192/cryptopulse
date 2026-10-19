@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { AmbientLights } from '@/components/ui/AmbientLights'
 import { useDashboardData } from '@/features/dashboard/hooks/useDashboardData'
 import {
   WelcomeCard,
@@ -26,6 +25,8 @@ export function Dashboard() {
     personalMovers,
     trending,
     recentTransactions,
+    allTransactions,
+    coinImages,
   } = useDashboardData()
 
   const [depositOpen, setDepositOpen] = useState(false)
@@ -33,8 +34,6 @@ export function Dashboard() {
 
   return (
     <main className="relative min-h-full">
-      <AmbientLights variant="home" intensity="subtle" />
-
       <div className="relative z-10 mx-auto max-w-6xl space-y-6">
         <WelcomeCard
           displayName={displayName}
@@ -61,7 +60,11 @@ export function Dashboard() {
 
         <TrendingNow coins={trending} />
 
-        <RecentTransactions transactions={recentTransactions} />
+        <RecentTransactions
+          transactions={recentTransactions}
+          allTransactions={allTransactions}
+          coinImages={coinImages}
+        />
       </div>
 
       <DepositModal
