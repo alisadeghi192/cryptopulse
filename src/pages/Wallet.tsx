@@ -7,7 +7,7 @@ import { HoldingsGrid } from '@/features/wallet/components/HoldingsGrid'
 import { TransactionsPreview } from '@/features/wallet/components/TransactionsPreview'
 import { DepositModal } from '@/features/wallet/components/DepositModal'
 import { WithdrawModal } from '@/features/wallet/components/WithdrawModal'
-import { PageLoader } from '@/components/ui/PageLoader'
+import { cn } from '@/utils/cn'
 
 export function Wallet() {
   const wallet = useWalletStore((s) => s.wallet)
@@ -20,11 +20,14 @@ export function Wallet() {
   const cashBalance = wallet?.cash_balance ?? 0
   const totalPortfolio = cashBalance + holdingsValue
 
-  if (!isLoaded) return <PageLoader />
-
   return (
     <main className="relative min-h-full bg-background">
-      <div className="mx-auto max-w-6xl">
+      <div
+        className={cn(
+          'mx-auto max-w-6xl transition-all duration-500',
+          !isLoaded && 'loading-fade-active',
+        )}
+      >
         <WalletHeader />
         <PortfolioSummary
           totalPortfolio={totalPortfolio}

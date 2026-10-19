@@ -767,3 +767,13 @@ input:-webkit-autofill:active {
 .animate-glow-breathe {
   animation: glow-breathe 5s ease-in-out infinite;
 }
+
+/* ─── Loading Fade ─── */
+.loading-fade {
+  transition: opacity 0.4s ease-in-out, filter 0.4s ease-in-out;
+  pointer-events: none;
+}
+.loading-fade-active {
+  opacity: 0.4;
+  filter: blur(4px);
+}

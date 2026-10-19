@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useWalletStore } from '@/stores/useWalletStore'
 import { useDashboardData } from '@/features/dashboard/hooks/useDashboardData'
 import {
   WelcomeCard,
@@ -10,8 +11,10 @@ import {
 } from '@/features/dashboard/components'
 import { DepositModal } from '@/features/wallet/components/DepositModal'
 import { WithdrawModal } from '@/features/wallet/components/WithdrawModal'
+import { cn } from '@/utils/cn'
 
 export function Dashboard() {
+  const isLoaded = useWalletStore((s) => s.isLoaded)
   const {
     displayName,
     initial,
@@ -34,7 +37,12 @@ export function Dashboard() {
 
   return (
     <main className="relative min-h-full">
-      <div className="relative z-10 mx-auto max-w-6xl space-y-6">
+      <div
+        className={cn(
+          'relative z-10 mx-auto max-w-6xl space-y-6 transition-all duration-500',
+          !isLoaded && 'loading-fade-active',
+        )}
+      >
         <WelcomeCard
           displayName={displayName}
           initial={initial}
