@@ -16,6 +16,9 @@ const Markets = lazy(() =>
 const WalletPage = lazy(() =>
   import('@/pages/Wallet').then((m) => ({ default: m.Wallet })),
 )
+const TransactionsPage = lazy(() =>
+  import('@/pages/Transactions').then((m) => ({ default: m.Transactions })),
+)
 const CoinDetail = lazy(() =>
   import('@/pages/CoinDetail').then((m) => ({ default: m.CoinDetail })),
 )
@@ -119,6 +122,14 @@ export const router = createBrowserRouter([
         element: (
           <LazyPage>
             <WalletPage />
+          </LazyPage>
+        ),
+      },
+       {
+        path: 'transactions',
+        element: (
+          <LazyPage>
+            <TransactionsPage />
           </LazyPage>
         ),
       },
