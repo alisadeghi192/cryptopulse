@@ -49,6 +49,9 @@ export function MobileNavDrawer({
   const initial = userName?.[0]?.toUpperCase() ?? 'U'
   const navigate = useNavigate()
   const signOut = useAuthStore((s) => s.signOut)
+  const user = useAuthStore((s) => s.user)
+
+  const avatarUrl = (user?.user_metadata?.avatar_url as string) || null
 
   const handleSignOut = async () => {
     onClose()
@@ -67,7 +70,6 @@ export function MobileNavDrawer({
           open ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         style={{ zIndex: Z_LAYERS.drawer }}
-        aria-hidden="true"
       />
 
       {/* Drawer */}
@@ -121,7 +123,6 @@ export function MobileNavDrawer({
         <div className="border-border border-t p-3">
           {isAuthenticated ? (
             <div className="space-y-2">
-              {/* Sign Out */}
               <button
                 type="button"
                 onClick={handleSignOut}
@@ -131,17 +132,23 @@ export function MobileNavDrawer({
                 <span>Sign Out</span>
               </button>
 
-              {/* Divider */}
               <div className="bg-border/40 h-px" />
 
-              {/* User Profile */}
               <NavLink
                 to="/dashboard"
                 onClick={onClose}
                 className="hover:bg-elevated flex items-center gap-3 rounded-lg px-3 py-2 transition-colors"
               >
-                <div className="bg-primary text-background flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold">
-                  {initial}
+                <div className="bg-primary text-background relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-bold">
+                  {avatarUrl ? (
+                    <img
+                      src={avatarUrl}
+                      alt={userName}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    initial
+                  )}
                 </div>
                 <div className="flex min-w-0 flex-col">
                   <span className="text-text truncate text-sm font-medium">
