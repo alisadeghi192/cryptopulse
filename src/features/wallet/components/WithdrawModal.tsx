@@ -60,8 +60,7 @@ export function WithdrawModal({
   }, [open, hasCard, reset])
 
   const numericAmount = parseFloat(amount) || 0
-  const total = numericAmount + WITHDRAW_FEE
-  const isValid = numericAmount >= 10 && total <= currentBalance
+  const isValid = numericAmount >= 10 && numericAmount <= currentBalance
 
   const handleMax = () => {
     const max = maxWithdrawUsd(currentBalance, WITHDRAW_FEE)
@@ -219,7 +218,7 @@ export function WithdrawModal({
                     />
                   </div>
                   <p className="text-text/50 mt-1.5 font-mono text-[10px]">
-                    Min $10 · Fee: ${WITHDRAW_FEE.toFixed(2)}
+                    Min $10 · Fee: ${WITHDRAW_FEE.toFixed(2)} (deducted from amount)
                   </p>
                 </div>
 
@@ -240,9 +239,9 @@ export function WithdrawModal({
                   ))}
                 </div>
 
-                {numericAmount > 0 && total > currentBalance && (
+                {numericAmount > currentBalance && (
                   <p className="text-error font-mono text-[11px]">
-                    Insufficient balance (need ${total.toFixed(2)})
+                    Exceeds available balance
                   </p>
                 )}
 
@@ -287,7 +286,7 @@ export function WithdrawModal({
               <div className="border-border/40 bg-background/40 mb-5 space-y-3 rounded-xl border p-4">
                 <div className="flex items-center justify-between">
                   <span className="text-text/60 font-mono text-xs">
-                    Amount
+                    Requested
                   </span>
                   <span className="text-text font-mono text-sm font-semibold tabular-nums">
                     {formatBalance(numericAmount)}
@@ -369,7 +368,8 @@ export function WithdrawModal({
                   Withdrawal Successful
                 </h2>
                 <p className="text-text/70 mt-2 font-mono text-xs">
-                  {formatBalance(numericAmount)} has been sent to {maskedCard}.
+                  {formatBalance(numericAmount - WITHDRAW_FEE)} has been sent to{' '}
+                  {maskedCard}.
                 </p>
               </div>
 
