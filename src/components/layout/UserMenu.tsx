@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router'
 import {
@@ -77,6 +78,26 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
       user.email?.split('@')[0] ??
       'User'
     const initial = displayName[0].toUpperCase()
+    const avatarUrl = (user.user_metadata?.avatar_url as string) || null
+
+    const Avatar = ({ size = 'sm' }: { size?: 'sm' | 'md' }) => (
+      <div
+        className={cn(
+          'bg-primary text-background relative flex shrink-0 items-center justify-center overflow-hidden rounded-full text-xs font-bold',
+          size === 'sm' ? 'h-7 w-7' : 'h-8 w-8',
+        )}
+      >
+        {avatarUrl ? (
+          <img
+            src={avatarUrl}
+            alt={displayName}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          initial
+        )}
+      </div>
+    )
 
     // App routes: simple link to profile
     if (isAppRoute) {
@@ -85,9 +106,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
           to="/profile"
           className="hover:bg-elevated hidden items-center gap-2 rounded-lg px-2 py-1.5 transition-colors lg:flex"
         >
-          <div className="bg-primary text-background flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
-            {initial}
-          </div>
+          <Avatar />
           <span className="text-text text-sm font-medium">{displayName}</span>
         </Link>
       )
@@ -105,9 +124,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
           to="/dashboard"
           className="hover:bg-elevated flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 transition-colors"
         >
-          <div className="bg-primary text-background flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
-            {initial}
-          </div>
+          <Avatar />
           <span className="text-text text-sm font-medium">{displayName}</span>
           <ChevronDown
             className={cn(
@@ -127,6 +144,18 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
           )}
         >
           <div className="border-border/60 bg-surface overflow-hidden rounded-xl border p-1.5 shadow-sm">
+            <div className="flex items-center gap-2.5 border-b border-border/40 px-3 pb-2.5">
+              <Avatar size="md" />
+              <div className="min-w-0">
+                <p className="text-text truncate text-sm font-medium">
+                  {displayName}
+                </p>
+                <p className="text-text/60 truncate font-mono text-[10px]">
+                  {user.email}
+                </p>
+              </div>
+            </div>
+
             {MENU_ITEMS.map((item) => {
               const Icon = item.icon
               return (
