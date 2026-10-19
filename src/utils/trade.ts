@@ -1,28 +1,26 @@
-
 const COIN_DECIMALS = 8
 const USD_DECIMALS = 2
 
-/**
- * Floor a value to a given number of decimals without floating point drift.
- */
+export const EPSILON = 1e-12
+
 export function floorTo(value: number, decimals: number): number {
   const factor = 10 ** decimals
   return Math.floor(value * factor + Number.EPSILON) / factor
 }
 
-/**
- * MAX amount (in USD) that can be spent when buying, given cash balance and fee rate.
- * Ensures `amount + amount * feeRate <= cashBalance`.
- */
+export function lte(a: number, b: number): boolean {
+  return a <= b + EPSILON
+}
+
+export function gte(a: number, b: number): boolean {
+  return a + EPSILON >= b
+}
+
 export function maxBuyUsd(cashBalance: number, feeRate: number): number {
   if (cashBalance <= 0) return 0
   return floorTo(cashBalance / (1 + feeRate), USD_DECIMALS)
 }
 
-/**
- * MAX coin amount that can be bought, given cash balance, price and fee rate.
- * Floors to 8 decimals of the coin.
- */
 export function maxBuyCoin(
   cashBalance: number,
   price: number,
@@ -33,19 +31,37 @@ export function maxBuyCoin(
   return floorTo(usd / price, COIN_DECIMALS)
 }
 
-/**
- * MAX coin amount that can be sold, given current holding.
- */
 export function maxSellCoin(holdingAmount: number): number {
-  return floorTo(holdingAmount, COIN_DECIMALS)
+  return Math.max(holdingAmount, 0)
 }
 
 /**
- * MAX amount (in USD) that can be withdrawn, given cash balance and fixed fee.
- * Ensures `amount + fee <= cashBalance`.
+ * MAX amount (in USD) that can be withdrawn.
+ * In our model, fee is deducted FROM the withdrawal amount (not from cash).
+ * So user can withdraw their entire cash balance (minus minimum).
  */
 export function maxWithdrawUsd(cashBalance: number, fee: number): number {
-  const usable = cashBalance - fee
-  if (usable <= 0) return 0
-  return floorTo(usable, USD_DECIMALS)
+  if (cashBalance < fee + 10) return 0
+  return floorTo(cashBalance, USD_DECIMALS)
 }
+
+export function coinToUsdFloor(amount: number, price: number): number {
+  return floorTo(amount * price, USD_DECIMALS)
+}
+
+export function calculateTradeTotals(
+  amount: number,
+  price: number,
+  feeRate: number,
+  isBuy: boolean,
+) {
+  const subtotal = amount * price
+  const fee = subtotal * feeRate
+  const total = isBuy ? subtotal + fee : subtotal - fee
+  return {
+    subtotal: floorTo(subtotal, USD_DECIMALS),
+    fee: floorTo(fee, USD_DECIMALS),
+    total: floorTo(total, USD_DECIMALS),
+  }
+}
+
