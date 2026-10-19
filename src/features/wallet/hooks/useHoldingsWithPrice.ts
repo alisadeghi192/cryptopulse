@@ -18,6 +18,7 @@ export interface HoldingWithPrice {
   cost_basis: number
   pnl: number
   pnl_percent: number
+  change24h?: number
 }
 
 export function useHoldingsWithPrice() {
@@ -39,6 +40,7 @@ export function useHoldingsWithPrice() {
       const costBasis = h.amount * h.avg_buy_price
       const pnl = currentValue - costBasis
       const pnlPercent = costBasis > 0 ? (pnl / costBasis) * 100 : 0
+      
 
       return {
         ...h,
@@ -48,6 +50,7 @@ export function useHoldingsWithPrice() {
         cost_basis: costBasis,
         pnl,
         pnl_percent: pnlPercent,
+        change24h: coin?.price_change_percentage_24h
       }
     })
   }, [holdings, coins])
