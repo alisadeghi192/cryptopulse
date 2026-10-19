@@ -8,6 +8,7 @@ import {
   ChevronRight,
   X,
   Wallet,
+  Receipt,
 } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import { Logo } from '@/components/ui/Logo'
@@ -30,6 +31,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { label: 'Wallet', href: '/wallet', icon: Wallet },
+  { label: 'Transactions', href: '/transactions', icon: Receipt },
   { label: 'Watchlist', href: '/watchlist', icon: Star },
   { label: 'Profile', href: '/profile', icon: User },
 ]
@@ -51,7 +53,6 @@ export function Sidebar({
           mobileOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         style={{ zIndex: Z_LAYERS.drawer }}
-        aria-hidden="true"
       />
 
       {/* Sidebar */}
@@ -72,7 +73,7 @@ export function Sidebar({
             type="button"
             onClick={onMobileClose}
             aria-label="Close sidebar"
-            className="text-text-secondary hover:bg-elevated hover:text-text flex h-9 w-9 items-center justify-center rounded-lg transition-colors"
+            className="text-text-secondary hover:bg-elevated hover:text-text flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -113,7 +114,7 @@ export function Sidebar({
             type="button"
             onClick={onSignOut}
             className={cn(
-              'text-error hover:bg-error/10 flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-colors',
+              'text-error hover:bg-error/10 flex h-11 w-full cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-colors',
               collapsed && 'lg:justify-center lg:px-0',
             )}
           >
@@ -126,7 +127,7 @@ export function Sidebar({
             onClick={onToggleCollapse}
             aria-label="Toggle sidebar"
             className={cn(
-              'text-text dark:hover:bg-elevated/40 hidden h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-all duration-200 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)] lg:flex',
+              'text-text dark:hover:bg-elevated/40 hidden h-11 w-full cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-all duration-200 hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)] lg:flex',
               collapsed && 'lg:justify-center lg:px-0',
             )}
           >

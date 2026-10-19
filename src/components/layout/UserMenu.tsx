@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router'
 import {
@@ -8,6 +7,7 @@ import {
   Star,
   User as UserIcon,
   LogOut,
+  Receipt,
 } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/Button'
 import { useAuthStore } from '@/stores/useAuthStore'
@@ -22,12 +22,19 @@ interface UserMenuProps {
 const MENU_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { label: 'Wallet', href: '/wallet', icon: Wallet },
+  { label: 'Transactions', href: '/transactions', icon: Receipt },
   { label: 'Watchlist', href: '/watchlist', icon: Star },
   { label: 'Profile', href: '/profile', icon: UserIcon },
 ]
 
 // App routes don't need a dropdown
-const APP_ROUTES = ['/dashboard', '/wallet', '/watchlist', '/profile']
+const APP_ROUTES = [
+  '/dashboard',
+  '/wallet',
+  '/transactions',
+  '/watchlist',
+  '/profile',
+]
 
 export function UserMenu({ isAuthenticated }: UserMenuProps) {
   const user = useAuthStore((s) => s.user)
