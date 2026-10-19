@@ -5,7 +5,6 @@ import { BlurFade } from '@/components/ui/BlurFade'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useWatchlistStore } from '@/stores/useWatchlistStore'
 import { useWalletStore } from '@/stores/useWalletStore'
-import { useHoldingsWithPrice } from '@/features/wallet/hooks/useHoldingsWithPrice'
 import { ProfileHeader } from '@/features/profile/components/ProfileHeader'
 import { InfoCard } from '@/features/profile/components/InfoCard'
 import { BalanceCard } from '@/features/profile/components/BalanceCard'
@@ -21,8 +20,6 @@ export function Profile() {
   const transactions = useWalletStore((s) => s.transactions)
   const cashBalance = useWalletStore((s) => s.wallet?.cash_balance ?? 0)
 
-  const { holdingsValue } = useHoldingsWithPrice()
-  const totalPortfolio = cashBalance + holdingsValue
 
   const tradesCount = useMemo(
     () =>
@@ -93,7 +90,7 @@ export function Profile() {
           </BlurFade>
 
           <BlurFade delay={0.2}>
-            <BalanceCard totalPortfolio={totalPortfolio} />
+            <BalanceCard cashBalance={cashBalance} />
           </BlurFade>
         </div>
 
