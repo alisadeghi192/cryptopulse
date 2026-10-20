@@ -1,4 +1,4 @@
-import { Search, AlertCircle, ArrowLeft } from 'lucide-react'
+import { Search, AlertCircle, ArrowLeft, Loader2 } from 'lucide-react'
 import { Link } from 'react-router'
 import { buttonVariants } from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
@@ -9,6 +9,8 @@ interface MarketsEmptyProps {
   scope?: string
   onClear?: () => void
   onExpandScope?: () => void
+  onLoadMore?: () => void
+  isLoadingMore?: boolean
 }
 
 export function MarketsEmpty({
@@ -17,6 +19,8 @@ export function MarketsEmpty({
   scope,
   onClear,
   onExpandScope,
+  onLoadMore,
+  isLoadingMore,
 }: MarketsEmptyProps) {
   if (variant === 'error') {
     return (
@@ -52,11 +56,30 @@ export function MarketsEmpty({
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
+          {onLoadMore && (
+            <button
+              onClick={onLoadMore}
+              disabled={isLoadingMore}
+              className={cn(
+                buttonVariants({ variant: 'primary', size: 'sm' }),
+                'font-mono text-xs disabled:opacity-50',
+              )}
+            >
+              {isLoadingMore ? (
+                <>
+                  <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                'Load more coins'
+              )}
+            </button>
+          )}
           {onClear && (
             <button
               onClick={onClear}
               className={cn(
-                buttonVariants({ variant: 'primary', size: 'sm' }),
+                buttonVariants({ variant: 'outline', size: 'sm' }),
                 'font-mono text-xs',
               )}
             >

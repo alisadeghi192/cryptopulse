@@ -75,6 +75,7 @@ export function Markets() {
           view={view}
           onViewChange={setView}
           searchScope={searchScope}
+          isLoadingMore={isFetchingNextPage}
         />
 
         {isSearchEmpty ? (
@@ -84,6 +85,8 @@ export function Markets() {
             scope={searchScope}
             onClear={() => setSearch('')}
             onExpandScope={canExpand ? () => setFilter('all') : undefined}
+            onLoadMore={hasNextPage ? fetchNextPage : undefined}
+            isLoadingMore={isFetchingNextPage}
           />
         ) : view === 'table' ? (
           <DataTable
@@ -92,7 +95,7 @@ export function Markets() {
             virtualize
             estimateSize={56}
             onLoadMore={fetchNextPage}
-            hasNextPage={hasNextPage}
+            hasNextPage={hasNextPage} 
             isFetchingNextPage={isFetchingNextPage}
             mobileCardRender={(coin) => <MarketsMobileCard coin={coin} />}
           />
