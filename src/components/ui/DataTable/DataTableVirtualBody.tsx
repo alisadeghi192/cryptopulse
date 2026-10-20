@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { flexRender, type Table } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { Link } from 'react-router' // ✅ اضافه شد
+import { Link } from 'react-router' 
 import { cn } from '@/utils/cn'
 
 interface DataTableVirtualBodyProps<TData> {
@@ -74,8 +74,6 @@ export function DataTableVirtualBody<TData>({
         {items.map((virtualRow) => {
           const row = rows[virtualRow.index]
           
-          // ✅ تشخیص اینکه آیا این ردیف مربوط به کوین است یا نه
-          // چون در صفحه Markets، دیتای ردیف شامل فیلد id (شناسه کوین) است
           const coinId = (row.original as any)?.id as string | undefined
           const isCoin = !!coinId
 

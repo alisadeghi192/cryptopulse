@@ -123,8 +123,6 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
 
   const handleConfirm = async () => {
     if (!isValid) return
-
-    // ✅ فقط زمانی به مرحله بعد می‌رویم که مقدار ورودی کاملاً معتبر باشد
     const error = await run(() =>
       isBuy
         ? buyCoin(coin.id, coin.symbol, coinAmount, price)
