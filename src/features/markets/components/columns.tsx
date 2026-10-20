@@ -1,4 +1,3 @@
-import { Link } from 'react-router'
 import type { ColumnDef } from '@tanstack/react-table'
 import { FlashValue } from '@/components/ui/FlashValue'
 import { MiniSparkline } from '@/components/ui/MiniSparkline'
@@ -19,7 +18,7 @@ export const marketsColumns: ColumnDef<Coin, any>[] = [
     ),
   },
 
-  // 2. Coin
+  // 2. Coin (Name & Symbol)
   {
     accessorKey: 'name',
     header: 'Coin',
@@ -28,10 +27,7 @@ export const marketsColumns: ColumnDef<Coin, any>[] = [
     cell: ({ row }) => {
       const coin = row.original
       return (
-        <Link
-          to={`/coin/${coin.id}`}
-          className="flex min-w-0 items-center gap-3"
-        >
+        <div className="flex min-w-0 items-center gap-3">
           <img
             src={coin.image}
             alt={coin.name}
@@ -45,7 +41,7 @@ export const marketsColumns: ColumnDef<Coin, any>[] = [
               {coin.symbol}
             </p>
           </div>
-        </Link>
+        </div>
       )
     },
   },

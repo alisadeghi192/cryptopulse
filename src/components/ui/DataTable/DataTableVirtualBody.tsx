@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { flexRender, type Table } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { Link } from 'react-router' // ✅ اضافه شد
 import { cn } from '@/utils/cn'
 
 interface DataTableVirtualBodyProps<TData> {
@@ -72,6 +73,12 @@ export function DataTableVirtualBody<TData>({
       >
         {items.map((virtualRow) => {
           const row = rows[virtualRow.index]
+          
+          // ✅ تشخیص اینکه آیا این ردیف مربوط به کوین است یا نه
+          // چون در صفحه Markets، دیتای ردیف شامل فیلد id (شناسه کوین) است
+          const coinId = (row.original as any)?.id as string | undefined
+          const isCoin = !!coinId
+
           return (
             <div
               key={row.id}
@@ -86,30 +93,60 @@ export function DataTableVirtualBody<TData>({
                 transform: `translateY(${virtualRow.start}px)`,
               }}
             >
-              <div className="flex h-14 items-center px-3 md:px-4">
-                {row.getVisibleCells().map((cell) => (
-                  <div
-                    key={cell.id}
-                    style={{ width: cell.column.getSize() }}
-                    className={cn(
-                      'shrink-0',
-                      cell.column.id === 'name' && 'flex-1',
-                      cell.column.columnDef.meta?.hideBelow === 'sm' &&
-                        'hidden sm:block',
-                      cell.column.columnDef.meta?.hideBelow === 'md' &&
-                        'hidden md:block',
-                      cell.column.columnDef.meta?.hideBelow === 'lg' &&
-                        'hidden lg:block',
-                      cell.column.columnDef.meta?.hideBelow === 'xl' &&
-                        'hidden xl:block',
-                      cell.column.columnDef.meta?.hideBelow === '2xl' &&
-                        'hidden 2xl:block',
-                    )}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </div>
-                ))}
-              </div>
+              {isCoin ? (
+                <Link
+                  to={`/coin/${coinId}`}
+                  className="flex h-14 items-center px-3 md:px-4"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <div
+                      key={cell.id}
+                      style={{ width: cell.column.getSize() }}
+                      className={cn(
+                        'shrink-0',
+                        cell.column.id === 'name' && 'flex-1',
+                        cell.column.columnDef.meta?.hideBelow === 'sm' &&
+                          'hidden sm:block',
+                        cell.column.columnDef.meta?.hideBelow === 'md' &&
+                          'hidden md:block',
+                        cell.column.columnDef.meta?.hideBelow === 'lg' &&
+                          'hidden lg:block',
+                        cell.column.columnDef.meta?.hideBelow === 'xl' &&
+                          'hidden xl:block',
+                        cell.column.columnDef.meta?.hideBelow === '2xl' &&
+                          'hidden 2xl:block',
+                      )}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </div>
+                  ))}
+                </Link>
+              ) : (
+                <div className="flex h-14 items-center px-3 md:px-4">
+                  {row.getVisibleCells().map((cell) => (
+                    <div
+                      key={cell.id}
+                      style={{ width: cell.column.getSize() }}
+                      className={cn(
+                        'shrink-0',
+                        cell.column.id === 'name' && 'flex-1',
+                        cell.column.columnDef.meta?.hideBelow === 'sm' &&
+                          'hidden sm:block',
+                        cell.column.columnDef.meta?.hideBelow === 'md' &&
+                          'hidden md:block',
+                        cell.column.columnDef.meta?.hideBelow === 'lg' &&
+                          'hidden lg:block',
+                        cell.column.columnDef.meta?.hideBelow === 'xl' &&
+                          'hidden xl:block',
+                        cell.column.columnDef.meta?.hideBelow === '2xl' &&
+                          'hidden 2xl:block',
+                      )}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )
         })}
