@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { ArrowRight, Sparkles, Zap, Shield, LayoutDashboard, Mail } from 'lucide-react'
+import {
+  ArrowRight,
+  Sparkles,
+  Zap,
+  Shield,
+  LayoutDashboard,
+  Mail,
+} from 'lucide-react'
 import { buttonVariants } from '@/components/ui/Button'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { useAuthStore } from '@/stores/useAuthStore'
@@ -14,7 +21,8 @@ export function CTASection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Redirect to register with email prefilled
+    
+    // Redirect to register with email prefilled via URL
     if (email.trim()) {
       navigate(`/register?email=${encodeURIComponent(email.trim())}`)
     } else {

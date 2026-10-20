@@ -72,9 +72,10 @@ function SwapCard({ flipped, direction, front, back }: SwapCardProps) {
 interface FormSlotProps {
   isLogin: boolean
   onSwitch: () => void
+  email?: string
 }
 
-function FormSlot({ isLogin, onSwitch }: FormSlotProps) {
+function FormSlot({ isLogin, onSwitch, email }: FormSlotProps) {
   return (
     <div className="relative flex h-full items-center justify-center overflow-hidden">
       <AmbientLights intensity="subtle" variant="auth" />
@@ -82,7 +83,11 @@ function FormSlot({ isLogin, onSwitch }: FormSlotProps) {
         {isLogin ? (
           <LoginForm onSwitch={onSwitch} />
         ) : (
-          <RegisterForm onSwitch={onSwitch} />
+          <RegisterForm
+            key={email || 'register'} // Force re-render if email changes
+            onSwitch={onSwitch}
+            email={email}
+          />
         )}
       </div>
     </div>
@@ -93,6 +98,9 @@ export function Auth() {
   const { pathname } = useLocation()
   const [params, setParams] = useSearchParams()
   const navigate = useNavigate()
+
+  // Extract email from URL
+  const emailParam = params.get('email') || undefined
 
   const modeFromPath: AuthMode = pathname.includes('register')
     ? 'register'
@@ -107,8 +115,7 @@ export function Auth() {
       next.delete('mode')
       setParams(next, { replace: true })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
+  }, [pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSwitch = () => {
     const next = new URLSearchParams(params)
@@ -124,7 +131,13 @@ export function Auth() {
           flipped={!isLogin}
           direction="up"
           front={<AuthImagePanel mode="login" />}
-          back={<FormSlot isLogin={false} onSwitch={handleSwitch} />}
+          back={
+            <FormSlot
+              isLogin={false}
+              onSwitch={handleSwitch}
+              email={emailParam}
+            />
+          }
         />
 
         <SwapCard
@@ -138,13 +151,17 @@ export function Auth() {
       <div className="relative flex min-h-screen items-center justify-center overflow-hidden md:hidden">
         <AmbientLights intensity="subtle" variant="auth" />
         <div
-          key={mode}
+          key={mode + (emailParam || '')}
           className="relative z-10 w-full max-w-md animate-[slide-fade_0.5s_ease-out] px-6"
         >
           {isLogin ? (
             <LoginForm onSwitch={handleSwitch} />
           ) : (
-            <RegisterForm onSwitch={handleSwitch} />
+            <RegisterForm
+              key={emailParam || 'register'}
+              onSwitch={handleSwitch}
+              email={emailParam}
+            />
           )}
         </div>
       </div>

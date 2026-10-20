@@ -16,9 +16,10 @@ import { cn } from '@/utils/cn'
 
 interface RegisterFormProps {
   onSwitch: () => void
+  email?: string
 }
 
-export function RegisterForm({ onSwitch }: RegisterFormProps) {
+export function RegisterForm({ onSwitch, email }: RegisterFormProps) {
   const navigate = useNavigate()
   const signUp = useAuthStore((s) => s.signUp)
   const isLoading = useAuthStore((s) => s.isLoading)
@@ -35,7 +36,7 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
     defaultValues: {
       fullName: '',
       phone: '',
-      email: '',
+      email: email ?? '', // ✅ Use passed email as default
       password: '',
       confirmPassword: '',
       agree: false as true,
@@ -76,7 +77,6 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
           description: 'Please check your email to confirm your account.',
           duration: 6000,
         })
-        // Maybe redirect to login or show a message on screen
         navigate('/login')
       } else {
         toast.success('Account created!', {
@@ -195,7 +195,10 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
               variant="primary"
               size="lg"
               disabled={isLoading}
-              className={cn("group mt-2 w-full gap-2" , !isLoading && "cursor-pointer")}
+              className={cn(
+                'group mt-2 w-full gap-2',
+                !isLoading && 'cursor-pointer',
+              )}
             >
               {isLoading ? (
                 <>
@@ -216,7 +219,7 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
             <button
               type="button"
               onClick={onSwitch}
-              className="text-primary cursor-pointer hover:text-primary-hover font-medium transition-colors"
+              className="text-primary cursor-pointer font-medium transition-colors hover:text-primary-hover"
             >
               Sign in
             </button>
