@@ -10,19 +10,31 @@ function getCacheSeconds(path: string): number {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const path = (req.query.path as string[]) || []
-  const coingeckoPath = '/' + path.join('/')
-
-  const { path: _, ...restQuery } = req.query
-  const searchParams = new URLSearchParams()
-  Object.entries(restQuery).forEach(([key, value]) => {
-    if (Array.isArray(value)) value.forEach((v) => searchParams.append(key, v))
-    else if (value) searchParams.append(key, value)
-  })
-
-  const cgUrl = `https://api.coingecko.com/api/v3${coingeckoPath}?${searchParams}`
-
   try {
+    // ✅ Safely normalize path (can be string or string[])
+    let pathStr = ''
+    if (Array.isArray(req.query.path)) {
+      pathStr = req.query.path.join('/')
+    } else if (typeof req.query.path === 'string') {
+      pathStr = req.query.path
+    }
+
+    if (!pathStr) {
+      return res.status(400).json({ error: 'Missing path parameter' })
+    }
+
+    const coingeckoPath = '/' + pathStr
+
+    // Build query string
+    const { path: _, ...restQuery } = req.query
+    const searchParams = new URLSearchParams()
+    Object.entries(restQuery).forEach(([key, value]) => {
+      if (Array.isArray(value)) value.forEach((v) => searchParams.append(key, v))
+      else if (value) searchParams.append(key, value)
+    })
+
+    const cgUrl = `https://api.coingecko.com/api/v3${coingeckoPath}?${searchParams}`
+
     const response = await fetch(cgUrl, {
       headers: {
         Accept: 'application/json',
@@ -46,7 +58,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Content-Type', 'application/json')
 
     return res.status(200).json(data)
-  } catch {
+  } catch (error) {
+    console.error('CoinGecko API Error:', error)
     res.setHeader('Cache-Control', 'no-store')
     return res.status(500).json({ error: 'Failed to fetch from CoinGecko' })
   }
