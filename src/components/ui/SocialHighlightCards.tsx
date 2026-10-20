@@ -22,13 +22,13 @@ const socials: SocialLink[] = [
   },
   {
     label: 'LinkedIn',
-    href: 'https://www.linkedin.com',
+    href: 'https://www.linkedin.com/in/alisadeghi19211/',
     highlight: '#0a66c2',
     icon: LinkedinIcon,
   },
   {
     label: 'Instagram',
-    href: 'https://instagram.com',
+    href: 'https://instagram.com/alisadeghi_dev',
     highlight: '#e4405f',
     icon: InstagramIcon,
   },

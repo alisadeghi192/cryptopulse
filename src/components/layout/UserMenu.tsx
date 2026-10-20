@@ -183,7 +183,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
             <button
               type="button"
               onClick={handleSignOut}
-              className="text-error hover:bg-error/10 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
+              className="text-error cursor-pointer hover:bg-error/10 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
             >
               <LogOut className="h-4 w-4 shrink-0" />
               <span>Sign Out</span>

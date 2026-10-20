@@ -6,6 +6,7 @@ import { ArrowRight, Mail, Lock, Phone, User, Loader2 } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
 import { Button } from '@/components/ui/Button'
 import { Checkbox } from '@/components/ui/Checkbox'
+import { useSearchParams } from 'react-router'
 import { InputField } from '@/components/ui/InputField'
 import { useAuthStore } from '@/stores/useAuthStore'
 import {
@@ -19,6 +20,8 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({ onSwitch }: RegisterFormProps) {
+  const [searchParams] = useSearchParams()
+  const defaultEmail = searchParams.get('email') || ''
   const navigate = useNavigate()
   const signUp = useAuthStore((s) => s.signUp)
   const isLoading = useAuthStore((s) => s.isLoading)
@@ -35,7 +38,7 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
     defaultValues: {
       fullName: '',
       phone: '',
-      email: '',
+      email: defaultEmail,
       password: '',
       confirmPassword: '',
       agree: false as true,
