@@ -4,7 +4,6 @@ import { useCoins } from '@/hooks/useCoins'
 import { useLiveClock } from '@/hooks/useLiveClock'
 import { TELEMETRY } from '@/constants'
 
-
 function LiveDot() {
   return (
     <div className="flex items-center gap-2">
@@ -43,9 +42,9 @@ function CoinTicker({
 export function TelemetryStrip() {
   const time = useLiveClock()
   const formattedTime = time.toLocaleTimeString('en-US', {
-  hour12: false,
-  timeZone: 'UTC',
-})
+    hour12: false,
+    timeZone: 'Asia/Tehran',
+  })
 
   const { data: coins } = useCoins({ perPage: 100 })
   const btc = coins?.find((c) => c.id === 'bitcoin')
@@ -56,14 +55,19 @@ export function TelemetryStrip() {
       <div className="flex items-center gap-4 max-md:w-full max-md:justify-between">
         <LiveDot />
         <div className="bg-border/40 h-3 w-px" />
-        <div className="text-text-secondary flex items-center gap-1.5">
+        <a
+          href="https://www.coingecko.com"
+          target="_blank"
+          rel="noreferrer"
+          className="text-text-secondary hover:text-primary flex items-center gap-1.5 transition-colors"
+        >
           <Radio className="text-primary h-3 w-3" />
-          <span>{TELEMETRY.dataSource}</span>
-        </div>
+          <span>CoinGecko · 2-min refresh</span>
+        </a>
       </div>
 
       <div className="text-text-secondary flex items-center gap-4 max-md:w-full max-md:justify-between">
-        <div className='flex items-center gap-4'>
+        <div className="flex items-center gap-4">
           {btc && (
             <CoinTicker
               symbol="BTC"
@@ -85,7 +89,7 @@ export function TelemetryStrip() {
         <div className="bg-border/40 h-3 w-px" />
         <div className="flex items-center gap-1.5">
           <Clock className="text-primary h-3 w-3" />
-          <span className="text-primary tabular-nums">{formattedTime} UTC</span>
+          <span className="text-primary tabular-nums">{formattedTime} Tehran</span>
         </div>
       </div>
     </div>

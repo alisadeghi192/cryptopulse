@@ -6,14 +6,19 @@ import {
 } from '@/components/ui/BrandIcons'
 
 export const FOOTER_LINKS = {
-  Product: [
+  Platform: [
     { label: 'Markets', href: '/markets' },
     { label: 'Converter', href: '/converter' },
     { label: 'Watchlist', href: '/watchlist' },
-    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Wallet', href: '/wallet' },
   ],
-  Company: [{ label: 'About', href: '/about' }],
   Account: [
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Transactions', href: '/transactions' },
+    { label: 'Profile', href: '/profile' },
+  ],
+  Resources: [
+    { label: 'About', href: '/about' },
     { label: 'Sign In', href: '/login' },
     { label: 'Create Account', href: '/register' },
   ],
@@ -28,7 +33,7 @@ export const SOCIAL_LINKS = [
 
 export const FOOTER_TEXT = {
   description:
-    'Real-time crypto market data, curated and beautiful. Track thousands of coins with live prices and zero noise.',
+    'Real-time crypto market data, curated and beautiful. Track 5,000+ coins with live prices and zero noise.',
   copyright: (year: number) =>
     `© ${year} CryptoPulse — Built with React, TanStack & Supabase`,
   sourceUrl: 'https://github.com',

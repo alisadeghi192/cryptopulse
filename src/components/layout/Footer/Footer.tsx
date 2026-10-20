@@ -15,15 +15,13 @@ export function Footer() {
         <TelemetryStrip />
 
         <div className="flex flex-col items-start justify-between gap-10 py-16 md:gap-8 lg:flex-row">
-          <div >
+          <div>
             <Logo />
             <p className="text-text-secondary mt-5 leading-relaxed">
-              Real-time crypto market data, curated and beautiful. Track
-              thousands of coins with live prices and zero noise.
+              {FOOTER_TEXT.description}
             </p>
-            <div className='mt-5'>
-            <SocialHighlightCards />
-
+            <div className="mt-5">
+              <SocialHighlightCards />
             </div>
           </div>
 
@@ -41,7 +39,7 @@ export function Footer() {
               href={FOOTER_TEXT.sourceUrl}
               target="_blank"
               rel="noreferrer"
-              className=" font-mono! hover:text-primary  transition-colors"
+              className="hover:text-primary font-mono! transition-colors"
             >
               {FOOTER_TEXT.sourceLabel}
             </a>
