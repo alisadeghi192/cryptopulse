@@ -138,7 +138,7 @@ export function Converter() {
                     onClick={swap}
                     aria-label="Swap currencies"
                     className={cn(
-                      'border-border bg-background text-text-secondary rounded-full border-2 p-2.5 shadow-lg transition-all duration-500',
+                      'border-border bg-background cursor-pointer text-text-secondary rounded-full border-2 p-2.5 shadow-lg transition-all duration-500',
                       'hover:border-primary/40 hover:bg-primary/10 hover:text-primary',
                       'active:scale-95',
                     )}

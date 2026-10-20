@@ -77,7 +77,7 @@ export function CurrencySelect({
         type="button"
         onClick={() => setOpen((o) => !o)}
         className={cn(
-          'border-border bg-surface/40 flex h-14 w-full items-center justify-between gap-3 rounded-xl border px-3',
+          'border-border bg-surface/40 flex h-14 w-full cursor-pointer items-center justify-between gap-3 rounded-xl border px-3',
           'hover:border-primary/40 transition-colors',
           open && 'border-primary/50',
         )}
@@ -134,7 +134,7 @@ export function CurrencySelect({
               <button
                 type="button"
                 onClick={() => setSearch('')}
-                className="text-text-secondary hover:text-text"
+                className="text-text-secondary hover:text-text cursor-pointer"
                 aria-label="Clear search"
               >
                 <X className="size-3.5" />
@@ -154,7 +154,7 @@ export function CurrencySelect({
                   setSearch('')
                 }}
                 className={cn(
-                  'hover:bg-elevated/60 flex w-full items-center gap-2.5 px-3 py-2.5 text-left transition-colors',
+                  'hover:bg-elevated/60 flex w-full  items-center gap-2.5 px-3 py-2.5 text-left transition-colors',
                   value?.id === 'usd' && 'bg-primary/5',
                 )}
               >
@@ -163,9 +163,7 @@ export function CurrencySelect({
                 </span>
                 <div className="min-w-0">
                   <p className="text-text text-sm font-semibold">USD</p>
-                  <p className="text-text-secondary text-[10px]">
-                    US Dollar
-                  </p>
+                  <p className="text-text-secondary text-[10px]">US Dollar</p>
                 </div>
               </button>
             )}
@@ -186,7 +184,7 @@ export function CurrencySelect({
                     setSearch('')
                   }}
                   className={cn(
-                    'hover:bg-elevated/60 flex w-full items-center gap-2.5 px-3 py-2.5 text-left transition-colors',
+                    'hover:bg-elevated/60 flex w-full cursor-pointer items-center gap-2.5 px-3 py-2.5 text-left transition-colors',
                     value?.id === option.id && 'bg-primary/5',
                   )}
                 >
