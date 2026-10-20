@@ -12,7 +12,7 @@ interface BalanceCardProps {
 export function BalanceCard({ cashBalance }: BalanceCardProps) {
   return (
     <Link to="/wallet" className="block h-full">
-      <div className="group/wallet relative h-full overflow-hidden rounded-2xl transition-transform hover:-translate-y-0.5">
+      <div className="group/wallet relative h-full overflow-hidden rounded-2xl shadow-md transition-transform hover:-translate-y-0.5">
         <div className="pointer-events-none absolute inset-0">
           <AmbientLights variant="yellow" intensity="subtle" />
         </div>

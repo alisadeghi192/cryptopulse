@@ -34,7 +34,7 @@ export function TransactionsHeader({
 }: TransactionsHeaderProps) {
   return (
     <BlurFade>
-      <div className="relative mb-8 overflow-hidden rounded-3xl">
+      <div className="relative shadow-xl mb-8 overflow-hidden rounded-3xl">
         <div className="pointer-events-none absolute inset-0">
           <AmbientLights variant="hero" intensity="normal" />
         </div>
@@ -79,7 +79,7 @@ export function TransactionsHeader({
             {/* Search + Filters */}
             <div className="mt-6 flex flex-col gap-3">
               {/* Search */}
-              <div className="border-border/60 bg-background/40 focus-within:border-primary/50 flex h-11 items-center gap-2 rounded-xl border px-3 backdrop-blur-sm transition-all focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]">
+              <div className="border-border/60 bg-background/40 shadow-md focus-within:border-primary/50 flex h-11 items-center gap-2 rounded-xl border px-3 backdrop-blur-sm transition-all focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]">
                 <Search className="text-text/70 h-4 w-4 shrink-0" />
                 <input
                   type="text"
@@ -100,7 +100,7 @@ export function TransactionsHeader({
               </div>
 
               {/* Filters */}
-              <div className="border-border/60 flex-wrap bg-background/40 no-scrollbar flex items-center gap-1 overflow-x-auto rounded-xl border p-1 backdrop-blur-sm">
+              <div className="border-border/60 shadow-md flex-wrap bg-background/40 no-scrollbar flex items-center gap-1 overflow-x-auto rounded-xl border p-1 backdrop-blur-sm">
                 {FILTERS.map((f) => (
                   <button
                     key={f.value}

@@ -35,7 +35,7 @@ export function WelcomeCard({
 
   return (
     <BlurFade>
-      <div className="relative overflow-hidden rounded-3xl">
+      <div className="relative shadow-xl overflow-hidden rounded-3xl">
         <div className="pointer-events-none absolute inset-0">
           <AmbientLights variant="hero" intensity="normal" />
         </div>

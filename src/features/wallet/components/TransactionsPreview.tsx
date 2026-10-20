@@ -52,11 +52,11 @@ export function TransactionsPreview() {
         </div>
 
         {transactions.length === 0 ? (
-          <div className="border-border/40 bg-surface/40 rounded-2xl border p-8 text-center backdrop-blur-3xl">
+          <div className="border-border/40 bg-surface/40 rounded-2xl shadow-lg border p-8 text-center backdrop-blur-3xl">
             <p className="text-text/60 font-mono text-xs">No transactions yet</p>
           </div>
         ) : (
-          <div className="border-border/40 space-y-1 bg-surface/40 overflow-hidden rounded-2xl border p-1 backdrop-blur-3xl">
+          <div className="border-border/40 space-y-1 bg-surface/40 overflow-hidden shadow-xl rounded-2xl border p-1 backdrop-blur-3xl">
             {transactions.slice(0, 5).map((txn) => {
               const meta = TYPE_META[txn.type]
               const Icon = meta.icon
@@ -68,7 +68,7 @@ export function TransactionsPreview() {
                   type="button"
                   onClick={() => setSelected(txn)}
                   className={cn(
-                    'flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-3 text-left transition-colors',
+                    'flex w-full cursor-pointer items-center justify-between gap-3 shadow-sm rounded-xl px-3 py-3 text-left transition-colors',
                     meta.rowClass,
                   )}
                 >

@@ -149,7 +149,7 @@ export function SecuritySection() {
         <div className="bg-border h-px flex-1" />
       </div>
 
-      <div className="relative overflow-hidden rounded-2xl">
+      <div className="relative overflow-hidden shadow-xl rounded-2xl">
         <div className="pointer-events-none absolute inset-0">
           <AmbientLights variant="multi" intensity="subtle" />
         </div>

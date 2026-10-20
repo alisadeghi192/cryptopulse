@@ -42,7 +42,7 @@ export function TransactionItem({ transaction, onClick }: TransactionItemProps) 
   const timeLabel = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
 
   return (
-    <button type="button" onClick={onClick} className="border-border/40 bg-surface/40 hover:bg-elevated/30 flex w-full cursor-pointer flex-col gap-3 rounded-xl border p-4 text-left backdrop-blur-xl transition-colors sm:flex-row sm:items-center sm:justify-between">
+    <button type="button" onClick={onClick} className="border-border/40 shadow-md bg-surface/40 hover:bg-elevated/30 flex w-full cursor-pointer flex-col gap-3 rounded-xl border p-4 text-left backdrop-blur-xl transition-colors sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 items-center gap-3">
         <div className={cn('flex size-10 shrink-0 items-center justify-center rounded-lg', meta.iconClass)}>
           <Icon className="size-5" />

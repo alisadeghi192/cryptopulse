@@ -13,7 +13,7 @@ import type { Coin } from '@/types/coin'
 
 // ─── CVA Variants ───
 const coinCardVariants = cva(
-  'group border-border bg-surface/40 relative overflow-hidden rounded-2xl border backdrop-blur-xl transition-colors hover:border-border',
+  'group border-border bg-surface/40 relative overflow-hidden rounded-2xl border backdrop-blur-xl transition-colors hover:border-border shadow-md',
   {
     variants: {
       size: {
@@ -101,7 +101,7 @@ export function CoinCard({ coin, size }: CoinCardProps) {
             spotlightColor={spotlightColor}
             className={cn(coinCardVariants({ size }))}
           >
-            <div className="relative z-10">
+            <div className="relative z-10 ">
               {/* Header */}
               <div className={cn(headerVariants({ size }))}>
                 <div className="border-border bg-elevated/60 text-text-secondary rounded-md border px-2 py-0.5 font-mono text-[10px]">
@@ -214,7 +214,7 @@ export function CoinRow({ coin }: { coin: Coin }) {
   return (
     <Link
       to={`/coin/${coin.id}`}
-      className="group hover:bg-elevated/40 grid grid-cols-[1fr_90px_80px] items-center px-4 py-3 transition-colors md:grid-cols-[60px_1fr_130px_110px_120px_100px]"
+      className="group hover:bg-elevated/40  grid grid-cols-[1fr_90px_80px] items-center px-4 py-3 transition-colors md:grid-cols-[60px_1fr_130px_110px_120px_100px]"
     >
       <span className="text-text-secondary hidden font-mono text-sm md:block">
         {coin.market_cap_rank}

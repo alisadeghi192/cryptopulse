@@ -28,7 +28,7 @@ export function PortfolioSummary({
 }: PortfolioSummaryProps) {
   return (
     <BlurFade delay={0.05}>
-      <div className="relative mb-6 overflow-hidden rounded-3xl">
+      <div className="relative mb-6 shadow-xl overflow-hidden rounded-3xl">
         <div className="pointer-events-none absolute inset-0">
           <AmbientLights variant="hero" intensity="normal" />
         </div>

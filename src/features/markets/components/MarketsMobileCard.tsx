@@ -15,7 +15,7 @@ export function MarketsMobileCard({ coin }: MarketsMobileCardProps) {
   return (
     <Link
       to={`/coin/${coin.id}`}
-      className="border-border bg-surface flex items-center gap-3 rounded-xl border p-3 transition-colors"
+      className="border-border bg-surface shadow-md flex items-center gap-3 rounded-xl border p-3 transition-colors"
     >
       {/* Rank */}
       <span className="text-text-secondary w-6 shrink-0 font-mono text-xs">

@@ -54,7 +54,7 @@ export function InfoCard({
   const accentClass = ACCENT_CLASSES[accent]
 
   return (
-    <div className="relative h-full overflow-hidden rounded-2xl">
+    <div className="relative h-full shadow-md overflow-hidden rounded-2xl">
       <div className="pointer-events-none absolute inset-0">
         <AmbientLights variant={ambientVariant} intensity="subtle" />
       </div>

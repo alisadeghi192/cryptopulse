@@ -101,13 +101,10 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
         )}
       >
         <div className="relative z-10">
-          <div className="mb-4 text-center">
+          <div className="mb-2 text-center">
             <h1 className="font-display text-2xl font-bold tracking-tight">
               Create account
             </h1>
-            <p className="text-text-secondary mt-2 text-sm">
-              Start tracking markets in seconds
-            </p>
           </div>
 
           <form
@@ -198,7 +195,7 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
               variant="primary"
               size="lg"
               disabled={isLoading}
-              className="group mt-2 w-full gap-2"
+              className={cn("group mt-2 w-full gap-2" , !isLoading && "cursor-pointer")}
             >
               {isLoading ? (
                 <>
@@ -219,7 +216,7 @@ export function RegisterForm({ onSwitch }: RegisterFormProps) {
             <button
               type="button"
               onClick={onSwitch}
-              className="text-primary hover:text-primary-hover font-medium transition-colors"
+              className="text-primary cursor-pointer hover:text-primary-hover font-medium transition-colors"
             >
               Sign in
             </button>

@@ -22,7 +22,7 @@ export function TransactionsList({
   if (transactions.length === 0) {
     return (
       <BlurFade delay={0.1}>
-        <div className="border-border/40 bg-surface/40 relative overflow-hidden rounded-2xl border backdrop-blur-3xl">
+        <div className="border-border/40 bg-surface/40 relative overflow-hidden shadow-xl rounded-2xl border backdrop-blur-3xl">
           <div className="pointer-events-none absolute inset-0">
             <AmbientLights variant="blue" intensity="subtle" />
           </div>

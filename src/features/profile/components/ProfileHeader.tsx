@@ -107,7 +107,7 @@ export function ProfileHeader({
   const busy = uploading || removing
 
   return (
-    <div className="relative overflow-hidden rounded-3xl">
+    <div className="relative overflow-hidden shadow-xl rounded-3xl">
       <div className="pointer-events-none absolute inset-0">
         <AmbientLights variant="hero" intensity="normal" />
       </div>

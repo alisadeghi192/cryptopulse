@@ -82,7 +82,7 @@ function ActionCard({
     <button
       type="button"
       onClick={onClick}
-      className="group/action relative block h-full w-full cursor-pointer overflow-hidden rounded-2xl text-left transition-transform hover:-translate-y-0.5"
+      className="group/action shadow-lg relative block h-full w-full cursor-pointer overflow-hidden rounded-2xl text-left transition-transform hover:-translate-y-0.5"
     >
       <div className="pointer-events-none absolute inset-0">
         <AmbientLights variant={ambientVariant} intensity="subtle" />

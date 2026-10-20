@@ -20,7 +20,7 @@ export function HoldingsGrid({ holdings }: HoldingsGridProps) {
       </div>
 
       {holdings.length === 0 ? (
-        <div className="border-border/40 bg-surface/40 relative overflow-hidden rounded-2xl border backdrop-blur-3xl">
+        <div className="border-border/40 bg-surface/40 relative overflow-hidden shadow-xl rounded-2xl border backdrop-blur-3xl">
           <div className="pointer-events-none absolute inset-0">
             <AmbientLights variant="blue" intensity="subtle" />
           </div>

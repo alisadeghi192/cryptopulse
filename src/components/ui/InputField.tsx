@@ -58,9 +58,10 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           {showPasswordToggle && (
             <button
               type="button"
+              tabIndex={-1}
               onClick={() => setShow((s) => !s)}
               aria-label={show ? 'Hide password' : 'Show password'}
-              className="text-text-secondary hover:text-text shrink-0 transition-colors"
+              className="text-text-secondary cursor-pointer hover:text-text shrink-0 transition-colors"
             >
               {show ? (
                 <EyeOff className="size-4" />
@@ -71,7 +72,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           )}
         </div>
         {error && (
-          <p className="text-error animate-error-pulse mt-1.5 font-mono text-[11px] font-medium">
+          <p className="text-error mt-1.5 font-mono text-[11px] font-medium">
             {error}
           </p>
         )}

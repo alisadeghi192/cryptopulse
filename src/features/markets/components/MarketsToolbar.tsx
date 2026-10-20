@@ -33,7 +33,7 @@ export function MarketsToolbar({
 }: MarketsToolbarProps) {
   return (
     <div className="mb-5 flex flex-col gap-3">
-      <div className="border-border bg-surface focus-within:border-primary/50 flex h-10 items-center gap-2 rounded-lg border px-3 transition-colors">
+      <div className="border-border bg-surface focus-within:border-primary/50 flex h-10 items-center gap-2 rounded-lg border px-3 shadow-md transition-colors">
         <Search className="text-text-secondary h-4 w-4 shrink-0" />
         <input
           type="text"
@@ -46,15 +46,15 @@ export function MarketsToolbar({
           <Loader2 className="text-text-secondary h-3 w-3 animate-spin" />
         )}
       </div>
-      
+
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="border-border bg-surface no-scrollbar max-md:w-full flex items-center gap-1 overflow-x-auto rounded-lg border p-1">
+        <div className="border-border bg-surface no-scrollbar flex items-center gap-1 overflow-x-auto rounded-lg border p-1 shadow-md max-md:w-full">
           {FILTERS.map((f) => (
             <button
               key={f.value}
               onClick={() => onFilterChange(f.value)}
               className={cn(
-                'shrink-0 max-md:flex-1 rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+                'shrink-0 rounded-md px-3 py-1.5 font-mono text-xs transition-colors max-md:flex-1',
                 filter === f.value
                   ? 'bg-primary/15 text-primary'
                   : 'text-text-secondary hover:text-text',
@@ -65,7 +65,7 @@ export function MarketsToolbar({
           ))}
         </div>
 
-        <div className="border-border bg-surface hidden shrink-0 items-center rounded-lg border p-1 md:flex">
+        <div className="border-border bg-surface hidden shrink-0 items-center rounded-lg border p-1 shadow-md md:flex">
           <button
             onClick={() => onViewChange('table')}
             className={cn(

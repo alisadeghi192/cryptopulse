@@ -114,7 +114,7 @@ export function LoginForm({ onSwitch }: LoginFormProps) {
               variant="primary"
               size="lg"
               disabled={isLoading}
-              className="group mt-2 w-full gap-2"
+              className={cn("group mt-2 w-full gap-2" , !isLoading && "cursor-pointer")} 
             >
               {isLoading ? (
                 <>
@@ -135,7 +135,7 @@ export function LoginForm({ onSwitch }: LoginFormProps) {
             <button
               type="button"
               onClick={onSwitch}
-              className="text-primary hover:text-primary-hover font-medium transition-colors"
+              className="text-primary cursor-pointer hover:text-primary-hover font-medium transition-colors"
             >
               Create one
             </button>

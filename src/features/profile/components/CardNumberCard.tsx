@@ -58,7 +58,7 @@ export function CardNumberCard() {
   }
 
   return (
-    <div className="relative h-full overflow-hidden rounded-2xl">
+    <div className="relative h-full overflow-hidden shadow-md rounded-2xl">
       <div className="pointer-events-none absolute inset-0">
         <AmbientLights variant="lightblue" intensity="subtle" />
       </div>
