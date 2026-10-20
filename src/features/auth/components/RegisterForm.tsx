@@ -36,7 +36,7 @@ export function RegisterForm({ onSwitch, email }: RegisterFormProps) {
     defaultValues: {
       fullName: '',
       phone: '',
-      email: email ?? '', // ✅ Use passed email as default
+      email: email ?? '',
       password: '',
       confirmPassword: '',
       agree: false as true,
