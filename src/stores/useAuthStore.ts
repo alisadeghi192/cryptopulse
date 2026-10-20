@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { User, Session } from '@supabase/supabase-js'
+import type { User, Session, AuthChangeEvent, Subscription } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 
 interface AuthState {
@@ -7,6 +7,7 @@ interface AuthState {
   session: Session | null
   isLoading: boolean
   initialized: boolean
+  authSubscription: Subscription | null // ✅ Keep track of listener
 
   initialize: () => Promise<void>
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
@@ -15,8 +16,8 @@ interface AuthState {
     password: string,
     fullName: string,
     phone: string,
-  ) => Promise<{ error: string | null }>
-  signOut: () => Promise<void>
+  ) => Promise<{ error: string | null; needsEmailVerification?: boolean }>
+  signOut: () => Promise<{ error: string | null }>
   signOutAll: () => Promise<{ error: string | null }>
   updateProfile: (data: {
     full_name?: string
@@ -34,8 +35,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   session: null,
   isLoading: false,
   initialized: false,
+  authSubscription: null,
 
   initialize: async () => {
+    // Prevent double-initialization
+    if (get().initialized) return
+
     set({ isLoading: true })
 
     const { data } = await supabase.auth.getSession()
@@ -46,12 +51,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       initialized: true,
     })
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      set({
-        user: session?.user ?? null,
-        session,
-      })
-    })
+    // Clean up previous listener if exists
+    const prevSub = get().authSubscription
+    if (prevSub) prevSub.unsubscribe()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => {
+        set({
+          user: session?.user ?? null,
+          session,
+        })
+      }
+    )
+
+    set({ authSubscription: subscription })
   },
 
   signIn: async (email, password) => {
@@ -94,17 +107,31 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return { error: error.message }
     }
 
-    set({
-      user: data.user,
-      session: data.session,
-      isLoading: false,
-    })
-    return { error: null }
+    // If session exists, user is logged in immediately
+    // If not, it means email verification is required
+    if (data.session) {
+      set({
+        user: data.user,
+        session: data.session,
+        isLoading: false,
+      })
+      return { error: null, needsEmailVerification: false }
+    } else {
+      // Email verification needed - do NOT log in yet
+      set({ isLoading: false })
+      return { error: null, needsEmailVerification: true }
+    }
   },
 
   signOut: async () => {
-    await supabase.auth.signOut()
+    const { error } = await supabase.auth.signOut()
+    
+    if (error) {
+      return { error: error.message }
+    }
+
     set({ user: null, session: null })
+    return { error: null }
   },
 
   signOutAll: async () => {
@@ -135,7 +162,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return { error: 'No user signed in' }
     }
 
-    // check current password
+    // Check current password
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email: user.email,
       password: currentPassword,
@@ -145,7 +172,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return { error: 'Current password is incorrect' }
     }
 
-    // update user password
+    // Update user password
     const { error: updateError } = await supabase.auth.updateUser({
       password: newPassword,
     })
