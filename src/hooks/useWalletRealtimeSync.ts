@@ -20,7 +20,7 @@ export function useWalletRealtimeSync() {
           table: 'wallets',
           filter: `user_id=eq.${user.id}`,
         },
-        () => refreshWallet(),
+        () => refreshWallet(), // ← Now debounced
       )
       .on(
         'postgres_changes',

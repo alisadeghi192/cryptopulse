@@ -6,14 +6,17 @@ interface WalletState {
   holdings: Holding[]
   transactions: Transaction[]
   isLoaded: boolean
+  loadedUserId: string | null
   isLoading: boolean
+  error: string | null // ✅ NEW
 
   setWallet: (wallet: Wallet | null) => void
   setHoldings: (holdings: Holding[]) => void
   setTransactions: (transactions: Transaction[]) => void
-  addTransaction: (txn: Transaction) => void
   setLoaded: (loaded: boolean) => void
   setLoading: (loading: boolean) => void
+  setLoadedUserId: (userId: string | null) => void
+  setError: (error: string | null) => void // ✅ NEW
   reset: () => void
 }
 
@@ -22,17 +25,17 @@ export const useWalletStore = create<WalletState>((set) => ({
   holdings: [],
   transactions: [],
   isLoaded: false,
+  loadedUserId: null,
   isLoading: false,
+  error: null,
 
   setWallet: (wallet) => set({ wallet }),
   setHoldings: (holdings) => set({ holdings }),
   setTransactions: (transactions) => set({ transactions }),
-
-  addTransaction: (txn) =>
-    set((s) => ({ transactions: [txn, ...s.transactions] })),
-
   setLoaded: (isLoaded) => set({ isLoaded }),
   setLoading: (isLoading) => set({ isLoading }),
+  setLoadedUserId: (loadedUserId) => set({ loadedUserId }),
+  setError: (error) => set({ error }),
 
   reset: () =>
     set({
@@ -40,6 +43,8 @@ export const useWalletStore = create<WalletState>((set) => ({
       holdings: [],
       transactions: [],
       isLoaded: false,
+      loadedUserId: null,
       isLoading: false,
+      error: null,
     }),
 }))

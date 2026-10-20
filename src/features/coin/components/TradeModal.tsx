@@ -66,9 +66,6 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
     isBuy,
   )
 
-  const safeCoinAmount =
-    !isBuy && coinAmount > holdingAmount ? holdingAmount : coinAmount
-
   const minUsd = isBuy ? TRADE_LIMITS.MIN_BUY_USD : TRADE_LIMITS.MIN_SELL_USD
   const isSellingAll =
     !isBuy &&
@@ -82,7 +79,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
     meetsMin &&
     (isBuy
       ? lte(total, cashBalance)
-      : lte(safeCoinAmount, holdingAmount) && safeCoinAmount > 0)
+      : lte(coinAmount, holdingAmount)) // ← اینجا دیگه safeCoinAmount نداریم و مستقیم coinAmount رو چک می‌کنیم
 
   useEffect(() => {
     if (open) {
@@ -125,10 +122,13 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
   }
 
   const handleConfirm = async () => {
+    if (!isValid) return
+
+    // ✅ فقط زمانی به مرحله بعد می‌رویم که مقدار ورودی کاملاً معتبر باشد
     const error = await run(() =>
       isBuy
         ? buyCoin(coin.id, coin.symbol, coinAmount, price)
-        : sellCoin(coin.id, coin.symbol, safeCoinAmount, price),
+        : sellCoin(coin.id, coin.symbol, coinAmount, price),
     )
     if (error) toast.error('Trade failed', { description: error })
   }
@@ -276,7 +276,6 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                   </div>
                 </div>
 
-                {/* Only show summary if input has value */}
                 {coinAmount > 0 && (
                   <div className="border-border/40 bg-background/40 space-y-1.5 rounded-lg border p-2.5">
                     <div className="flex items-center justify-between">
@@ -372,7 +371,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                     {isBuy ? 'Buying' : 'Selling'}
                   </span>
                   <span className="text-text font-mono text-sm font-semibold tabular-nums">
-                    {formatCoinAmount(safeCoinAmount)} {coin.symbol.toUpperCase()}
+                    {formatCoinAmount(coinAmount)} {coin.symbol.toUpperCase()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
