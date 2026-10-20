@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/Button'
 import { PasswordField } from '@/components/ui/PasswordField'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useWatchlistStore } from '@/stores/useWatchlistStore'
+import { useWalletStore } from '@/stores/useWalletStore'
 import {
   changePasswordSchema,
   type ChangePasswordFormData,
@@ -28,7 +29,11 @@ export function SecuritySection() {
   const user = useAuthStore((s) => s.user)
   const signOutAll = useAuthStore((s) => s.signOutAll)
   const changePassword = useAuthStore((s) => s.changePassword)
+  
   const watchlistIds = useWatchlistStore((s) => s.coinIds)
+  const wallet = useWalletStore((s) => s.wallet)
+  const holdings = useWalletStore((s) => s.holdings)
+  const transactions = useWalletStore((s) => s.transactions)
 
   const [passwordOpen, setPasswordOpen] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
@@ -89,7 +94,27 @@ export function SecuritySection() {
         email: user.email,
         full_name: user.user_metadata?.full_name ?? null,
         phone_number: user.user_metadata?.phone_number ?? null,
+        card_number: user.user_metadata?.card_number ?? null,
         created_at: user.created_at,
+      },
+      wallet: {
+        cash_balance: wallet?.cash_balance ?? 0,
+        holdings: holdings.map(h => ({
+          coin_id: h.coin_id,
+          coin_symbol: h.coin_symbol,
+          amount: h.amount,
+          avg_buy_price: h.avg_buy_price,
+        })),
+        transactions: transactions.map(t => ({
+          type: t.type,
+          coin_symbol: t.coin_symbol,
+          amount: t.amount,
+          price: t.price,
+          fee: t.fee,
+          total_usd: t.total_usd,
+          txn_id: t.txn_id,
+          date: t.created_at,
+        })),
       },
       watchlist: watchlistIds,
       preferences: {
@@ -110,7 +135,7 @@ export function SecuritySection() {
     URL.revokeObjectURL(url)
 
     toast.success('Data exported', {
-      description: 'Your account data has been downloaded',
+      description: 'Your account data and history have been downloaded',
     })
   }
 

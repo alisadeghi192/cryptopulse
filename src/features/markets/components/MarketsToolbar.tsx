@@ -49,7 +49,7 @@ export function MarketsToolbar({
               key={f.value}
               onClick={() => onFilterChange(f.value)}
               className={cn(
-                'shrink-0 max-md:flex-1 rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+                'shrink-0 max-md:flex-1 cursor-pointer rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
                 filter === f.value
                   ? 'bg-primary/15 text-primary'
                   : 'text-text-secondary hover:text-text',
@@ -64,7 +64,7 @@ export function MarketsToolbar({
           <button
             onClick={() => onViewChange('table')}
             className={cn(
-              'flex h-8 w-8 items-center justify-center rounded-md transition-colors',
+              'flex h-8 w-8 items-center cursor-pointer justify-center rounded-md transition-colors',
               view === 'table'
                 ? 'bg-primary/15 text-primary'
                 : 'text-text-secondary hover:text-text',
@@ -76,7 +76,7 @@ export function MarketsToolbar({
           <button
             onClick={() => onViewChange('grid')}
             className={cn(
-              'flex h-8 w-8 items-center justify-center rounded-md transition-colors',
+              'flex h-8 w-8 items-center cursor-pointer justify-center rounded-md transition-colors',
               view === 'grid'
                 ? 'bg-primary/15 text-primary'
                 : 'text-text-secondary hover:text-text',

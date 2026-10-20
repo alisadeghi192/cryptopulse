@@ -49,7 +49,7 @@ export function MarketsPreview() {
       </BlurFade>
 
       <BlurFade delay={0.2}>
-        <div className="border-border bg-surface overflow-hidden rounded-2xl border shadow-lg backdrop-blur-xl">
+        <div className="border-border bg-surface/80 overflow-hidden rounded-2xl border shadow-lg backdrop-blur-2x">
           <div className="border-border text-text-secondary grid grid-cols-[1fr_90px_80px] items-center border-b px-4 py-3 font-mono text-xs tracking-wider uppercase md:grid-cols-[60px_1fr_130px_110px_120px_100px]">
             <span className="md:hidden">Coin</span>
             <span className="hidden md:block">#</span>
