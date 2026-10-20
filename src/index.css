@@ -7,9 +7,9 @@
    ═══════════════════════════════════════════════ */
 :root {
   /* Background layers */
-  --color-background: #fcf6de;
-  --color-surface: #f8f9fa;
-  --color-elevated: #f1f3f5;
+  --color-background: #faecc8; 
+  --color-surface: #fff9ee;    
+  --color-elevated: #f0dfb8;   
 
   /* Brand & semantic colors */
   --color-primary: #d97706;
@@ -17,12 +17,12 @@
   --color-success: #15803d;
   --color-error: #dc2626;
   --color-text: #0f172a;
-  --color-text-secondary: #64748b;
+  --color-text-secondary: #78654b; 
 
   /* Border colors */
-  --color-border: #e2e8f0;
-  --color-border-subtle: #f1f5f9;
-  --color-border-strong: #cbd5e1;
+  --color-border: #ead5a8;       
+  --color-border-subtle: #f5e8c9;
+  --color-border-strong: #dcc18c;
 
   /* Shadow elevation */
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.06);
