@@ -17,7 +17,7 @@ const CONTENT = {
       </>
     ),
     subtitle:
-      'Real-time market data, powerful charts, and a wallet to grow your crypto wealth.',
+      'Track real-time markets and manage your virtual portfolio seamlessly.',
     stats: [
       { value: '5,000+', label: 'Coins tracked' },
       { value: '24/7', label: 'Live data' },
@@ -35,12 +35,12 @@ const CONTENT = {
       </>
     ),
     subtitle:
-      'Join thousands of traders tracking real-time markets with CryptoPulse.',
+      'Create an account to claim your $1,000 virtual funds and start trading.',
     stats: [
-      { value: '250+', label: 'Exchanges' },
-      { value: 'Free', label: 'No credit card' },
+      { value: 'Zero', label: 'Risk trading' },
+      { value: 'Free', label: 'Forever' },
     ],
-    footer: 'Free forever · No credit card',
+    footer: 'No credit card required · Instant access',
   },
 }
 
