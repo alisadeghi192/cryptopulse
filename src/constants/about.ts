@@ -1,15 +1,143 @@
-import { Database, Palette, Gauge, Code2, type LucideIcon } from 'lucide-react'
+import {
+  Database,
+  Palette,
+  Gauge,
+  ShieldCheck,
+  Cpu,
+  type LucideIcon,
+} from 'lucide-react'
 
-export interface Tech {
-  name: string
+export const ABOUT_STATS = [
+  { label: 'Coins tracked', value: '5,000+', color: 'text-primary' },
+  { label: 'Type-safe', value: '100%', color: 'text-[#3178C6]' },
+  { label: 'AI-assisted', value: 'UI & Motion', color: 'text-[#7C3AED]' },
+  { label: 'Edge Caching', value: 'API Layer', color: 'text-success' },
+]
+
+export interface Challenge {
+  id: string
+  title: string
+  summary: string
   description: string
-  version: string
-  icon: string
+  solution: string
+  icon: LucideIcon
   accent: string
-  category: 'core' | 'state' | 'ui' | 'backend' | 'ai'
+  glow: string
 }
 
-export const TECH_STACK: Tech[] = [
+export const CHALLENGES: Challenge[] = [
+  {
+    id: 'financial-accuracy',
+    title: 'Financial Accuracy',
+    summary:
+      'Ensuring precise decimal math, trade totals, and MAX functionality.',
+    description:
+      'Floating-point errors in JavaScript can cause critical bugs in financial applications. When a user clicks "MAX" or calculates a trade fee, slight precision errors can block the transaction or leave dust in the wallet.',
+    solution:
+      'Centralized all financial math into a strict utility layer using an EPSILON tolerance to compare numbers. Synced frontend calculations directly with database RPC responses to guarantee 100% accuracy.',
+    icon: ShieldCheck,
+    accent: '#22C55E',
+    glow: 'rgba(34, 197, 94, 0.10)',
+  },
+  {
+    id: 'data-lifecycle',
+    title: 'Data Lifecycle',
+    summary:
+      'Preventing state race conditions and managing real-time sync efficiently.',
+    description:
+      'Managing asynchronous data flows and Supabase Realtime events can lead to race conditions. For example, if a user logs out while a wallet request is in flight, old data could leak back into the store.',
+    solution:
+      'Implemented safe lifecycle guards (cancelled flags, loadedUserId tracking) to prevent stale updates. Added a debounce mechanism for real-time events to prevent network request explosions during rapid transactions.',
+    icon: Database,
+    accent: '#FACC15',
+    glow: 'rgba(250, 204, 21, 0.10)',
+  },
+  {
+    id: 'scalable-performance',
+    title: 'Scalable Performance',
+    summary: 'Rendering thousands of data rows with virtualization.',
+    description:
+      'Rendering thousands of cryptocurrency rows at once causes DOM thrashing and freezes the browser. Furthermore, heavy charting libraries can severely impact bundle size.',
+    solution:
+      'Integrated TanStack Virtual to render only visible rows in the table. Used a lightweight, dependency-free charting solution (TradingView lightweight-charts) and optimized query caching with TanStack Query.',
+    icon: Gauge,
+    accent: '#7C3AED',
+    glow: 'rgba(124, 58, 237, 0.10)',
+  },
+  {
+    id: 'api-limits',
+    title: 'API Rate Limits',
+    summary: 'Implementing a two-layer caching strategy to respect API limits.',
+    description:
+      'CoinGecko restricts free-tier requests. Without smart caching, a data-heavy dashboard would quickly hit rate limits and fail to load market data.',
+    solution:
+      'Built a two-layer caching architecture: A Vercel Edge proxy handles server-side caching and hides the API key, while TanStack Query manages client-side caching and background refetching.',
+    icon: Cpu,
+    accent: '#3B82F6',
+    glow: 'rgba(59, 130, 246, 0.10)',
+  },
+  {
+    id: 'time-constraints',
+    title: 'Time Constraints',
+    summary: 'Rapidly prototyping UI and motion with AI assistance.',
+    description:
+      'Building a production-ready UI with complex glassmorphism, custom animations, and a cohesive dark/light theme from scratch requires significant time.',
+    solution:
+      'Leveraged AI to accelerate UI prototyping, generate initial component structures, and experiment with design tokens. This allowed focusing human effort on architectural decisions, performance, and complex trade logic.',
+    icon: Palette,
+    accent: '#F97316',
+    glow: 'rgba(249, 115, 22, 0.10)',
+  },
+]
+
+export const DEVELOPMENT_STEPS = [
+  {
+    number: '01',
+    title: 'Architecture',
+    description:
+      'Designed a feature-based structure and selected the core stack (TanStack, Zustand, Supabase) for maximum scalability.',
+  },
+  {
+    number: '02',
+    title: 'Data Engine',
+    description:
+      'Connected real-time feeds, implemented two-layer API caching, and virtualized large datasets for smooth rendering.',
+  },
+  {
+    number: '03',
+    title: 'Financial Core',
+    description:
+      'Engineered precise trade logic, fixed floating-point issues, and secured the wallet lifecycle against race conditions.',
+  },
+  {
+    number: '04',
+    title: 'UI & Polish',
+    description:
+      'Crafted a responsive glassmorphism UI, added spring animations, and optimized the final developer experience.',
+  },
+]
+
+export const TECH_GROUPS = [
+  { key: 'core', label: 'Core', description: 'Application foundation' },
+  {
+    key: 'state',
+    label: 'State & Data',
+    description: 'Data fetching and state management',
+  },
+  {
+    key: 'ui',
+    label: 'UI & Experience',
+    description: 'Interface and visualization',
+  },
+  {
+    key: 'backend',
+    label: 'Backend',
+    description: 'Data, forms, and validation',
+  },
+  { key: 'ai', label: 'AI Assistant', description: 'Development accelerator' },
+] as const
+
+export const TECH_STACK = [
   {
     name: 'React',
     description: 'UI Library',
@@ -130,51 +258,9 @@ export const TECH_STACK: Tech[] = [
     accent: '#4D6BFE',
     category: 'ai',
   },
-]
-
-export const TECH_GROUPS = [
-  {
-    key: 'core',
-    label: 'Core',
-    description: 'Application foundation',
-  },
-  {
-    key: 'state',
-    label: 'State & Data',
-    description: 'Data fetching and state',
-  },
-  {
-    key: 'ui',
-    label: 'UI & Experience',
-    description: 'Interface and visualization',
-  },
-  {
-    key: 'backend',
-    label: 'Backend',
-    description: 'Data, forms and validation',
-  },
-  {
-    key: 'ai',
-    label: 'AI Assistant',
-    description: 'Development accelerator',
-  },
 ] as const
 
-export interface Feature {
-  icon: LucideIcon
-  title: string
-  description: string
-  eyebrow: string
-  size: 'large' | 'small'
-  color: {
-    text: string
-    bg: string
-    border: string
-    glow: string
-  }
-}
-
-export const FEATURES: Feature[] = [
+export const FEATURES = [
   {
     icon: Gauge,
     eyebrow: 'Performance',
@@ -189,167 +275,6 @@ export const FEATURES: Feature[] = [
       glow: 'rgba(255, 193, 7, 0.12)',
     },
   },
-  {
-    icon: Database,
-    eyebrow: 'Data',
-    title: 'Efficient data flow',
-    description:
-      'TanStack Query handles caching, pagination and background refetching to keep market information useful without unnecessary requests.',
-    size: 'small',
-    color: {
-      text: 'text-success',
-      bg: 'bg-success/10',
-      border: 'border-success/30',
-      glow: 'rgba(34, 197, 94, 0.12)',
-    },
-  },
-  {
-    icon: Code2,
-    eyebrow: 'Architecture',
-    title: 'Type-safe by design',
-    description:
-      'TypeScript and Zod create safer boundaries between external data, application state, forms and UI components.',
-    size: 'small',
-    color: {
-      text: 'text-[#7C3AED]',
-      bg: 'bg-[#7C3AED]/10',
-      border: 'border-[#7C3AED]/30',
-      glow: 'rgba(124, 58, 237, 0.12)',
-    },
-  },
-  {
-    icon: Palette,
-    eyebrow: 'Experience',
-    title: 'A focused interface',
-    description:
-      'Responsive layouts, dark and light themes, RTL support, accessible interactions and subtle motion keep the interface focused.',
-    size: 'large',
-    color: {
-      text: 'text-[#F7931A]',
-      bg: 'bg-[#F7931A]/10',
-      border: 'border-[#F7931A]/30',
-      glow: 'rgba(247, 147, 26, 0.12)',
-    },
-  },
 ]
 
-export const ENGINEERING_POINTS = [
-  {
-    label: 'Rendering',
-    value: 'Virtualized',
-    description: 'Large market datasets',
-  },
-  {
-    label: 'Fetching',
-    value: 'Cached',
-    description: 'Background refetching',
-  },
-  {
-    label: 'Validation',
-    value: 'Schema-safe',
-    description: 'Runtime validation',
-  },
-  {
-    label: 'Structure',
-    value: 'Feature-based',
-    description: 'Scalable organization',
-  },
-]
-
-export const ABOUT_STATS = [
-  {
-    label: 'Pages',
-    value: '10+',
-    color: 'text-primary',
-  },
-  {
-    label: 'Components',
-    value: '70+',
-    color: 'text-[#7C3AED]',
-  },
-  {
-    label: 'Coins tracked',
-    value: '5,000+',
-    color: 'text-success',
-  },
-  {
-    label: 'TypeScript',
-    value: 'First-class',
-    color: 'text-[#3178C6]',
-  },
-]
-
-export const DEVELOPMENT_STEPS = [
-  {
-    number: '01',
-    title: 'Explore',
-    description:
-      'Investigate the problem, APIs and possible implementation approaches.',
-  },
-  {
-    number: '02',
-    title: 'Build',
-    description:
-      'Use AI to accelerate repetitive work, exploration and first-pass implementation.',
-  },
-  {
-    number: '03',
-    title: 'Validate',
-    description:
-      'Review generated code, test assumptions and verify behavior against the actual requirements.',
-  },
-  {
-    number: '04',
-    title: 'Refine',
-    description:
-      'Improve architecture, performance, UX and maintainability through manual iteration.',
-  },
-]
-
-export interface Challenge {
-  number: string
-  problem: string
-  solution: string
-  description: string
-  accent: string
-  glow: string
-}
-
-export interface Challenge {
-  number: string
-  problem: string
-  solution: string
-  description: string
-  accent: string
-  glow: string
-}
-
-export const CHALLENGES: Challenge[] = [
-  {
-    number: '01',
-    problem: 'Rate limits',
-    solution: 'Two-layer caching',
-    description:
-      'CoinGecko caps free requests at 30/min. A Vercel edge route caches responses server-side and hides the API key, while TanStack Query handles per-user caching on the client. Together they keep requests well under the limit.',
-    accent: '#FFC107',
-    glow: 'rgba(255, 193, 7, 0.10)',
-  },
-  {
-    number: '02',
-    problem: 'No WebSocket',
-    solution: 'Flash on change',
-    description:
-      'Public WebSocket providers are unreliable in some regions. Instead of faking real-time, prices refresh on a schedule with a subtle flash when values change.',
-    accent: '#22C55E',
-    glow: 'rgba(34, 197, 94, 0.10)',
-  },
-  {
-    number: '03',
-    problem: '5,000 rows',
-    solution: 'Virtualization',
-    description:
-      'Rendering thousands of coins would freeze the DOM. TanStack Virtual renders only the rows in view, keeping scroll smooth at any depth.',
-    accent: '#7C3AED',
-    glow: 'rgba(124, 58, 237, 0.10)',
-  },
-]
+export const ENGINEERING_POINTS = []

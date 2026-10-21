@@ -24,16 +24,16 @@ export default function AboutHero() {
           </div>
 
           <h1 className="font-display text-text text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            A crypto dashboard
-            <span className="from-primary via-primary block bg-linear-to-r to-amber-300 bg-clip-text text-transparent">
-              built to move fast.
+            Tracking the
+            <br/>
+            <span className="text-primary">
+              crypto pulse.
             </span>
           </h1>
 
           <p className="text-text-secondary mx-auto mt-7 max-w-2xl text-sm leading-7 sm:text-base md:text-lg">
-            A production-minded React application exploring frontend
-            performance, scalable architecture, data-heavy interfaces, and
-            AI-assisted development.
+            Why I built a scalable, real-time dashboard focusing on data
+            integrity, API constraints, and rapid development.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
@@ -63,7 +63,6 @@ export default function AboutHero() {
             {ABOUT_STATS.map((stat, i) => (
               <BlurFade key={stat.label} delay={0.5 + i * 0.05}>
                 <div className="group hover:bg-background/60 relative px-4 py-5 text-center transition-all duration-300 hover:shadow-[inset_0_4px_12px_rgba(0,0,0,0.15),inset_0_-2px_6px_rgba(255,255,255,0.05)] md:px-6 md:py-6">
-                  {/* Inner glow  */}
                   <div className="bg-primary/0 group-hover:bg-primary/5 pointer-events-none absolute inset-0 transition-colors duration-300" />
 
                   <div className="relative">
@@ -84,11 +83,11 @@ export default function AboutHero() {
 
         <div className="mt-10 flex justify-center">
           <a
-            href="#idea"
+            href="#mission"
             onClick={(e) => {
               e.preventDefault()
               document
-                .getElementById('idea')
+                .getElementById('mission')
                 ?.scrollIntoView({ behavior: 'smooth' })
             }}
             className="group text-text-secondary hover:text-primary flex flex-col items-center gap-2 transition-colors"

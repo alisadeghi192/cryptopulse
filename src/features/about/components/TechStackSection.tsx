@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Layers, ArrowRight } from 'lucide-react'
 import { TECH_GROUPS, TECH_STACK } from '@/constants'
 
 export default function TechStackSection() {
@@ -127,6 +128,47 @@ export default function TechStackSection() {
               </div>
             )
           })}
+        </div>
+
+        {/* Architecture Principle Card */}
+        <div className="mt-16">
+          <div className="mb-3 flex items-center gap-2">
+            <Layers className="text-primary size-3.5" />
+            <span className="text-primary font-mono text-[10px] tracking-[0.25em] uppercase">
+              Architecture Principle
+            </span>
+            <div className="bg-border h-px flex-1" />
+            <span className="text-text-secondary font-mono text-[10px]">
+              Feature-based
+            </span>
+          </div>
+
+          <div className="border-border bg-surface/20 grid overflow-hidden rounded-2xl border shadow-lg md:grid-cols-[1fr_auto_1fr]">
+            {/* Left: What */}
+            <div className="p-5 sm:p-6">
+              <span className="text-text-secondary font-mono text-[10px] tracking-[0.2em] uppercase">
+                What we do
+              </span>
+              <p className="text-text mt-2 text-sm leading-relaxed font-medium">
+                Keep logic, styles, and data inside the feature that owns them.
+              </p>
+            </div>
+
+            {/* Center: Arrow */}
+            <div className="border-border/60 relative flex items-center justify-center border-y px-6 py-3 md:border-x md:border-y-0">
+              <ArrowRight className="text-primary size-4 rotate-90 md:rotate-0" />
+            </div>
+
+            {/* Right: Why */}
+            <div className="p-5 sm:p-6">
+              <span className="text-primary font-mono text-[10px] tracking-[0.2em] uppercase">
+                Why it matters
+              </span>
+              <p className="text-text mt-2 text-sm leading-relaxed font-medium">
+                Fewer shared abstractions → faster changes → fewer surprises.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
