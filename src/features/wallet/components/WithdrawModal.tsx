@@ -63,8 +63,7 @@ export function WithdrawModal({
   const isValid = numericAmount >= 10 && numericAmount <= currentBalance
 
   const handleMax = () => {
-    const max = maxWithdrawUsd(currentBalance, WITHDRAW_FEE)
-    setAmount(max.toFixed(2))
+    setAmount(maxWithdrawUsd(currentBalance).toFixed(2))
   }
 
   const handleConfirm = async () => {
@@ -218,7 +217,8 @@ export function WithdrawModal({
                     />
                   </div>
                   <p className="text-text/50 mt-1.5 font-mono text-[10px]">
-                    Min $10 · Fee: ${WITHDRAW_FEE.toFixed(2)} (deducted from amount)
+                    Min $10 · Fee: ${WITHDRAW_FEE.toFixed(2)} (deducted from
+                    amount)
                   </p>
                 </div>
 

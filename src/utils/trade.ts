@@ -40,8 +40,8 @@ export function maxSellCoin(holdingAmount: number): number {
  * In our model, fee is deducted FROM the withdrawal amount (not from cash).
  * So user can withdraw their entire cash balance (minus minimum).
  */
-export function maxWithdrawUsd(cashBalance: number, fee: number): number {
-  if (cashBalance < fee + 10) return 0
+export function maxWithdrawUsd(cashBalance: number): number {
+  if (cashBalance < 10) return 0
   return floorTo(cashBalance, USD_DECIMALS)
 }
 
