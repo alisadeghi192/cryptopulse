@@ -10,8 +10,8 @@ import {
 
 export function useWallet() {
   const user = useAuthStore((s) => s.user)
-  const isLoaded = useWalletStore((s) => s.isLoaded)
-  const loadedUserId = useWalletStore((s) => s.loadedUserId)
+  const reset = useWalletStore((s) => s.reset)
+
   const setWallet = useWalletStore((s) => s.setWallet)
   const setHoldings = useWalletStore((s) => s.setHoldings)
   const setTransactions = useWalletStore((s) => s.setTransactions)
@@ -19,37 +19,40 @@ export function useWallet() {
   const setLoading = useWalletStore((s) => s.setLoading)
   const setLoadedUserId = useWalletStore((s) => s.setLoadedUserId)
   const setError = useWalletStore((s) => s.setError)
-  const reset = useWalletStore((s) => s.reset)
+
+  const userId = user?.id
 
   useEffect(() => {
-    if (!user) {
+    if (!userId) {
       reset()
       return
     }
 
-    if (isLoaded && loadedUserId !== user.id) {
+    // Read current state without subscribing to it. This prevents the
+    // effect from re-running after reset() changes isLoaded/loadedUserId.
+    const state = useWalletStore.getState()
+
+    // Already loaded for this exact user → nothing to do.
+    if (state.isLoaded && state.loadedUserId === userId) return
+
+    // A different user's data is in the store → clear it first.
+    if (state.loadedUserId && state.loadedUserId !== userId) {
       reset()
     }
-
-    if (isLoaded && loadedUserId === user.id) return
 
     let cancelled = false
 
     async function load() {
-      if (!user) return
       setLoading(true)
-      setError(null) // ✅ Clear previous errors
+      setError(null)
 
       try {
-        let wallet = await fetchWallet(user.id)
-
-        if (!wallet) {
-          wallet = await createWallet(user.id)
-        }
+        let wallet = await fetchWallet(userId!)
+        if (!wallet) wallet = await createWallet(userId!)
 
         const [holdings, transactions] = await Promise.all([
-          fetchHoldings(user.id),
-          fetchTransactions(user.id),
+          fetchHoldings(userId!),
+          fetchTransactions(userId!),
         ])
 
         if (cancelled) return
@@ -57,7 +60,7 @@ export function useWallet() {
         setWallet(wallet)
         setHoldings(holdings)
         setTransactions(transactions)
-        setLoadedUserId(user.id)
+        setLoadedUserId(userId!)
         setLoaded(true)
       } catch (err: any) {
         if (!cancelled) {
@@ -75,9 +78,8 @@ export function useWallet() {
       cancelled = true
     }
   }, [
-    user,
-    isLoaded,
-    loadedUserId,
+    userId,
+    reset,
     setWallet,
     setHoldings,
     setTransactions,
@@ -85,6 +87,5 @@ export function useWallet() {
     setLoading,
     setLoadedUserId,
     setError,
-    reset,
   ])
 }
