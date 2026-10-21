@@ -46,6 +46,7 @@ export const PasswordField = forwardRef<
         />
         <button
           type="button"
+          tabIndex={-1}
           onClick={() => setShow((s) => !s)}
           aria-label={show ? 'Hide password' : 'Show password'}
           className="text-text/70 hover:text-text shrink-0 transition-colors"

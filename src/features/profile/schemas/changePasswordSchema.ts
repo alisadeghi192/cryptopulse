@@ -2,9 +2,6 @@ import { z } from 'zod'
 
 export const changePasswordSchema = z
   .object({
-    currentPassword: z
-      .string()
-      .min(1, 'Current password is required'),
     newPassword: z
       .string()
       .min(1, 'New password is required')
@@ -15,10 +12,6 @@ export const changePasswordSchema = z
   .refine((d) => d.newPassword === d.confirmPassword, {
     message: 'Passwords do not match',
     path: ['confirmPassword'],
-  })
-  .refine((d) => d.newPassword !== d.currentPassword, {
-    message: 'New password must differ from current',
-    path: ['newPassword'],
   })
 
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>

@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Shield,
-  LogOut,
   Download,
   ChevronRight,
   ChevronDown,
@@ -25,18 +23,15 @@ import {
 import { cn } from '@/utils/cn'
 
 export function SecuritySection() {
-  const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
-  const signOutAll = useAuthStore((s) => s.signOutAll)
   const changePassword = useAuthStore((s) => s.changePassword)
-  
+
   const watchlistIds = useWatchlistStore((s) => s.coinIds)
   const wallet = useWalletStore((s) => s.wallet)
   const holdings = useWalletStore((s) => s.holdings)
   const transactions = useWalletStore((s) => s.transactions)
 
   const [passwordOpen, setPasswordOpen] = useState(false)
-  const [signingOut, setSigningOut] = useState(false)
 
   const {
     register,
@@ -46,17 +41,13 @@ export function SecuritySection() {
   } = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
-      currentPassword: '',
       newPassword: '',
       confirmPassword: '',
     },
   })
 
   const onSubmit = async (data: ChangePasswordFormData) => {
-    const { error } = await changePassword(
-      data.currentPassword,
-      data.newPassword,
-    )
+    const { error } = await changePassword('', data.newPassword)
 
     if (error) {
       toast.error('Failed to change password', { description: error })
@@ -68,20 +59,6 @@ export function SecuritySection() {
     })
     reset()
     setPasswordOpen(false)
-  }
-
-  const handleSignOutAll = async () => {
-    setSigningOut(true)
-    const { error } = await signOutAll()
-
-    if (error) {
-      toast.error('Failed to sign out', { description: error })
-      setSigningOut(false)
-      return
-    }
-
-    toast.success('Signed out from all devices')
-    navigate('/')
   }
 
   const handleExport = () => {
@@ -99,13 +76,13 @@ export function SecuritySection() {
       },
       wallet: {
         cash_balance: wallet?.cash_balance ?? 0,
-        holdings: holdings.map(h => ({
+        holdings: holdings.map((h) => ({
           coin_id: h.coin_id,
           coin_symbol: h.coin_symbol,
           amount: h.amount,
           avg_buy_price: h.avg_buy_price,
         })),
-        transactions: transactions.map(t => ({
+        transactions: transactions.map((t) => ({
           type: t.type,
           coin_symbol: t.coin_symbol,
           amount: t.amount,
@@ -198,16 +175,6 @@ export function SecuritySection() {
                   noValidate
                 >
                   <PasswordField
-                    id="current-password"
-                    label="Current Password"
-                    icon={Lock}
-                    placeholder="••••••••"
-                    disabled={isSubmitting}
-                    error={errors.currentPassword?.message}
-                    {...register('currentPassword')}
-                  />
-
-                  <PasswordField
                     id="new-password"
                     label="New Password"
                     icon={Lock}
@@ -247,33 +214,6 @@ export function SecuritySection() {
               </div>
             </div>
           </div>
-
-          {/* ── Sign Out All Devices ── */}
-          <button
-            type="button"
-            onClick={handleSignOutAll}
-            disabled={signingOut}
-            className="group hover:bg-error/5 border-border/30 cursor-pointer flex w-full items-center justify-between gap-4 border-b px-5 py-4 text-left transition-colors disabled:opacity-50"
-          >
-            <div className="flex items-center gap-3">
-              <div className="border-error/30 bg-error/10 text-error flex size-9 shrink-0 items-center justify-center rounded-lg border backdrop-blur-sm">
-                {signingOut ? (
-                  <Loader2 className="size-4 animate-spin" />
-                ) : (
-                  <LogOut className="size-4" />
-                )}
-              </div>
-              <div>
-                <p className="text-text text-sm font-medium">
-                  Sign Out from All Devices
-                </p>
-                <p className="text-text/70 mt-0.5 font-mono text-[11px]">
-                  End all active sessions
-                </p>
-              </div>
-            </div>
-            <ChevronRight className="text-text/70 group-hover:text-error size-4 shrink-0 transition-all group-hover:translate-x-0.5" />
-          </button>
 
           {/* ── Export Data ── */}
           <button

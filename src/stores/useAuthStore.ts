@@ -18,7 +18,6 @@ interface AuthState {
     phone: string,
   ) => Promise<{ error: string | null; needsEmailVerification?: boolean }>
   signOut: () => Promise<{ error: string | null }>
-  signOutAll: () => Promise<{ error: string | null }>
   updateProfile: (data: {
     full_name?: string
     avatar_url?: string
@@ -134,17 +133,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     return { error: null }
   },
 
-  signOutAll: async () => {
-    const { error } = await supabase.auth.signOut({ scope: 'global' })
-
-    if (error) {
-      return { error: error.message }
-    }
-
-    set({ user: null, session: null })
-    return { error: null }
-  },
-
   updateProfile: async (data) => {
     const { data: res, error } = await supabase.auth.updateUser({ data })
 
@@ -156,31 +144,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     return { error: null }
   },
 
-  changePassword: async (currentPassword, newPassword) => {
-    const user = get().user
-    if (!user?.email) {
-      return { error: 'No user signed in' }
-    }
+changePassword: async (_currentPassword, newPassword) => {
+  const user = get().user
+  if (!user?.email) {
+    return { error: 'No user signed in' }
+  }
 
-    // Check current password
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: user.email,
-      password: currentPassword,
-    })
+  // Requires an active session. For a production app, guard this with a
+  // re-authentication step or email confirmation.
+  const { error } = await supabase.auth.updateUser({ password: newPassword })
 
-    if (signInError) {
-      return { error: 'Current password is incorrect' }
-    }
+  if (error) {
+    return { error: error.message }
+  }
 
-    // Update user password
-    const { error: updateError } = await supabase.auth.updateUser({
-      password: newPassword,
-    })
-
-    if (updateError) {
-      return { error: updateError.message }
-    }
-
-    return { error: null }
-  },
+  return { error: null }
+},
 }))
