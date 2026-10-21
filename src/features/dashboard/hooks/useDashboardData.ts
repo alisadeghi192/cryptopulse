@@ -116,7 +116,7 @@ export function useDashboardData() {
   }, [transactions])
 
   const { data: transactionCoins } = useCoins(
-    { ids: transactionCoinIds },
+    { ids: transactionCoinIds, perPage: 250 },
     !!transactionCoinIds,
   )
 
