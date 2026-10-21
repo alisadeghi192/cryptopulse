@@ -16,6 +16,7 @@ import { cn } from '@/utils/cn'
 import { Logo } from '../ui/Logo'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { Z_LAYERS } from '@/constants'
+import { confirm } from '@/lib/confirm'
 
 interface NavLinkItem {
   label: string
@@ -54,6 +55,15 @@ export function MobileNavDrawer({
   const avatarUrl = (user?.user_metadata?.avatar_url as string) || null
 
   const handleSignOut = async () => {
+    const ok = await confirm({
+      title: 'Sign out?',
+      description: 'You will need to sign in again to access your account.',
+      confirmLabel: 'Sign Out',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
+    })
+    if (!ok) return
+
     onClose()
     await signOut()
     toast.success('Signed out')

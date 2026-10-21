@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router'
+import { confirm } from '@/lib/confirm'
 import {
   ChevronDown,
   LayoutDashboard,
@@ -73,6 +74,15 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
   }
 
   const handleSignOut = async () => {
+    const ok = await confirm({
+      title: 'Sign out?',
+      description: 'You will need to sign in again to access your account.',
+      confirmLabel: 'Sign Out',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
+    })
+    if (!ok) return
+
     setOpen(false)
     await signOut()
     toast.success('Signed out')
@@ -151,7 +161,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
           )}
         >
           <div className="border-border/60 bg-surface overflow-hidden rounded-xl border p-1.5 shadow-sm">
-            <div className="flex items-center gap-2.5 border-b border-border/40 px-3 pb-2.5">
+            <div className="border-border/40 flex items-center gap-2.5 border-b px-3 pb-2.5">
               <Avatar size="md" />
               <div className="min-w-0">
                 <p className="text-text truncate text-sm font-medium">
@@ -183,7 +193,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
             <button
               type="button"
               onClick={handleSignOut}
-              className="text-error cursor-pointer hover:bg-error/10 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
+              className="text-error hover:bg-error/10 flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
             >
               <LogOut className="h-4 w-4 shrink-0" />
               <span>Sign Out</span>

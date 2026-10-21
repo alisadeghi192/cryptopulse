@@ -4,6 +4,7 @@ import { TopBar } from '@/components/layout/TopBar'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { PageLoader } from '@/components/ui/PageLoader'
 import { useAuthStore } from '@/stores/useAuthStore'
+import { confirm } from '@/lib/confirm'
 
 export function AppLayout() {
   const [collapsed, setCollapsed] = useState(false)
@@ -15,6 +16,15 @@ export function AppLayout() {
   const navigate = useNavigate()
 
   const handleSignOut = async () => {
+    const ok = await confirm({
+      title: 'Sign out?',
+      description: 'You will need to sign in again to access your account.',
+      confirmLabel: 'Sign Out',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
+    })
+    if (!ok) return
+
     await signOut()
     navigate('/')
   }
@@ -28,7 +38,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className="container flex h-screen flex-col overflow-hidden bg-background">
+    <div className="bg-background container flex h-screen flex-col overflow-hidden">
       <TopBar
         onMenuClick={() => setMobileOpen(true)}
         showNav={true}
