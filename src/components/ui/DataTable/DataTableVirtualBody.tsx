@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { flexRender, type Table } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { Link } from 'react-router' 
+import { Link } from 'react-router'
 import { cn } from '@/utils/cn'
 
 interface DataTableVirtualBodyProps<TData> {
@@ -73,7 +73,7 @@ export function DataTableVirtualBody<TData>({
       >
         {items.map((virtualRow) => {
           const row = rows[virtualRow.index]
-          
+
           const coinId = (row.original as any)?.id as string | undefined
           const isCoin = !!coinId
 
@@ -92,33 +92,46 @@ export function DataTableVirtualBody<TData>({
               }}
             >
               {isCoin ? (
-                <Link
-                  to={`/coin/${coinId}`}
-                  className="flex h-14 items-center px-3 md:px-4"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <div
-                      key={cell.id}
-                      style={{ width: cell.column.getSize() }}
-                      className={cn(
-                        'shrink-0',
-                        cell.column.id === 'name' && 'flex-1',
-                        cell.column.columnDef.meta?.hideBelow === 'sm' &&
-                          'hidden sm:block',
-                        cell.column.columnDef.meta?.hideBelow === 'md' &&
-                          'hidden md:block',
-                        cell.column.columnDef.meta?.hideBelow === 'lg' &&
-                          'hidden lg:block',
-                        cell.column.columnDef.meta?.hideBelow === 'xl' &&
-                          'hidden xl:block',
-                        cell.column.columnDef.meta?.hideBelow === '2xl' &&
-                          'hidden 2xl:block',
-                      )}
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </div>
-                  ))}
-                </Link>
+                <div className="flex h-14 items-center px-3 md:px-4">
+                  {row.getVisibleCells().map((cell) => {
+                    const isWatchlistCell = cell.column.id === 'watchlist'
+                    const content = flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext(),
+                    )
+                    return (
+                      <div
+                        key={cell.id}
+                        style={{ width: cell.column.getSize() }}
+                        className={cn(
+                          'shrink-0',
+                          cell.column.id === 'name' && 'flex-1',
+                          cell.column.columnDef.meta?.hideBelow === 'sm' &&
+                            'hidden sm:block',
+                          cell.column.columnDef.meta?.hideBelow === 'md' &&
+                            'hidden md:block',
+                          cell.column.columnDef.meta?.hideBelow === 'lg' &&
+                            'hidden lg:block',
+                          cell.column.columnDef.meta?.hideBelow === 'xl' &&
+                            'hidden xl:block',
+                          cell.column.columnDef.meta?.hideBelow === '2xl' &&
+                            'hidden 2xl:block',
+                        )}
+                      >
+                        {isWatchlistCell ? (
+                          content
+                        ) : (
+                          <Link
+                            to={`/coin/${coinId}`}
+                            className="flex h-full w-full items-center"
+                          >
+                            {content}
+                          </Link>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
               ) : (
                 <div className="flex h-14 items-center px-3 md:px-4">
                   {row.getVisibleCells().map((cell) => (
@@ -140,7 +153,10 @@ export function DataTableVirtualBody<TData>({
                           'hidden 2xl:block',
                       )}
                     >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </div>
                   ))}
                 </div>

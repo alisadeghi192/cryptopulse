@@ -195,61 +195,63 @@ function WatchlistRow({ coin }: { coin: Coin }) {
       : isPositive
 
   return (
-    <Link
-      to={`/coin/${coin.id}`}
-      className="border-border/40 shadow-md bg-surface/40 hover:border-border hover:bg-elevated/30 group flex items-center gap-3 rounded-xl border p-3 backdrop-blur-xl transition-colors"
-    >
-      <span className="text-text-secondary w-5 shrink-0 text-center font-mono text-[10px]">
-        {coin.market_cap_rank}
-      </span>
+    <div className="relative">
+      <Link
+        to={`/coin/${coin.id}`}
+        className="border-border/40 shadow-md bg-surface/40 hover:border-border hover:bg-elevated/30 group flex items-center gap-3 rounded-xl border p-3 pr-12 backdrop-blur-xl transition-colors"
+      >
+        <span className="text-text-secondary w-5 shrink-0 text-center font-mono text-[10px]">
+          {coin.market_cap_rank}
+        </span>
 
-      <img
-        src={coin.image}
-        alt={coin.name}
-        className="h-9 w-9 shrink-0 rounded-full"
-      />
+        <img
+          src={coin.image}
+          alt={coin.name}
+          className="h-9 w-9 shrink-0 rounded-full"
+        />
 
-      <div className="min-w-0 flex-1">
-        <p className="text-text truncate text-sm font-medium">{coin.name}</p>
-        <p className="text-text-secondary font-mono text-[10px] uppercase">
-          {coin.symbol}
-        </p>
-      </div>
-
-      {sparkData.length > 1 && (
-        <div className="hidden shrink-0 sm:block">
-          <MiniSparkline
-            data={sparkData}
-            isPositive={sparkPositive}
-            width={70}
-            height={28}
-          />
+        <div className="min-w-0 flex-1">
+          <p className="text-text truncate text-sm font-medium">{coin.name}</p>
+          <p className="text-text-secondary font-mono text-[10px] uppercase">
+            {coin.symbol}
+          </p>
         </div>
-      )}
 
-      <div className="shrink-0 text-right">
-        <p className="text-text font-mono text-sm tabular-nums">
-          $
-          <FlashValue
-            value={coin.current_price}
-            decimals={coin.current_price < 1 ? 4 : 2}
-          />
-        </p>
-        <p
-          className={cn(
-            'font-mono text-xs tabular-nums',
-            isPositive ? 'text-success' : 'text-error',
-          )}
-        >
-          {isPositive ? '+' : ''}
-          {change.toFixed(2)}%
-        </p>
-      </div>
+        {sparkData.length > 1 && (
+          <div className="hidden shrink-0 sm:block">
+            <MiniSparkline
+              data={sparkData}
+              isPositive={sparkPositive}
+              width={70}
+              height={28}
+            />
+          </div>
+        )}
 
-      <div className="shrink-0 pl-1">
+        <div className="shrink-0 text-right">
+          <p className="text-text font-mono text-sm tabular-nums">
+            $
+            <FlashValue
+              value={coin.current_price}
+              decimals={coin.current_price < 1 ? 4 : 2}
+            />
+          </p>
+          <p
+            className={cn(
+              'font-mono text-xs tabular-nums',
+              isPositive ? 'text-success' : 'text-error',
+            )}
+          >
+            {isPositive ? '+' : ''}
+            {change.toFixed(2)}%
+          </p>
+        </div>
+      </Link>
+
+      <div className="absolute top-1/2 right-3 -translate-y-1/2">
         <WatchlistButton coinId={coin.id} size="sm" />
       </div>
-    </Link>
+    </div>
   )
 }
 

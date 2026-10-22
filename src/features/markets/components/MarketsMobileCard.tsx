@@ -13,52 +13,59 @@ export function MarketsMobileCard({ coin }: MarketsMobileCardProps) {
   const isPositive = change24h >= 0
 
   return (
-    <Link
-      to={`/coin/${coin.id}`}
-      className="border-border bg-surface shadow-md flex items-center gap-3 rounded-xl border p-3 transition-colors"
-    >
-      {/* Rank */}
-      <span className="text-text-secondary w-6 shrink-0 font-mono text-xs">
-        {coin.market_cap_rank}
-      </span>
+    <div className="relative">
+      <Link
+        to={`/coin/${coin.id}`}
+        className="border-border bg-surface shadow-md flex items-center gap-3 rounded-xl border p-3 transition-colors"
+      >
+        {/* Rank */}
+        <span className="text-text-secondary w-6 shrink-0 font-mono text-xs">
+          {coin.market_cap_rank}
+        </span>
 
-      {/* Logo */}
-      <img
-        src={coin.image}
-        alt={coin.name}
-        className="h-9 w-9 shrink-0 rounded-full"
-      />
+        {/* Logo */}
+        <img
+          src={coin.image}
+          alt={coin.name}
+          className="h-9 w-9 shrink-0 rounded-full"
+        />
 
-      {/* Name + Symbol */}
-      <div className="min-w-0 flex-1">
-        <p className="text-text truncate text-sm font-medium">{coin.name}</p>
-        <p className="text-text-secondary font-mono text-[10px] uppercase">
-          {coin.symbol}
-        </p>
+        {/* Name + Symbol */}
+        <div className="min-w-0 flex-1">
+          <p className="text-text truncate text-sm font-medium">{coin.name}</p>
+          <p className="text-text-secondary font-mono text-[10px] uppercase">
+            {coin.symbol}
+          </p>
+        </div>
+
+        {/* Price + Change */}
+        <div className="shrink-0 text-right">
+          <p className="text-text font-mono text-sm tabular-nums">
+            $
+            <FlashValue
+              value={coin.current_price}
+              decimals={coin.current_price < 1 ? 4 : 2}
+            />
+          </p>
+          <p
+            className={cn(
+              'font-mono text-xs tabular-nums',
+              isPositive ? 'text-success' : 'text-error',
+            )}
+          >
+            {isPositive ? '+' : ''}
+            {change24h.toFixed(2)}%
+          </p>
+        </div>
+
+        {/* Reserve space for the watchlist button */}
+        <div className="w-6 shrink-0" aria-hidden="true" />
+      </Link>
+
+      {/* Watchlist button as sibling of the link */}
+      <div className="absolute top-1/2 right-3 -translate-y-1/2">
+        <WatchlistButton coinId={coin.id} size="sm" />
       </div>
-
-      {/* Price + Change */}
-      <div className="shrink-0 text-right">
-        <p className="text-text font-mono text-sm tabular-nums">
-          $
-          <FlashValue
-            value={coin.current_price}
-            decimals={coin.current_price < 1 ? 4 : 2}
-          />
-        </p>
-        <p
-          className={cn(
-            'font-mono text-xs tabular-nums',
-            isPositive ? 'text-success' : 'text-error',
-          )}
-        >
-          {isPositive ? '+' : ''}
-          {change24h.toFixed(2)}%
-        </p>
-      </div>
-
-      {/* Star */}
-      <WatchlistButton coinId={coin.id} size="sm" />
-    </Link>
+    </div>
   )
 }
