@@ -38,4 +38,6 @@ export interface HoldingWithPrice extends Holding {
   cost_basis: number
   pnl: number
   pnl_percent: number
+  change24h?: number
+  isPriceAvailable: boolean
 }

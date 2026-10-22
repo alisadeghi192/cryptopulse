@@ -2,26 +2,7 @@ import { useMemo } from 'react'
 import { useCoins } from '@/hooks/useCoins'
 import { useWalletStore } from '@/stores/useWalletStore'
 import type { Coin } from '@/types/coin'
-
-export interface HoldingWithPrice {
-  id: string
-  user_id: string
-  coin_id: string
-  coin_symbol: string
-  amount: number
-  avg_buy_price: number
-  created_at: string
-  // Enriched fields
-  image: string
-  current_price: number
-  current_value: number
-  cost_basis: number
-  pnl: number
-  pnl_percent: number
-  change24h?: number
-  // Status flags
-  isPriceAvailable: boolean
-}
+import type { HoldingWithPrice } from '@/types/wallet'
 
 export function useHoldingsWithPrice() {
   const holdings = useWalletStore((s) => s.holdings)
@@ -30,24 +11,22 @@ export function useHoldingsWithPrice() {
   const idsParam = coinIds.length > 0 ? coinIds.join(',') : undefined
 
   const { data: coins, isLoading: isCoinsLoading } = useCoins(
-    {
-      ids: idsParam,
-      perPage: 250,
-    },
-    coinIds.length > 0, // ✅ Only fetch if we have holdings
+    { ids: idsParam, perPage: 250 },
+    coinIds.length > 0,
   )
 
   const holdingsWithPrice = useMemo<HoldingWithPrice[]>(() => {
     return holdings.map((h) => {
       const coin = coins?.find((c: Coin) => c.id === h.coin_id)
-      
+
       const isPriceAvailable = !!coin && coin.current_price > 0
       const currentPrice = isPriceAvailable ? coin.current_price : 0
-      
+
       const currentValue = h.amount * currentPrice
       const costBasis = h.amount * h.avg_buy_price
       const pnl = isPriceAvailable ? currentValue - costBasis : 0
-      const pnlPercent = isPriceAvailable && costBasis > 0 ? (pnl / costBasis) * 100 : 0
+      const pnlPercent =
+        isPriceAvailable && costBasis > 0 ? (pnl / costBasis) * 100 : 0
 
       return {
         ...h,
@@ -69,10 +48,7 @@ export function useHoldingsWithPrice() {
       0,
     )
     const totalPnl = holdingsWithPrice.reduce((sum, h) => sum + h.pnl, 0)
-    // Check if any holding is still waiting for its price
-    const hasUnavailablePrices = holdingsWithPrice.some((h) => !h.isPriceAvailable)
-    
-    return { holdingsValue, totalPnl, hasUnavailablePrices, isCoinsLoading }
+    return { holdingsValue, totalPnl, isCoinsLoading }
   }, [holdingsWithPrice, isCoinsLoading])
 
   return {
