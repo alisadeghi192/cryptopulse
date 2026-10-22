@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useWalletStore } from '@/stores/useWalletStore'
-import { useWatchlistStore } from '@/stores/useWatchlistStore'
 import { useHoldingsWithPrice } from '@/features/wallet/hooks/useHoldingsWithPrice'
 import { useCoinImages } from '@/hooks/useCoinImages'
 import { useTrending } from '@/hooks/useTrending'
@@ -27,7 +26,6 @@ export function useDashboardData() {
   const user = useAuthStore((s) => s.user)
   const cashBalance = useWalletStore((s) => s.wallet?.cash_balance ?? 0)
   const transactions = useWalletStore((s) => s.transactions)
-  const coinIds = useWatchlistStore((s) => s.coinIds)
 
   const { holdingsWithPrice, holdingsValue, totalPnl } = useHoldingsWithPrice()
   const { data: trending } = useTrending()
@@ -91,7 +89,6 @@ export function useDashboardData() {
         symbol: h.coin_symbol,
         image: h.image,
         change: h.change24h as number,
-        value: h.current_value,
       }))
 
     const gainers = [...withChange]
@@ -127,7 +124,6 @@ export function useDashboardData() {
     dailyPnl,
     allocation,
     holdingsWithPrice,
-    watchlistCount: coinIds.length,
     personalMovers,
     trending: trending ?? [],
     recentTransactions: transactions.slice(0, 3),

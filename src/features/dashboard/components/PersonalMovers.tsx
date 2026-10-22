@@ -9,7 +9,6 @@ interface Mover {
   symbol: string
   image: string
   change: number
-  value: number
 }
 
 interface PersonalMoversProps {
