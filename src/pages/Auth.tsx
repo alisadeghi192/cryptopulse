@@ -96,32 +96,21 @@ function FormSlot({ isLogin, onSwitch, email }: FormSlotProps) {
 
 export function Auth() {
   const { pathname } = useLocation()
-  const [params, setParams] = useSearchParams()
+  const [params] = useSearchParams()
   const navigate = useNavigate()
 
-  // Extract email from URL
   const emailParam = params.get('email') || undefined
 
-  const modeFromPath: AuthMode = pathname.includes('register')
+  const mode: AuthMode = pathname.includes('register')
     ? 'register'
     : 'login'
-
-  const mode = (params.get('mode') as AuthMode | null) ?? modeFromPath
   const isLogin = mode === 'login'
-
-  useEffect(() => {
-    if (params.get('mode')) {
-      const next = new URLSearchParams(params)
-      next.delete('mode')
-      setParams(next, { replace: true })
-    }
-  }, [pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSwitch = () => {
     const next = new URLSearchParams(params)
-    next.delete('mode')
-    setParams(next, { replace: true })
-    navigate(isLogin ? '/register' : '/login', { replace: true })
+    const qs = next.toString()
+    const base = isLogin ? '/register' : '/login'
+    navigate(qs ? `${base}?${qs}` : base, { replace: true })
   }
 
   return (
