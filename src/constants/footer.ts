@@ -1,9 +1,4 @@
-import {
-  GithubIcon,
-  TelegramIcon,
-  LinkedinIcon,
-  InstagramIcon,
-} from '@/components/ui/BrandIcons'
+
 
 export const FOOTER_LINKS = {
   Platform: [
@@ -24,19 +19,13 @@ export const FOOTER_LINKS = {
   ],
 } as const
 
-export const SOCIAL_LINKS = [
-  { icon: GithubIcon, href: 'https://github.com', label: 'GitHub' },
-  { icon: LinkedinIcon, href: 'https://linkedin.com', label: 'LinkedIn' },
-  { icon: InstagramIcon, href: 'https://instagram.com', label: 'Instagram' },
-  { icon: TelegramIcon, href: 'https://t.me', label: 'Telegram' },
-] as const
 
 export const FOOTER_TEXT = {
   description:
     'Real-time crypto market data, curated and beautiful. Track 5,000+ coins with live prices and zero noise.',
   copyright: (year: number) =>
     `© ${year} CryptoPulse — Built with React, TanStack & Supabase`,
-  sourceUrl: 'https://github.com',
+  sourceUrl: 'https://github.com/alisadeghi192/cryptopulse',
   sourceLabel: 'Source',
   version: 'v0.1.0',
 } as const

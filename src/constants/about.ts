@@ -260,21 +260,3 @@ export const TECH_STACK = [
   },
 ] as const
 
-export const FEATURES = [
-  {
-    icon: Gauge,
-    eyebrow: 'Performance',
-    title: 'Built for data-heavy interfaces',
-    description:
-      'Virtualized rendering keeps large cryptocurrency datasets responsive by limiting DOM work to the content users can actually see.',
-    size: 'large',
-    color: {
-      text: 'text-primary',
-      bg: 'bg-primary/10',
-      border: 'border-primary/30',
-      glow: 'rgba(255, 193, 7, 0.12)',
-    },
-  },
-]
-
-export const ENGINEERING_POINTS = []

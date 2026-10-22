@@ -62,7 +62,7 @@ export function TelemetryStrip() {
           className="text-text-secondary hover:text-primary flex items-center gap-1.5 transition-colors"
         >
           <Radio className="text-primary h-3 w-3" />
-          <span>CoinGecko · 2-min refresh</span>
+          <span>{TELEMETRY.dataSource}</span>
         </a>
       </div>
 
