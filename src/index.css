@@ -476,6 +476,31 @@ html[data-theme-vt='active'] * {
   }
 }
 
+/* ─── Flash Value (price tickers) ─── */
+@keyframes flash-pulse {
+  0% {
+    background-color: color-mix(in srgb, currentColor 22%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* ─── Password Field Error ─── */
+@keyframes error-pulse {
+  0% {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ─── Coin / UI Transitions ─── */
 @keyframes slide-fade {
   0% {
