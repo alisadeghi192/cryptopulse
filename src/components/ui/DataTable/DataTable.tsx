@@ -45,9 +45,7 @@ export function DataTable<TData>({
     },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    columnResizeMode: 'onChange',
   })
-
   // ─── Mobile virtualizer (always called, count=0 when not mobile) ───
   const mobileVirtualizer = useVirtualizer({
     count: isMobile && mobileCardRender ? data.length : 0,
@@ -63,7 +61,7 @@ export function DataTable<TData>({
     return (
       <div
         ref={mobileParentRef}
-        className={cn('h-[70vh] overflow-y-auto custom-scroll', className)}
+        className={cn('custom-scroll h-[70vh] overflow-y-auto', className)}
         onScroll={(e) => {
           const el = e.currentTarget
           const nearBottom =
