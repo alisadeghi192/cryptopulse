@@ -17,6 +17,7 @@ import { buttonVariants } from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
 import { coinImageUrl } from '@/utils/image'
+import { EmptyState } from '@/components/ui/EmptyState'
 
 export function Watchlist() {
   const [search, setSearch] = useState('')
@@ -143,7 +144,24 @@ export function Watchlist() {
         {isLoadingPage ? (
           <MarketsSkeleton />
         ) : watchlistCoins.length === 0 ? (
-          <EmptyState />
+          <EmptyState
+            icon={Star}
+            title="Your watchlist is empty"
+            description="Add coins you want to track — they'll appear here"
+            variant="gold"
+            action={
+              <Link
+                to="/markets"
+                className={cn(
+                  buttonVariants({ variant: 'primary', size: 'md' }),
+                  'gap-2',
+                )}
+              >
+                <Compass className="h-4 w-4" />
+                Explore Markets
+              </Link>
+            }
+          />
         ) : isSearchEmpty ? (
           <MarketsEmpty
             variant="notFound"
@@ -253,43 +271,5 @@ function WatchlistRow({ coin }: { coin: Coin }) {
         <WatchlistButton coinId={coin.id} size="sm" />
       </div>
     </div>
-  )
-}
-
-/* ─── Empty ─── */
-function EmptyState() {
-  return (
-    <BlurFade delay={0.1}>
-      <div className="border-border bg-surface/30 relative overflow-hidden rounded-2xl border shadow-xl backdrop-blur-xl">
-        <div className="pointer-events-none absolute inset-0">
-          <AmbientLights variant="gold" intensity="subtle" />
-        </div>
-        <div className="relative flex flex-col items-center gap-6 p-12 text-center">
-          <div className="border-border bg-elevated/60 flex size-16 items-center justify-center rounded-2xl border shadow-sm">
-            <Star className="text-text-secondary h-7 w-7" />
-          </div>
-
-          <div>
-            <p className="text-text font-mono text-sm font-medium">
-              Your watchlist is empty
-            </p>
-            <p className="text-text-secondary mt-1.5 font-mono text-xs">
-              Add coins you want to track — they'll appear here
-            </p>
-          </div>
-
-          <Link
-            to="/markets"
-            className={cn(
-              buttonVariants({ variant: 'primary', size: 'md' }),
-              'gap-2',
-            )}
-          >
-            <Compass className="h-4 w-4" />
-            Explore Markets
-          </Link>
-        </div>
-      </div>
-    </BlurFade>
   )
 }

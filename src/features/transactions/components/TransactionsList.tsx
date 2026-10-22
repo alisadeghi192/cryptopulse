@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Receipt } from 'lucide-react'
-import { AmbientLights } from '@/components/ui/AmbientLights'
 import { BlurFade } from '@/components/ui/BlurFade'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { TransactionItem } from './TransactionItem'
 import { TransactionModal } from './TransactionModal'
 import type { Transaction } from '@/types/wallet'
@@ -21,26 +21,12 @@ export function TransactionsList({
 
   if (transactions.length === 0) {
     return (
-      <BlurFade delay={0.1}>
-        <div className="border-border/40 bg-surface/40 relative overflow-hidden shadow-xl rounded-2xl border backdrop-blur-3xl">
-          <div className="pointer-events-none absolute inset-0">
-            <AmbientLights variant="blue" intensity="subtle" />
-          </div>
-          <div className="relative flex flex-col items-center gap-5 p-12 text-center">
-            <div className="border-border/40 bg-elevated/40 flex size-16 items-center justify-center rounded-2xl border shadow-sm">
-              <Receipt className="text-text/40 size-7" />
-            </div>
-            <div>
-              <p className="text-text font-mono text-sm font-medium">
-                No transactions found
-              </p>
-              <p className="text-text/60 mt-1 font-mono text-xs">
-                Try a different filter or make your first deposit
-              </p>
-            </div>
-          </div>
-        </div>
-      </BlurFade>
+      <EmptyState
+        icon={Receipt}
+        title="No transactions found"
+        description="Try a different filter or make your first deposit"
+        variant="blue"
+      />
     )
   }
 
