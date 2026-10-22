@@ -6,6 +6,7 @@ import { AuthLayout } from '@/layouts/AuthLayout'
 import { PageLoader } from '@/components/ui/PageLoader'
 import { NotFound } from '@/pages/NotFound'
 import { Auth } from '@/pages/Auth'
+import { RouteError } from '@/components/ui/RouteError'
 
 const Home = lazy(() =>
   import('@/pages/Home').then((m) => ({ default: m.Home })),
@@ -46,6 +47,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <RouteError />,
     children: [
       {
         index: true,
@@ -92,6 +94,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
+    errorElement: <RouteError />,
     children: [
       {
         path: 'dashboard',
@@ -125,7 +128,7 @@ export const router = createBrowserRouter([
           </LazyPage>
         ),
       },
-       {
+      {
         path: 'transactions',
         element: (
           <LazyPage>
@@ -138,6 +141,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <AuthLayout />,
+    errorElement: <RouteError />,
     children: [
       {
         path: 'login',
