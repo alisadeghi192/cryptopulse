@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { flexRender, type Table } from '@tanstack/react-table'
+import type { Table } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { Link } from 'react-router'
-import { cn } from '@/utils/cn'
+import { DataTableRow } from './DataTableRow'
 
 interface DataTableVirtualBodyProps<TData> {
   table: Table<TData>
@@ -32,27 +31,17 @@ export function DataTableVirtualBody<TData>({
 
   const items = virtualizer.getVirtualItems()
 
-  // ─── Infinite scroll  ───
   useEffect(() => {
     const sentinel = sentinelRef.current
     const parent = parentRef.current
-    if (
-      !sentinel ||
-      !parent ||
-      !onLoadMore ||
-      !hasNextPage ||
-      isFetchingNextPage
-    )
+    if (!sentinel || !parent || !onLoadMore || !hasNextPage || isFetchingNextPage)
       return
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) onLoadMore()
       },
-      {
-        root: parent,
-        rootMargin: '400px',
-      },
+      { root: parent, rootMargin: '400px' },
     )
 
     observer.observe(sentinel)
@@ -73,99 +62,24 @@ export function DataTableVirtualBody<TData>({
       >
         {items.map((virtualRow) => {
           const row = rows[virtualRow.index]
-
-          const coinId = (row.original as any)?.id as string | undefined
-          const isCoin = !!coinId
+          const coinId = (row.original as { id?: string })?.id
 
           return (
             <div
               key={row.id}
               data-index={virtualRow.index}
               ref={(node) => virtualizer.measureElement(node)}
-              className={cn(
-                'absolute top-0 left-0 w-full',
-                'border-border/30 border-b',
-                'hover:bg-elevated/40 transition-colors',
-              )}
-              style={{
-                transform: `translateY(${virtualRow.start}px)`,
-              }}
+              className="border-border/30 hover:bg-elevated/40 absolute top-0 left-0 w-full border-b transition-colors"
+              style={{ transform: `translateY(${virtualRow.start}px)` }}
             >
-              {isCoin ? (
-                <div className="flex h-14 items-center px-3 md:px-4">
-                  {row.getVisibleCells().map((cell) => {
-                    const isWatchlistCell = cell.column.id === 'watchlist'
-                    const content = flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext(),
-                    )
-                    return (
-                      <div
-                        key={cell.id}
-                        style={{ width: cell.column.getSize() }}
-                        className={cn(
-                          'shrink-0',
-                          cell.column.id === 'name' && 'flex-1',
-                          cell.column.columnDef.meta?.hideBelow === 'sm' &&
-                            'hidden sm:block',
-                          cell.column.columnDef.meta?.hideBelow === 'md' &&
-                            'hidden md:block',
-                          cell.column.columnDef.meta?.hideBelow === 'lg' &&
-                            'hidden lg:block',
-                          cell.column.columnDef.meta?.hideBelow === 'xl' &&
-                            'hidden xl:block',
-                          cell.column.columnDef.meta?.hideBelow === '2xl' &&
-                            'hidden 2xl:block',
-                        )}
-                      >
-                        {isWatchlistCell ? (
-                          content
-                        ) : (
-                          <Link
-                            to={`/coin/${coinId}`}
-                            className="flex h-full w-full items-center"
-                          >
-                            {content}
-                          </Link>
-                        )}
-                      </div>
-                    )
-                  })}
-                </div>
-              ) : (
-                <div className="flex h-14 items-center px-3 md:px-4">
-                  {row.getVisibleCells().map((cell) => (
-                    <div
-                      key={cell.id}
-                      style={{ width: cell.column.getSize() }}
-                      className={cn(
-                        'shrink-0',
-                        cell.column.id === 'name' && 'flex-1',
-                        cell.column.columnDef.meta?.hideBelow === 'sm' &&
-                          'hidden sm:block',
-                        cell.column.columnDef.meta?.hideBelow === 'md' &&
-                          'hidden md:block',
-                        cell.column.columnDef.meta?.hideBelow === 'lg' &&
-                          'hidden lg:block',
-                        cell.column.columnDef.meta?.hideBelow === 'xl' &&
-                          'hidden xl:block',
-                        cell.column.columnDef.meta?.hideBelow === '2xl' &&
-                          'hidden 2xl:block',
-                      )}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <DataTableRow
+                row={row}
+                linkTo={coinId ? `/coin/${coinId}` : undefined}
+              />
             </div>
           )
         })}
 
-        {/* Sentinel infinite scroll */}
         <div
           ref={sentinelRef}
           style={{
@@ -177,7 +91,6 @@ export function DataTableVirtualBody<TData>({
           }}
         />
 
-        {/* Loading indicator */}
         {isFetchingNextPage && (
           <div
             style={{
