@@ -13,6 +13,8 @@ interface HoldingCardProps {
 
 export function HoldingCard({ holding }: HoldingCardProps) {
   const isPositive = holding.pnl >= 0
+  // ✅ Use a safe fallback for the image
+  const safeImage = holding.image || undefined
 
   return (
     <Link to={`/coin/${holding.coin_id}`} className="block h-full">
@@ -26,11 +28,19 @@ export function HoldingCard({ holding }: HoldingCardProps) {
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <img
-                  src={holding.image}
-                  alt={holding.coin_symbol}
-                  className="size-7 shrink-0 rounded-full"
-                />
+                {/* ✅ Only render <img> if safeImage exists */}
+                {safeImage ? (
+                  <img
+                    src={safeImage}
+                    alt={holding.coin_symbol}
+                    className="size-7 shrink-0 rounded-full bg-elevated"
+                  />
+                ) : (
+                  <div className="bg-elevated text-text-secondary flex size-7 shrink-0 items-center justify-center rounded-full font-mono text-xs font-bold uppercase">
+                    {holding.coin_symbol.slice(0, 2)}
+                  </div>
+                )}
+                
                 <div>
                   <p className="text-text font-mono text-sm font-semibold">
                     {holding.coin_symbol}

@@ -79,7 +79,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
     meetsMin &&
     (isBuy
       ? lte(total, cashBalance)
-      : lte(coinAmount, holdingAmount)) // ← اینجا دیگه safeCoinAmount نداریم و مستقیم coinAmount رو چک می‌کنیم
+      : lte(coinAmount, holdingAmount)) 
 
   useEffect(() => {
     if (open) {
