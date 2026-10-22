@@ -1,14 +1,16 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Navigate, Outlet, useNavigate } from 'react-router'
 import { TopBar } from '@/components/layout/TopBar'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { PageLoader } from '@/components/ui/PageLoader'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { confirm } from '@/lib/confirm'
 
 export function AppLayout() {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const mainRef = useRef<HTMLElement>(null)
 
   const user = useAuthStore((s) => s.user)
   const initialized = useAuthStore((s) => s.initialized)
@@ -38,7 +40,9 @@ export function AppLayout() {
   }
 
   return (
-    <div className="bg-background container flex h-screen flex-col overflow-hidden">
+    <div className="container flex h-screen flex-col overflow-hidden bg-background">
+      <ScrollToTop containerRef={mainRef} />
+
       <TopBar
         onMenuClick={() => setMobileOpen(true)}
         showNav={true}
@@ -55,7 +59,10 @@ export function AppLayout() {
           onSignOut={handleSignOut}
         />
 
-        <main className="custom-scroll min-w-0 flex-1 overflow-y-auto p-2 md:p-8">
+        <main
+          ref={mainRef}
+          className="custom-scroll min-w-0 flex-1 overflow-y-auto p-2 md:p-8"
+        >
           <Outlet />
         </main>
       </div>
