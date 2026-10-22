@@ -14,6 +14,7 @@ import { useWalletActions } from '@/hooks/useWalletActions'
 import { useTransactionFlow } from '@/hooks/useTransactionFlow'
 import { formatBalance } from '@/utils/format'
 import { cn } from '@/utils/cn'
+import { TRADE_LIMITS } from '@/constants'
 
 interface DepositModalProps {
   open: boolean
@@ -38,7 +39,9 @@ export function DepositModal({
   }, [open, reset])
 
   const numericAmount = parseFloat(amount) || 0
-  const isValid = numericAmount >= 10 && numericAmount <= 100_000
+  const isValid =
+    numericAmount >= TRADE_LIMITS.MIN_DEPOSIT_USD &&
+    numericAmount <= TRADE_LIMITS.MAX_DEPOSIT_USD
 
   const handleConfirm = async () => {
     const error = await run(() => deposit(numericAmount))
@@ -121,7 +124,8 @@ export function DepositModal({
                     />
                   </div>
                   <p className="text-text/50 mt-1.5 font-mono text-[10px]">
-                    Min $10 · Max $100,000
+                    Min ${TRADE_LIMITS.MIN_DEPOSIT_USD} · Max $
+                    {TRADE_LIMITS.MAX_DEPOSIT_USD.toLocaleString()}
                   </p>
                 </div>
 
@@ -182,9 +186,7 @@ export function DepositModal({
 
               <div className="border-border/40 bg-background/40 mb-5 space-y-3 rounded-xl border p-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-text/60 font-mono text-xs">
-                    Amount
-                  </span>
+                  <span className="text-text/60 font-mono text-xs">Amount</span>
                   <span className="text-success font-mono text-lg font-bold tabular-nums">
                     {formatBalance(numericAmount)}
                   </span>

@@ -1,6 +1,7 @@
 import { useCallback, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/stores/useAuthStore'
+import { WITHDRAW_FEE, TRADE_FEE_RATE } from '@/constants'
 import { useWalletStore } from '@/stores/useWalletStore'
 import {
   fetchWallet,
@@ -8,8 +9,6 @@ import {
   fetchTransactions,
 } from '@/lib/api/wallet'
 
-const WITHDRAW_FEE = 0.5
-const TRADE_FEE_RATE = 0.001
 
 interface RpcResponse {
   success: boolean

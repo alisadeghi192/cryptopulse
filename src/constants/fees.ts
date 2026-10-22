@@ -1,4 +1,10 @@
+export const TRADE_FEE_RATE = 0.001
+export const WITHDRAW_FEE = 0.5
+
 export const TRADE_LIMITS = {
   MIN_BUY_USD: 1,
   MIN_SELL_USD: 1,
+  MIN_DEPOSIT_USD: 10,
+  MAX_DEPOSIT_USD: 100_000,
+  MIN_WITHDRAW_USD: 10,
 } as const

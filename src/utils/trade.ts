@@ -1,3 +1,5 @@
+import { TRADE_LIMITS } from "@/constants"
+
 const COIN_DECIMALS = 8
 const USD_DECIMALS = 2
 
@@ -41,7 +43,7 @@ export function maxSellCoin(holdingAmount: number): number {
  * So user can withdraw their entire cash balance (minus minimum).
  */
 export function maxWithdrawUsd(cashBalance: number): number {
-  if (cashBalance < 10) return 0
+  if (cashBalance < TRADE_LIMITS.MIN_WITHDRAW_USD) return 0
   return floorTo(cashBalance, USD_DECIMALS)
 }
 

@@ -77,9 +77,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
   const isValid =
     coinAmount > 0 &&
     meetsMin &&
-    (isBuy
-      ? lte(total, cashBalance)
-      : lte(coinAmount, holdingAmount)) 
+    (isBuy ? lte(total, cashBalance) : lte(coinAmount, holdingAmount))
 
   useEffect(() => {
     if (open) {
@@ -286,7 +284,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-text/60 font-mono text-[10px]">
-                        Fee (0.1%)
+                        Fee ({(TRADE_FEE_RATE * 100).toFixed(1)}%)
                       </span>
                       <span className="text-error font-mono text-xs tabular-nums">
                         -{formatFee(fee)}
@@ -319,11 +317,13 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                     Insufficient balance
                   </p>
                 )}
-                {coinAmount > 0 && !isBuy && !lte(coinAmount, holdingAmount) && (
-                  <p className="text-error font-mono text-[11px]">
-                    Insufficient {coin.symbol.toUpperCase()}
-                  </p>
-                )}
+                {coinAmount > 0 &&
+                  !isBuy &&
+                  !lte(coinAmount, holdingAmount) && (
+                    <p className="text-error font-mono text-[11px]">
+                      Insufficient {coin.symbol.toUpperCase()}
+                    </p>
+                  )}
 
                 <div className="flex gap-3 pt-1">
                   <button
@@ -380,7 +380,7 @@ export function TradeModal({ open, onClose, coin, mode }: TradeModalProps) {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-text/60 font-mono text-xs">
-                    Fee (0.1%)
+                    Fee ({(TRADE_FEE_RATE * 100).toFixed(1)}%)
                   </span>
                   <span className="text-error font-mono text-xs tabular-nums">
                     -{formatFee(fee)}

@@ -18,6 +18,7 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import { formatBalance } from '@/utils/format'
 import { maxWithdrawUsd } from '@/utils/trade'
 import { cn } from '@/utils/cn'
+import { TRADE_LIMITS } from '@/constants'
 
 interface WithdrawModalProps {
   open: boolean
@@ -60,7 +61,9 @@ export function WithdrawModal({
   }, [open, hasCard, reset])
 
   const numericAmount = parseFloat(amount) || 0
-  const isValid = numericAmount >= 10 && numericAmount <= currentBalance
+  const isValid =
+    numericAmount >= TRADE_LIMITS.MIN_WITHDRAW_USD &&
+    numericAmount <= currentBalance
 
   const handleMax = () => {
     setAmount(maxWithdrawUsd(currentBalance).toFixed(2))
@@ -217,8 +220,8 @@ export function WithdrawModal({
                     />
                   </div>
                   <p className="text-text/50 mt-1.5 font-mono text-[10px]">
-                    Min $10 · Fee: ${WITHDRAW_FEE.toFixed(2)} (deducted from
-                    amount)
+                    Min ${TRADE_LIMITS.MIN_WITHDRAW_USD} · Fee: $
+                    {WITHDRAW_FEE.toFixed(2)} (deducted from amount)
                   </p>
                 </div>
 
