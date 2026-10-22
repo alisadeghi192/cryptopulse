@@ -1,5 +1,5 @@
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { fetchCoins, type FetchCoinsParams } from '@/lib/api/coins'
-import { useQuery } from '@tanstack/react-query'
 
 export function useCoins(
   params: FetchCoinsParams = {},
@@ -12,5 +12,6 @@ export function useCoins(
     staleTime: 1000 * 60 * 2,
     refetchInterval: 1000 * 60 * 2,
     refetchIntervalInBackground: false,
+    placeholderData: keepPreviousData,
   })
 }

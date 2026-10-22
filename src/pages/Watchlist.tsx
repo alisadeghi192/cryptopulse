@@ -48,7 +48,7 @@ export function Watchlist() {
     )
   }, [watchlistCoins, debouncedSearch])
 
-  const isLoadingPage = isLoading || !isLoaded
+  const isLoadingPage = !isLoaded || (isLoading && !allCoins)
   const isSearchEmpty = debouncedSearch.length > 0 && coins.length === 0
 
   // Stats: avg 24h change of watchlist
