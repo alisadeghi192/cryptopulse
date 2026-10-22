@@ -3,7 +3,7 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import { useWalletStore } from '@/stores/useWalletStore'
 import { useWatchlistStore } from '@/stores/useWatchlistStore'
 import { useHoldingsWithPrice } from '@/features/wallet/hooks/useHoldingsWithPrice'
-import { useCoins } from '@/hooks/useCoins'
+import { useCoinImages } from '@/hooks/useCoinImages'
 import { useTrending } from '@/hooks/useTrending'
 
 export interface AllocationSlice {
@@ -31,6 +31,7 @@ export function useDashboardData() {
 
   const { holdingsWithPrice, holdingsValue, totalPnl } = useHoldingsWithPrice()
   const { data: trending } = useTrending()
+  const coinImages = useCoinImages(transactions)
 
   // Daily P&L: reconstruct 24h-ago value from each holding's 24h change.
   const dailyPnl = useMemo(() => {
@@ -105,28 +106,6 @@ export function useDashboardData() {
 
     return { gainers, losers }
   }, [holdingsWithPrice])
-
-  // Fetch coin images for transaction list
-  const transactionCoinIds = useMemo(() => {
-    const ids = new Set<string>()
-    transactions.forEach((t) => {
-      if (t.coin_id) ids.add(t.coin_id)
-    })
-    return Array.from(ids).join(',')
-  }, [transactions])
-
-  const { data: transactionCoins } = useCoins(
-    { ids: transactionCoinIds, perPage: 250 },
-    !!transactionCoinIds,
-  )
-
-  const coinImages = useMemo(() => {
-    const map: Record<string, string> = {}
-    transactionCoins?.forEach((c) => {
-      map[c.id] = c.image
-    })
-    return map
-  }, [transactionCoins])
 
   const totalPortfolio = cashBalance + holdingsValue
 

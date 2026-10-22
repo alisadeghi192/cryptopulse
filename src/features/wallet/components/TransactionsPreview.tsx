@@ -9,6 +9,7 @@ import {
 import { BlurFade } from '@/components/ui/BlurFade'
 import { BalanceValue } from '@/components/ui/BalanceValue'
 import { useWalletStore } from '@/stores/useWalletStore'
+import { useCoinImages } from '@/hooks/useCoinImages'
 import { TransactionModal } from '@/features/transactions/components/TransactionModal'
 import { cn } from '@/utils/cn'
 import type { Transaction } from '@/types/wallet'
@@ -39,6 +40,7 @@ const TYPE_META = {
 export function TransactionsPreview() {
   const transactions = useWalletStore((s) => s.transactions)
   const [selected, setSelected] = useState<Transaction | null>(null)
+  const coinImages = useCoinImages(transactions)
 
   return (
     <BlurFade delay={0.15}>
@@ -118,7 +120,7 @@ export function TransactionsPreview() {
       <TransactionModal
         transaction={selected}
         allTransactions={transactions}
-        coinImages={{}} 
+        coinImages={coinImages}
         onClose={() => setSelected(null)}
       />
     </BlurFade>

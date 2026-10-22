@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { PageLoader } from '@/components/ui/PageLoader'
 import { useWalletStore } from '@/stores/useWalletStore'
-import { useCoins } from '@/hooks/useCoins'
+import { useCoinImages } from '@/hooks/useCoinImages'
 import { useDebounce } from '@/hooks/useDebounce'
 import {
   TransactionsHeader,
@@ -17,23 +17,7 @@ export function Transactions() {
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 300)
 
-  const coinIds = useMemo(() => {
-    const ids = new Set<string>()
-    transactions.forEach((t) => {
-      if (t.coin_id) ids.add(t.coin_id)
-    })
-    return Array.from(ids).join(',')
-  }, [transactions])
-
-  const { data: coins } = useCoins({ ids: coinIds }, !!coinIds)
-
-  const coinImages = useMemo(() => {
-    const map: Record<string, string> = {}
-    coins?.forEach((c) => {
-      map[c.id] = c.image
-    })
-    return map
-  }, [coins])
+  const coinImages = useCoinImages(transactions)
 
   const filteredTransactions = useMemo(() => {
     let result = transactions

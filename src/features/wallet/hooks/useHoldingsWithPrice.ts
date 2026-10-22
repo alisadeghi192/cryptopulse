@@ -26,7 +26,7 @@ export interface HoldingWithPrice {
 export function useHoldingsWithPrice() {
   const holdings = useWalletStore((s) => s.holdings)
 
-  const coinIds = holdings.map((h) => h.coin_id)
+  const coinIds = holdings.map((h) => h.coin_id).sort()
   const idsParam = coinIds.length > 0 ? coinIds.join(',') : undefined
 
   const { data: coins, isLoading: isCoinsLoading } = useCoins(
