@@ -129,11 +129,22 @@ export function ModalBody({
   // Escape
   useEffect(() => {
     if (!open || !dismissible) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
+
+    const onDown = (e: MouseEvent | TouchEvent) => {
+      if (!panelRef.current?.contains(e.target as Node)) {
+        e.preventDefault()
+        e.stopPropagation()
+        setOpen(false)
+      }
     }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+
+    document.addEventListener('mousedown', onDown, true)
+    document.addEventListener('touchstart', onDown, { capture: true })
+
+    return () => {
+      document.removeEventListener('mousedown', onDown, true)
+      document.removeEventListener('touchstart', onDown, true)
+    }
   }, [open, dismissible, setOpen])
 
   if (!open) return null
