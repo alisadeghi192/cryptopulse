@@ -40,6 +40,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         Accept: 'application/json',
         'x-cg-demo-api-key': process.env.COINGECKO_API_KEY || '',
       },
+      signal: AbortSignal.timeout(8000),
     })
 
     const data = await response.json()
