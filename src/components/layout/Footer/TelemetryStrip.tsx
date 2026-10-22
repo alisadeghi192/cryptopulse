@@ -46,7 +46,7 @@ export function TelemetryStrip() {
     timeZone: 'Asia/Tehran',
   })
 
-  const { data: coins } = useCoins({ perPage: 100 })
+  const { data: coins } = useCoins({ ids: 'bitcoin,ethereum', perPage: 2 })
   const btc = coins?.find((c) => c.id === 'bitcoin')
   const eth = coins?.find((c) => c.id === 'ethereum')
 
