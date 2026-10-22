@@ -63,6 +63,17 @@ export default defineConfig(({ mode }) => {
             'x-cg-demo-api-key': env.COINGECKO_API_KEY || '',
           },
         },
+        '/api/image': {
+          target: 'https://assets.coingecko.com',
+          changeOrigin: true,
+          rewrite: (path) => {
+            const url = new URL(`http://localhost${path}`)
+            const target = url.searchParams.get('url')
+            if (!target) return path
+            const targetUrl = new URL(target)
+            return targetUrl.pathname + targetUrl.search
+          },
+        },
       },
     },
   }

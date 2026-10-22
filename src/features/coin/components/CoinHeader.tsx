@@ -3,6 +3,7 @@ import { FlashValue } from '@/components/ui/FlashValue'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { WatchlistButton } from '@/components/ui/WatchlistButton'
 import { cn } from '@/utils/cn'
+import { coinImageUrl } from '@/utils/image'
 
 interface CoinHeaderProps {
   coinId: string
@@ -32,7 +33,7 @@ export function CoinHeader({
           <div className="relative shrink-0">
             <div className="bg-primary/20 absolute inset-0 rounded-full blur-lg" />
             <img
-              src={image}
+              src={coinImageUrl(image)}
               alt={name}
               className="relative h-14 w-14 animate-[scale-in_0.5s_ease-out] rounded-full md:h-16 md:w-16"
             />

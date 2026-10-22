@@ -16,6 +16,7 @@ import { BlurFade } from '@/components/ui/BlurFade'
 import { buttonVariants } from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
+import { coinImageUrl } from '@/utils/image'
 
 export function Watchlist() {
   const [search, setSearch] = useState('')
@@ -205,7 +206,7 @@ function WatchlistRow({ coin }: { coin: Coin }) {
         </span>
 
         <img
-          src={coin.image}
+          src={coinImageUrl(coin.image)}
           alt={coin.name}
           className="h-9 w-9 shrink-0 rounded-full"
         />

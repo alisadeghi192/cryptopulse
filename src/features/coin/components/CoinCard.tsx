@@ -10,6 +10,7 @@ import { BorderBeam } from '@/components/ui/BorderBeam'
 import { WatchlistButton } from '@/components/ui/WatchlistButton'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
+import { coinImageUrl } from '@/utils/image'
 
 // ─── CVA Variants ───
 const coinCardVariants = cva(
@@ -115,7 +116,7 @@ export function CoinCard({ coin, size }: CoinCardProps) {
                   <div className="relative shrink-0">
                     <div className="bg-primary/20 absolute inset-0 rounded-full blur-md" />
                     <img
-                      src={coin.image}
+                      src={coinImageUrl(coin.image)}
                       alt={coin.name}
                       className={cn(logoVariants({ size }))}
                     />
@@ -228,7 +229,7 @@ export function CoinRow({ coin }: { coin: Coin }) {
 
       <div className="flex min-w-0 items-center gap-3">
         <img
-          src={coin.image}
+          src={coinImageUrl(coin.image)}
           alt={coin.name}
           className="h-7 w-7 shrink-0 rounded-full"
         />

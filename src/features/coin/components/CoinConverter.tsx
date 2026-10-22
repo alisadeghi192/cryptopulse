@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ArrowDownUp } from 'lucide-react'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { cn } from '@/utils/cn'
+import { coinImageUrl } from '@/utils/image'
 
 interface CoinConverterProps {
   price: number
@@ -90,7 +91,7 @@ export function CoinConverter({ price, symbol, image, name }: CoinConverterProps
               <div className="border-border/60 bg-background/60 flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2">
                 {fromUnit === symbol ? (
                   <>
-                    <img src={image} alt={name} className="size-5 rounded-full" />
+                    <img src={coinImageUrl(image)} alt={name} className="size-5 rounded-full" />
                     <span className="text-text font-mono text-xs font-semibold">
                       {fromUnit}
                     </span>
@@ -145,7 +146,7 @@ export function CoinConverter({ price, symbol, image, name }: CoinConverterProps
               <div className="border-border/60 bg-background/60 flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2">
                 {toUnit === symbol ? (
                   <>
-                    <img src={image} alt={name} className="size-5 rounded-full" />
+                    <img src={coinImageUrl(image)} alt={name} className="size-5 rounded-full" />
                     <span className="text-text font-mono text-xs font-semibold">
                       {toUnit}
                     </span>

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { Search, ChevronDown, X } from 'lucide-react'
 import { cn } from '@/utils/cn'
+import { coinImageUrl } from '@/utils/image'
 
 export interface SelectOption {
   id: string
@@ -86,7 +87,7 @@ export function CurrencySelect({
           <div className="flex min-w-0 items-center gap-2.5">
             {value.image ? (
               <img
-                src={value.image}
+                src={coinImageUrl(value.image)}
                 alt={value.name}
                 className="size-7 shrink-0 rounded-full"
               />
@@ -154,7 +155,7 @@ export function CurrencySelect({
                   setSearch('')
                 }}
                 className={cn(
-                  'hover:bg-elevated/60 flex w-full  items-center gap-2.5 px-3 py-2.5 text-left transition-colors',
+                  'hover:bg-elevated/60 flex w-full items-center gap-2.5 px-3 py-2.5 text-left transition-colors',
                   value?.id === 'usd' && 'bg-primary/5',
                 )}
               >
@@ -190,7 +191,7 @@ export function CurrencySelect({
                 >
                   {option.image ? (
                     <img
-                      src={option.image}
+                      src={coinImageUrl(option.image)}
                       alt={option.name}
                       className="size-7 shrink-0 rounded-full"
                     />

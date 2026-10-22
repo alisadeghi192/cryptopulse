@@ -6,6 +6,7 @@ import { TiltCard } from '@/components/ui/TiltCard'
 import { cn } from '@/utils/cn'
 import { formatCoinPrice, formatCoinAmount } from '@/utils/format'
 import type { HoldingWithPrice } from '@/types/wallet'
+import { coinImageUrl } from '@/utils/image'
 
 interface HoldingCardProps {
   holding: HoldingWithPrice
@@ -14,7 +15,7 @@ interface HoldingCardProps {
 export function HoldingCard({ holding }: HoldingCardProps) {
   const isPositive = holding.pnl >= 0
   // ✅ Use a safe fallback for the image
-  const safeImage = holding.image || undefined
+  const safeImage = coinImageUrl(holding.image) || undefined
 
   return (
     <Link to={`/coin/${holding.coin_id}`} className="block h-full">
@@ -33,14 +34,13 @@ export function HoldingCard({ holding }: HoldingCardProps) {
                   <img
                     src={safeImage}
                     alt={holding.coin_symbol}
-                    className="size-7 shrink-0 rounded-full bg-elevated"
+                    className="bg-elevated size-7 shrink-0 rounded-full"
                   />
                 ) : (
                   <div className="bg-elevated text-text-secondary flex size-7 shrink-0 items-center justify-center rounded-full font-mono text-xs font-bold uppercase">
                     {holding.coin_symbol.slice(0, 2)}
                   </div>
                 )}
-                
                 <div>
                   <p className="text-text font-mono text-sm font-semibold">
                     {holding.coin_symbol}

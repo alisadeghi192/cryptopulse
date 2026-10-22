@@ -4,6 +4,7 @@ import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { TiltCard } from '@/components/ui/TiltCard'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
+import { coinImageUrl } from '@/utils/image'
 
 interface TopMoversCardProps {
   title: string
@@ -52,7 +53,7 @@ export function TopMoversCard({
             >
               <div className="flex items-center gap-3">
                 <img
-                  src={coin.image}
+                  src={coinImageUrl(coin.image)}
                   alt={coin.name}
                   className="h-8 w-8 rounded-full"
                 />

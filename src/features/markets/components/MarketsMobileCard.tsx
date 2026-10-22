@@ -3,6 +3,7 @@ import { FlashValue } from '@/components/ui/FlashValue'
 import { WatchlistButton } from '@/components/ui/WatchlistButton'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
+import { coinImageUrl } from '@/utils/image'
 
 interface MarketsMobileCardProps {
   coin: Coin
@@ -25,7 +26,7 @@ export function MarketsMobileCard({ coin }: MarketsMobileCardProps) {
 
         {/* Logo */}
         <img
-          src={coin.image}
+          src={coinImageUrl(coin.image)}
           alt={coin.name}
           className="h-9 w-9 shrink-0 rounded-full"
         />

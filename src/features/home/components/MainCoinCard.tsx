@@ -7,6 +7,7 @@ import { StatsGrid } from './StatsGrid'
 import { useCoinChart } from '@/hooks/useCoinChart'
 import { cn } from '@/utils/cn'
 import type { Coin, TimeRange } from '@/types/coin'
+import { coinImageUrl } from '@/utils/image'
 
 interface MainCoinCardProps {
   bitcoin?: Coin
@@ -30,7 +31,7 @@ export function MainCoinCard({ bitcoin, isPositive }: MainCoinCardProps) {
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <img
-                src={bitcoin?.image}
+                src={coinImageUrl(bitcoin?.image)}
                 alt={bitcoin?.name ?? 'Bitcoin'}
                 className="h-12 w-12 rounded-full"
               />

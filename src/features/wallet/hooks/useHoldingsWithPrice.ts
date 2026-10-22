@@ -3,6 +3,7 @@ import { useCoins } from '@/hooks/useCoins'
 import { useWalletStore } from '@/stores/useWalletStore'
 import type { Coin } from '@/types/coin'
 import type { HoldingWithPrice } from '@/types/wallet'
+import { coinImageUrl } from '@/utils/image'
 
 export function useHoldingsWithPrice() {
   const holdings = useWalletStore((s) => s.holdings)
@@ -30,7 +31,7 @@ export function useHoldingsWithPrice() {
 
       return {
         ...h,
-        image: coin?.image ?? '',
+        image: coinImageUrl(coin?.image),
         current_price: currentPrice,
         current_value: currentValue,
         cost_basis: costBasis,

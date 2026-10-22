@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useCoins } from '@/hooks/useCoins'
+import { coinImageUrl } from '@/utils/image'
 import type { Transaction } from '@/types/wallet'
 
 /**
@@ -21,7 +22,7 @@ export function useCoinImages(transactions: Transaction[]) {
   return useMemo(() => {
     const map: Record<string, string> = {}
     coins?.forEach((c) => {
-      map[c.id] = c.image
+      map[c.id] = coinImageUrl(c.image)
     })
     return map
   }, [coins])
