@@ -1,9 +1,19 @@
 import { Receipt, Search, X } from 'lucide-react'
 import { AmbientLights } from '@/components/ui/AmbientLights'
 import { BlurFade } from '@/components/ui/BlurFade'
+import { FilterTabs } from '@/components/ui/FilterTabs'
 import { formatBalance } from '@/utils/format'
-import { cn } from '@/utils/cn'
-import type { TransactionFilter } from './TransactionsFilters'
+import type { TransactionType } from '@/types/wallet'
+
+export type TransactionFilter = 'all' | TransactionType
+
+const FILTERS = [
+  { value: 'all', label: 'All' },
+  { value: 'deposit', label: 'Deposit' },
+  { value: 'withdraw', label: 'Withdraw' },
+  { value: 'buy', label: 'Buy' },
+  { value: 'sell', label: 'Sell' },
+] as const
 
 interface TransactionsHeaderProps {
   total: number
@@ -14,14 +24,6 @@ interface TransactionsHeaderProps {
   search: string
   onSearchChange: (value: string) => void
 }
-
-const FILTERS: { value: TransactionFilter; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'deposit', label: 'Deposit' },
-  { value: 'withdraw', label: 'Withdraw' },
-  { value: 'buy', label: 'Buy' },
-  { value: 'sell', label: 'Sell' },
-]
 
 export function TransactionsHeader({
   total,
@@ -41,7 +43,6 @@ export function TransactionsHeader({
 
         <div className="border-border/40 bg-surface/40 relative rounded-3xl border shadow-2xl backdrop-blur-3xl">
           <div className="px-6 pt-8 pb-6 md:px-8 md:pt-10 md:pb-6">
-            {/* Top: Title + Stats */}
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end md:gap-8">
               <div>
                 <div className="text-text/70 mb-2 flex items-center gap-2 font-mono text-xs tracking-widest uppercase">
@@ -76,9 +77,7 @@ export function TransactionsHeader({
               </div>
             </div>
 
-            {/* Search + Filters */}
             <div className="mt-6 flex flex-col gap-3">
-              {/* Search */}
               <div className="border-border/60 bg-background/40 shadow-md focus-within:border-primary/50 flex h-11 items-center gap-2 rounded-xl border px-3 backdrop-blur-sm transition-all focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]">
                 <Search className="text-text/70 h-4 w-4 shrink-0" />
                 <input
@@ -99,34 +98,14 @@ export function TransactionsHeader({
                 )}
               </div>
 
-              {/* Filters */}
-              <div className="border-border/60 shadow-md flex-wrap bg-background/40 no-scrollbar flex items-center gap-1 overflow-x-auto rounded-xl border p-1 backdrop-blur-sm">
-                {FILTERS.map((f) => (
-                  <button
-                    key={f.value}
-                    type="button"
-                    onClick={() => onFilterChange(f.value)}
-                    className={cn(
-                      'flex shrink-0 cursor-pointer items-center gap-2 rounded-lg px-3 py-1.5 font-mono text-xs transition-colors',
-                      filter === f.value
-                        ? 'bg-primary/15 text-primary'
-                        : 'text-text/60 hover:text-text hover:bg-elevated/40',
-                    )}
-                  >
-                    <span>{f.label}</span>
-                    <span
-                      className={cn(
-                        'rounded px-1.5 py-0.5 text-[10px] tabular-nums',
-                        filter === f.value
-                          ? 'bg-primary/20 text-primary'
-                          : 'bg-elevated/60 text-text/60',
-                      )}
-                    >
-                      {counts[f.value]}
-                    </span>
-                  </button>
-                ))}
-              </div>
+              <FilterTabs
+                items={FILTERS.map((f) => ({
+                  ...f,
+                  count: counts[f.value],
+                }))}
+                value={filter}
+                onChange={onFilterChange}
+              />
             </div>
           </div>
         </div>

@@ -4,13 +4,11 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { NumberTicker } from '@/components/ui/NumberTicker'
 import { FlashValue } from '@/components/ui/FlashValue'
 import { MiniSparkline } from '@/components/ui/MiniSparkline'
-import { SpotlightCard } from '@/components/ui/SpotlightCard'
-import { TiltCard } from '@/components/ui/TiltCard'
-import { BorderBeam } from '@/components/ui/BorderBeam'
 import { WatchlistButton } from '@/components/ui/WatchlistButton'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
 import { coinImageUrl } from '@/utils/image'
+import { PremiumCard } from '@/components/ui/PremiumCard'
 
 // ─── CVA Variants ───
 const coinCardVariants = cva(
@@ -97,108 +95,104 @@ export function CoinCard({ coin, size }: CoinCardProps) {
   return (
     <div className="relative h-full">
       <Link to={`/coin/${coin.id}`} className="block h-full">
-        <TiltCard maxTilt={4} className="h-full">
-          <BorderBeam thickness={1.5} duration={8} className="rounded-2xl">
-            <SpotlightCard
-              spotlightColor={spotlightColor}
-              className={cn(coinCardVariants({ size }))}
-            >
-              <div className="relative z-10">
-                {/* Header (without watchlist button) */}
-                <div className={cn(headerVariants({ size }))}>
-                  <div className="border-border bg-elevated/60 text-text-secondary rounded-md border px-2 py-0.5 font-mono text-[10px]">
-                    #{coin.market_cap_rank}
-                  </div>
-                </div>
-
-                {/* Coin */}
-                <div className={cn(coinInfoVariants({ size }))}>
-                  <div className="relative shrink-0">
-                    <div className="bg-primary/20 absolute inset-0 rounded-full blur-md" />
-                    <img
-                      src={coinImageUrl(coin.image)}
-                      alt={coin.name}
-                      className={cn(logoVariants({ size }))}
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-text truncate text-sm font-semibold">
-                      {coin.name}
-                    </p>
-                    <p className="text-text-secondary font-mono text-[10px] uppercase">
-                      {coin.symbol}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Price */}
-                <p className={cn(priceVariants({ size }))}>
-                  $<NumberTicker value={price} decimals={price < 1 ? 4 : 2} />
-                </p>
-
-                {/* Change */}
-                <div className="mt-1 flex items-center gap-2">
-                  <span
-                    className={cn(
-                      'flex items-center gap-1 rounded-md px-1.5 py-0.5 font-mono text-[10px] font-medium',
-                      isPositive
-                        ? 'bg-success/10 text-success'
-                        : 'bg-error/10 text-error',
-                    )}
-                  >
-                    {isPositive ? (
-                      <TrendingUp className="h-3 w-3" />
-                    ) : (
-                      <TrendingDown className="h-3 w-3" />
-                    )}
-                    {isPositive ? '+' : ''}
-                    {change.toFixed(2)}%
-                  </span>
-                  <span
-                    className={cn(
-                      'font-mono text-[10px]',
-                      isPositive ? 'text-success' : 'text-error',
-                    )}
-                  >
-                    {isPositive ? '+' : ''}$
-                    {Math.abs((price * change) / 100).toLocaleString('en-US', {
-                      maximumFractionDigits: 2,
-                    })}
-                  </span>
-                </div>
-
-                {/* Sparkline */}
-                {sparklineData.length > 1 && (
-                  <div className={cn(sparkVariants({ size }))}>
-                    <MiniSparkline
-                      data={sparklineData}
-                      isPositive={sparklinePositive}
-                      width={200}
-                      height={sparkHeight}
-                      fluid
-                    />
-                  </div>
-                )}
-
-                {/* Footer */}
-                <div className={cn(footerVariants({ size }))}>
-                  <div>
-                    <p className="text-text-secondary">MCap</p>
-                    <p className="text-text font-medium">
-                      ${(coin.market_cap / 1_000_000_000).toFixed(2)}B
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-text-secondary">24h Vol</p>
-                    <p className="text-text font-medium">
-                      ${(coin.total_volume / 1_000_000_000).toFixed(2)}B
-                    </p>
-                  </div>
-                </div>
+        <PremiumCard
+          spotlightColor={spotlightColor}
+          className={cn(coinCardVariants({ size }))}
+        >
+          <div className="relative z-10">
+            {/* Header (without watchlist button) */}
+            <div className={cn(headerVariants({ size }))}>
+              <div className="border-border bg-elevated/60 text-text-secondary rounded-md border px-2 py-0.5 font-mono text-[10px]">
+                #{coin.market_cap_rank}
               </div>
-            </SpotlightCard>
-          </BorderBeam>
-        </TiltCard>
+            </div>
+
+            {/* Coin */}
+            <div className={cn(coinInfoVariants({ size }))}>
+              <div className="relative shrink-0">
+                <div className="bg-primary/20 absolute inset-0 rounded-full blur-md" />
+                <img
+                  src={coinImageUrl(coin.image)}
+                  alt={coin.name}
+                  className={cn(logoVariants({ size }))}
+                />
+              </div>
+              <div className="min-w-0">
+                <p className="text-text truncate text-sm font-semibold">
+                  {coin.name}
+                </p>
+                <p className="text-text-secondary font-mono text-[10px] uppercase">
+                  {coin.symbol}
+                </p>
+              </div>
+            </div>
+
+            {/* Price */}
+            <p className={cn(priceVariants({ size }))}>
+              $<NumberTicker value={price} decimals={price < 1 ? 4 : 2} />
+            </p>
+
+            {/* Change */}
+            <div className="mt-1 flex items-center gap-2">
+              <span
+                className={cn(
+                  'flex items-center gap-1 rounded-md px-1.5 py-0.5 font-mono text-[10px] font-medium',
+                  isPositive
+                    ? 'bg-success/10 text-success'
+                    : 'bg-error/10 text-error',
+                )}
+              >
+                {isPositive ? (
+                  <TrendingUp className="h-3 w-3" />
+                ) : (
+                  <TrendingDown className="h-3 w-3" />
+                )}
+                {isPositive ? '+' : ''}
+                {change.toFixed(2)}%
+              </span>
+              <span
+                className={cn(
+                  'font-mono text-[10px]',
+                  isPositive ? 'text-success' : 'text-error',
+                )}
+              >
+                {isPositive ? '+' : ''}$
+                {Math.abs((price * change) / 100).toLocaleString('en-US', {
+                  maximumFractionDigits: 2,
+                })}
+              </span>
+            </div>
+
+            {/* Sparkline */}
+            {sparklineData.length > 1 && (
+              <div className={cn(sparkVariants({ size }))}>
+                <MiniSparkline
+                  data={sparklineData}
+                  isPositive={sparklinePositive}
+                  width={200}
+                  height={sparkHeight}
+                  fluid
+                />
+              </div>
+            )}
+
+            {/* Footer */}
+            <div className={cn(footerVariants({ size }))}>
+              <div>
+                <p className="text-text-secondary">MCap</p>
+                <p className="text-text font-medium">
+                  ${(coin.market_cap / 1_000_000_000).toFixed(2)}B
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-text-secondary">24h Vol</p>
+                <p className="text-text font-medium">
+                  ${(coin.total_volume / 1_000_000_000).toFixed(2)}B
+                </p>
+              </div>
+            </div>
+          </div>
+        </PremiumCard>
       </Link>
 
       {/* Watchlist button as sibling of the link */}
@@ -221,7 +215,7 @@ export function CoinRow({ coin }: { coin: Coin }) {
   return (
     <Link
       to={`/coin/${coin.id}`}
-      className="group hover:bg-elevated/40  grid grid-cols-[1fr_90px_80px] items-center px-4 py-3 transition-colors md:grid-cols-[60px_1fr_130px_110px_120px_100px]"
+      className="group hover:bg-elevated/40 grid grid-cols-[1fr_90px_80px] items-center px-4 py-3 transition-colors md:grid-cols-[60px_1fr_130px_110px_120px_100px]"
     >
       <span className="text-text-secondary hidden font-mono text-sm md:block">
         {coin.market_cap_rank}

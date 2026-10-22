@@ -1,14 +1,15 @@
 import { Search, LayoutGrid, List, Loader2 } from 'lucide-react'
+import { FilterTabs } from '@/components/ui/FilterTabs'
 import { cn } from '@/utils/cn'
 import type { MarketsFilter, MarketsView } from '../hooks/useMarketsFilters'
 
-const FILTERS: { value: MarketsFilter; label: string }[] = [
+const FILTERS = [
   { value: 'all', label: 'All' },
   { value: 'top100', label: 'Top 100' },
   { value: 'top500', label: 'Top 500' },
   { value: 'top1000', label: 'Top 1000' },
   { value: 'top5000', label: 'Top 5000' },
-]
+] as const
 
 interface MarketsToolbarProps {
   search: string
@@ -48,22 +49,12 @@ export function MarketsToolbar({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="border-border bg-surface no-scrollbar flex items-center gap-1 overflow-x-auto rounded-lg border p-1 shadow-md max-md:w-full">
-          {FILTERS.map((f) => (
-            <button
-              key={f.value}
-              onClick={() => onFilterChange(f.value)}
-              className={cn(
-                'shrink-0 rounded-md px-3 py-1.5 font-mono text-xs transition-colors max-md:flex-1',
-                filter === f.value
-                  ? 'bg-primary/15 text-primary'
-                  : 'text-text-secondary hover:text-text',
-              )}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
+        <FilterTabs
+          items={FILTERS}
+          value={filter}
+          onChange={onFilterChange}
+          fullWidthOnMobile
+        />
 
         <div className="border-border bg-surface hidden shrink-0 items-center rounded-lg border p-1 shadow-md md:flex">
           <button
