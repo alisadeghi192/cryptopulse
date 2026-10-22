@@ -28,7 +28,7 @@ export function Watchlist() {
   const ids = useMemo(() => [...coinIds].sort().join(','), [coinIds])
 
   const { data: allCoins, isLoading } = useCoins(
-    { ids },
+    { ids, perPage: 250 },
     isLoaded && coinIds.length > 0,
   )
 
@@ -65,7 +65,7 @@ export function Watchlist() {
       <div>
         {/* ─── Header Card ─── */}
         <BlurFade>
-          <div className="relative mb-8 shadow-xl overflow-hidden rounded-3xl">
+          <div className="relative mb-8 overflow-hidden rounded-3xl shadow-xl">
             <div className="pointer-events-none absolute inset-0">
               <AmbientLights variant="hero" intensity="normal" />
             </div>
@@ -122,7 +122,7 @@ export function Watchlist() {
 
                 {/* Search */}
                 {!isLoadingPage && watchlistCoins.length > 0 && (
-                  <div className="border-border/60 shadow-md bg-background/40 focus-within:border-primary/50 mt-6 flex h-11 items-center gap-2 rounded-xl border px-3 backdrop-blur-sm transition-all focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]">
+                  <div className="border-border/60 bg-background/40 focus-within:border-primary/50 mt-6 flex h-11 items-center gap-2 rounded-xl border px-3 shadow-md backdrop-blur-sm transition-all focus-within:shadow-[0_0_0_3px_rgba(255,193,7,0.1)]">
                     <Search className="text-text/70 h-4 w-4 shrink-0" />
                     <input
                       type="text"
@@ -198,7 +198,7 @@ function WatchlistRow({ coin }: { coin: Coin }) {
     <div className="relative">
       <Link
         to={`/coin/${coin.id}`}
-        className="border-border/40 shadow-md bg-surface/40 hover:border-border hover:bg-elevated/30 group flex items-center gap-3 rounded-xl border p-3 pr-12 backdrop-blur-xl transition-colors"
+        className="border-border/40 bg-surface/40 hover:border-border hover:bg-elevated/30 group flex items-center gap-3 rounded-xl border p-3 pr-12 shadow-md backdrop-blur-xl transition-colors"
       >
         <span className="text-text-secondary w-5 shrink-0 text-center font-mono text-[10px]">
           {coin.market_cap_rank}
@@ -259,7 +259,7 @@ function WatchlistRow({ coin }: { coin: Coin }) {
 function EmptyState() {
   return (
     <BlurFade delay={0.1}>
-      <div className="border-border bg-surface/30 shadow-xl relative overflow-hidden rounded-2xl border backdrop-blur-xl">
+      <div className="border-border bg-surface/30 relative overflow-hidden rounded-2xl border shadow-xl backdrop-blur-xl">
         <div className="pointer-events-none absolute inset-0">
           <AmbientLights variant="gold" intensity="subtle" />
         </div>
