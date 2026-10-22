@@ -10,12 +10,12 @@ import {
 } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/Button'
 import { BlurFade } from '@/components/ui/BlurFade'
-import { useAuthStore } from '@/stores/useAuthStore'
 import { cn } from '@/utils/cn'
 import { AmbientLights } from '@/components/ui/AmbientLights'
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
 export function CTASection() {
-  const isAuthenticated = !!useAuthStore((s) => s.user)
+  const isAuthenticated = useIsAuthenticated()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
 

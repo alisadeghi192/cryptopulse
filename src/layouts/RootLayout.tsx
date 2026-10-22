@@ -4,12 +4,11 @@ import { TopBar } from "@/components/layout/TopBar";
 import { MobileNavDrawer } from "@/components/layout/MobileNavDrawer";
 import { Footer } from "@/components/layout/Footer/Footer";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useIsAuthenticated } from "@/hooks/useIsAuthenticated";
 
 export function RootLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const user = useAuthStore((s) => s.user);
-  const isAuthenticated = !!user;
+  const isAuthenticated = useIsAuthenticated()
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -18,10 +17,6 @@ export function RootLayout() {
     };
   }, [mobileOpen]);
 
-  const userName =
-    (user?.user_metadata?.full_name as string) ??
-    user?.email?.split('@')[0] ??
-    'User';
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -45,8 +40,6 @@ const navLinks = [
       <MobileNavDrawer
         open={mobileOpen}
         links={navLinks}
-        isAuthenticated={isAuthenticated}
-        userName={userName}
         onClose={() => setMobileOpen(false)}
       />
 

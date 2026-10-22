@@ -13,13 +13,13 @@ import {
 import { cn } from '@/utils/cn'
 import { Logo } from '@/components/ui/Logo'
 import { Z_LAYERS } from '@/constants'
+import { useSignOut } from '@/hooks/useSignOut'
 
 interface SidebarProps {
   collapsed: boolean
   onToggleCollapse: () => void
   mobileOpen: boolean
   onMobileClose: () => void
-  onSignOut: () => void
 }
 
 interface NavItem {
@@ -41,8 +41,8 @@ export function Sidebar({
   onToggleCollapse,
   mobileOpen,
   onMobileClose,
-  onSignOut,
 }: SidebarProps) {
+  const handleSignOut = useSignOut()
   return (
     <>
       {/* Mobile Backdrop */}
@@ -112,7 +112,7 @@ export function Sidebar({
         <div className="border-border/40 space-y-1 border-t p-3">
           <button
             type="button"
-            onClick={onSignOut}
+            onClick={() => handleSignOut(onMobileClose)}
             className={cn(
               'text-error hover:bg-error/10 flex h-11 w-full cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-colors',
               collapsed && 'lg:justify-center lg:px-0',

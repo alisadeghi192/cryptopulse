@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router'
-import { confirm } from '@/lib/confirm'
+import { Link, useLocation } from 'react-router'
 import {
   ChevronDown,
   LayoutDashboard,
@@ -12,13 +11,9 @@ import {
 } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/Button'
 import { useAuthStore } from '@/stores/useAuthStore'
-import { toast } from 'sonner'
 import { cn } from '@/utils/cn'
 import { Z_LAYERS } from '@/constants'
-
-interface UserMenuProps {
-  isAuthenticated: boolean
-}
+import { useSignOut } from '@/hooks/useSignOut'
 
 const MENU_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -37,10 +32,9 @@ const APP_ROUTES = [
   '/profile',
 ]
 
-export function UserMenu({ isAuthenticated }: UserMenuProps) {
+export function UserMenu() {
   const user = useAuthStore((s) => s.user)
-  const signOut = useAuthStore((s) => s.signOut)
-  const navigate = useNavigate()
+  const isAuthenticated = !!user
   const { pathname } = useLocation()
 
   const [open, setOpen] = useState(false)
@@ -73,21 +67,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
     timeoutRef.current = setTimeout(() => setOpen(false), 200)
   }
 
-  const handleSignOut = async () => {
-    const ok = await confirm({
-      title: 'Sign out?',
-      description: 'You will need to sign in again to access your account.',
-      confirmLabel: 'Sign Out',
-      cancelLabel: 'Cancel',
-      variant: 'danger',
-    })
-    if (!ok) return
-
-    setOpen(false)
-    await signOut()
-    toast.success('Signed out')
-    navigate('/')
-  }
+  const handleSignOut = useSignOut()
 
   if (isAuthenticated && user) {
     const displayName =
@@ -192,7 +172,7 @@ export function UserMenu({ isAuthenticated }: UserMenuProps) {
 
             <button
               type="button"
-              onClick={handleSignOut}
+              onClick={() => handleSignOut()}
               className="text-error hover:bg-error/10 flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
             >
               <LogOut className="h-4 w-4 shrink-0" />

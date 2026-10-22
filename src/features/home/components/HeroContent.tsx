@@ -8,11 +8,11 @@ import {
 } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/Button'
 import { BlurFade } from '@/components/ui/BlurFade'
-import { useAuthStore } from '@/stores/useAuthStore'
 import { cn } from '@/utils/cn'
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
 export function HeroContent() {
-  const isAuthenticated = !!useAuthStore((s) => s.user)
+  const isAuthenticated = useIsAuthenticated()
 
   return (
     <div className="flex flex-col items-start gap-6 lg:col-span-6">

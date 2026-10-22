@@ -9,7 +9,6 @@ import { BORDER_BEAM_CONFIG, Z_LAYERS } from '@/constants'
 import { cn } from '@/utils/cn'
 import { Menu } from 'lucide-react'
 import { NavigationProgress } from '../ui/NavigationProgress'
-import { useAuthStore } from '@/stores/useAuthStore'
 
 interface TopBarProps {
   onMenuClick: () => void
@@ -25,8 +24,6 @@ export function TopBar({
   useBorderBeam = true,
 }: TopBarProps) {
   const scrolled = useScroll()
-  const user = useAuthStore((s) => s.user)
-  const isAuthenticated = !!user
 
   const navLinks = [
     { label: 'Markets', href: '/markets' },
@@ -57,7 +54,7 @@ export function TopBar({
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <UserMenu isAuthenticated={isAuthenticated} />
+          <UserMenu />
 
           {showHamburger && (
             <Button

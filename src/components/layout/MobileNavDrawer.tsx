@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router'
+import { NavLink } from 'react-router'
 import {
   X,
   Home,
@@ -11,12 +11,11 @@ import {
   LogOut,
   type LucideIcon,
 } from 'lucide-react'
-import { toast } from 'sonner'
 import { cn } from '@/utils/cn'
 import { Logo } from '../ui/Logo'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { Z_LAYERS } from '@/constants'
-import { confirm } from '@/lib/confirm'
+import { useSignOut } from '@/hooks/useSignOut'
 
 interface NavLinkItem {
   label: string
@@ -26,8 +25,6 @@ interface NavLinkItem {
 interface MobileNavDrawerProps {
   open: boolean
   links: NavLinkItem[]
-  isAuthenticated: boolean
-  userName: string
   onClose: () => void
 }
 
@@ -43,32 +40,20 @@ const LINK_ICONS: Record<string, LucideIcon> = {
 export function MobileNavDrawer({
   open,
   links,
-  isAuthenticated,
-  userName,
   onClose,
 }: MobileNavDrawerProps) {
-  const initial = userName?.[0]?.toUpperCase() ?? 'U'
-  const navigate = useNavigate()
-  const signOut = useAuthStore((s) => s.signOut)
   const user = useAuthStore((s) => s.user)
+  const isAuthenticated = !!user
+
+  const userName =
+    (user?.user_metadata?.full_name as string) ??
+    user?.email?.split('@')[0] ??
+    'User'
+  const initial = userName[0]?.toUpperCase() ?? 'U'
 
   const avatarUrl = (user?.user_metadata?.avatar_url as string) || null
 
-  const handleSignOut = async () => {
-    const ok = await confirm({
-      title: 'Sign out?',
-      description: 'You will need to sign in again to access your account.',
-      confirmLabel: 'Sign Out',
-      cancelLabel: 'Cancel',
-      variant: 'danger',
-    })
-    if (!ok) return
-
-    onClose()
-    await signOut()
-    toast.success('Signed out')
-    navigate('/')
-  }
+  const handleSignOut = useSignOut()
 
   return (
     <>
@@ -135,8 +120,8 @@ export function MobileNavDrawer({
             <div className="space-y-2">
               <button
                 type="button"
-                onClick={handleSignOut}
-                className="text-error hover:bg-error/10 flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-left text-sm font-medium transition-colors"
+                onClick={() => handleSignOut(onClose)}
+                className="text-error hover:bg-error/10 cursor-pointer flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-left text-sm font-medium transition-colors"
               >
                 <LogOut className="h-4 w-4 shrink-0" />
                 <span>Sign Out</span>
