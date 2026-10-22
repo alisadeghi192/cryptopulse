@@ -2,12 +2,14 @@ import { create } from 'zustand'
 import type { User, Session, AuthChangeEvent, Subscription } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 
+// Module-level: keeps the listener outside React/Zustand state.
+let authSubscription: Subscription | null = null
+
 interface AuthState {
   user: User | null
   session: Session | null
   isLoading: boolean
   initialized: boolean
-  authSubscription: Subscription | null // ✅ Keep track of listener
 
   initialize: () => Promise<void>
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
@@ -18,13 +20,14 @@ interface AuthState {
     phone: string,
   ) => Promise<{ error: string | null; needsEmailVerification?: boolean }>
   signOut: () => Promise<{ error: string | null }>
+  signOutAll: () => Promise<{ error: string | null }>
   updateProfile: (data: {
     full_name?: string
     avatar_url?: string
     card_number?: string
   }) => Promise<{ error: string | null }>
   changePassword: (
-    currentPassword: string,
+    _currentPassword: string,
     newPassword: string,
   ) => Promise<{ error: string | null }>
 }
@@ -34,7 +37,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   session: null,
   isLoading: false,
   initialized: false,
-  authSubscription: null,
 
   initialize: async () => {
     // Prevent double-initialization
@@ -51,8 +53,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     })
 
     // Clean up previous listener if exists
-    const prevSub = get().authSubscription
-    if (prevSub) prevSub.unsubscribe()
+    if (authSubscription) {
+      authSubscription.unsubscribe()
+    }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event: AuthChangeEvent, session: Session | null) => {
@@ -63,7 +66,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
     )
 
-    set({ authSubscription: subscription })
+    authSubscription = subscription
   },
 
   signIn: async (email, password) => {
@@ -106,8 +109,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return { error: error.message }
     }
 
-    // If session exists, user is logged in immediately
-    // If not, it means email verification is required
     if (data.session) {
       set({
         user: data.user,
@@ -116,7 +117,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       })
       return { error: null, needsEmailVerification: false }
     } else {
-      // Email verification needed - do NOT log in yet
       set({ isLoading: false })
       return { error: null, needsEmailVerification: true }
     }
@@ -124,7 +124,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   signOut: async () => {
     const { error } = await supabase.auth.signOut()
-    
+
+    if (error) {
+      return { error: error.message }
+    }
+
+    set({ user: null, session: null })
+    return { error: null }
+  },
+
+  signOutAll: async () => {
+    const { error } = await supabase.auth.signOut({ scope: 'global' })
+
     if (error) {
       return { error: error.message }
     }
@@ -144,20 +155,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     return { error: null }
   },
 
-changePassword: async (_currentPassword, newPassword) => {
-  const user = get().user
-  if (!user?.email) {
-    return { error: 'No user signed in' }
-  }
+  changePassword: async (_currentPassword, newPassword) => {
+    const user = get().user
+    if (!user?.email) {
+      return { error: 'No user signed in' }
+    }
 
-  // Requires an active session. For a production app, guard this with a
-  // re-authentication step or email confirmation.
-  const { error } = await supabase.auth.updateUser({ password: newPassword })
+    // Requires an active session. For a production app, guard this with a
+    // re-authentication step or email confirmation.
+    const { error } = await supabase.auth.updateUser({ password: newPassword })
 
-  if (error) {
-    return { error: error.message }
-  }
+    if (error) {
+      return { error: error.message }
+    }
 
-  return { error: null }
-},
+    return { error: null }
+  },
 }))
