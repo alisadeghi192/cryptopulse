@@ -1,9 +1,5 @@
 import {
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  Copy,
-  TrendingDown,
-  TrendingUp,
+  Copy
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { AmbientLights } from '@/components/ui/AmbientLights'
@@ -18,6 +14,7 @@ import { cn } from '@/utils/cn'
 import { useWalletStore } from '@/stores/useWalletStore'
 import type { Transaction } from '@/types/wallet'
 import { coinImageUrl } from '@/utils/image'
+import { TRANSACTION_TYPE_META } from '@/constants'
 
 interface TransactionModalProps {
   transaction: Transaction | null
@@ -25,29 +22,6 @@ interface TransactionModalProps {
   coinImages: Record<string, string>
   onClose: () => void
 }
-
-const TYPE_META = {
-  deposit: {
-    label: 'Deposit',
-    icon: ArrowDownToLine,
-    iconClass: 'bg-success/10 text-success',
-  },
-  withdraw: {
-    label: 'Withdraw',
-    icon: ArrowUpFromLine,
-    iconClass: 'bg-error/10 text-error',
-  },
-  buy: {
-    label: 'Buy',
-    icon: TrendingUp,
-    iconClass: 'bg-primary/10 text-primary',
-  },
-  sell: {
-    label: 'Sell',
-    icon: TrendingDown,
-    iconClass: 'bg-[#3B82F6]/10 text-[#3B82F6]',
-  },
-} as const
 
 export function TransactionModal({
   transaction,
@@ -58,7 +32,7 @@ export function TransactionModal({
   const currentCash = useWalletStore((s) => s.wallet?.cash_balance ?? 0)
   if (!transaction) return null
 
-  const meta = TYPE_META[transaction.type]
+  const meta = TRANSACTION_TYPE_META[transaction.type]
   const Icon = meta.icon
   const isCredit = transaction.type === 'deposit' || transaction.type === 'sell'
   const isTrade = transaction.type === 'buy' || transaction.type === 'sell'

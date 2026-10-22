@@ -1,12 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
 import {
-  ArrowDownToLine,
-  ArrowUpFromLine,
   ArrowRight,
   History,
-  TrendingDown,
-  TrendingUp,
 } from 'lucide-react'
 import { AmbientLights } from '@/components/ui/AmbientLights'
 import { BlurFade } from '@/components/ui/BlurFade'
@@ -14,6 +10,7 @@ import { BalanceValue } from '@/components/ui/BalanceValue'
 import { TransactionModal } from '@/features/transactions/components/TransactionModal'
 import { cn } from '@/utils/cn'
 import type { Transaction } from '@/types/wallet'
+import { TRANSACTION_TYPE_META } from '@/constants'
 
 interface RecentTransactionsProps {
   transactions: Transaction[]
@@ -21,28 +18,6 @@ interface RecentTransactionsProps {
   coinImages: Record<string, string>
 }
 
-const TYPE_META = {
-  deposit: {
-    icon: ArrowDownToLine,
-    iconClass: 'bg-success/10 text-success',
-    hoverBg: 'hover:bg-success/5',
-  },
-  withdraw: {
-    icon: ArrowUpFromLine,
-    iconClass: 'bg-error/10 text-error',
-    hoverBg: 'hover:bg-error/5',
-  },
-  buy: {
-    icon: TrendingUp,
-    iconClass: 'bg-primary/10 text-primary',
-    hoverBg: 'hover:bg-primary/5',
-  },
-  sell: {
-    icon: TrendingDown,
-    iconClass: 'bg-[#3B82F6]/10 text-[#3B82F6]',
-    hoverBg: 'hover:bg-[#3B82F6]/5',
-  },
-} as const
 
 export function RecentTransactions({
   transactions,
@@ -82,7 +57,7 @@ export function RecentTransactions({
         ) : (
           <div className="relative divide-border/30 divide-y">
             {transactions.map((txn) => {
-              const meta = TYPE_META[txn.type]
+              const meta = TRANSACTION_TYPE_META[txn.type]
               const Icon = meta.icon
               const isCredit = txn.type === 'deposit' || txn.type === 'sell'
 

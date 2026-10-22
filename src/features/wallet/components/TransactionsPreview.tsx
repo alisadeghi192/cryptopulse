@@ -1,10 +1,6 @@
 import { useState } from 'react'
 import {
-  Plus,
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  TrendingUp,
-  TrendingDown,
+  Plus
 } from 'lucide-react'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { BalanceValue } from '@/components/ui/BalanceValue'
@@ -13,29 +9,8 @@ import { useCoinImages } from '@/hooks/useCoinImages'
 import { TransactionModal } from '@/features/transactions/components/TransactionModal'
 import { cn } from '@/utils/cn'
 import type { Transaction } from '@/types/wallet'
+import { TRANSACTION_TYPE_META } from '@/constants'
 
-const TYPE_META = {
-  deposit: {
-    icon: ArrowDownToLine,
-    iconClass: 'bg-success/10 text-success',
-    rowClass: 'bg-success/5 hover:bg-success/10',
-  },
-  withdraw: {
-    icon: ArrowUpFromLine,
-    iconClass: 'bg-error/10 text-error',
-    rowClass: 'bg-error/5 hover:bg-error/10',
-  },
-  buy: {
-    icon: TrendingUp,
-    iconClass: 'bg-primary/10 text-primary',
-    rowClass: 'bg-primary/5 hover:bg-primary/10',
-  },
-  sell: {
-    icon: TrendingDown,
-    iconClass: 'bg-[#3B82F6]/10 text-[#3B82F6]',
-    rowClass: 'bg-[#3B82F6]/5 hover:bg-[#3B82F6]/10',
-  },
-} as const
 
 export function TransactionsPreview() {
   const transactions = useWalletStore((s) => s.transactions)
@@ -60,7 +35,7 @@ export function TransactionsPreview() {
         ) : (
           <div className="border-border/40 space-y-1 bg-surface/40 overflow-hidden shadow-xl rounded-2xl border p-1 backdrop-blur-3xl">
             {transactions.slice(0, 5).map((txn) => {
-              const meta = TYPE_META[txn.type]
+              const meta = TRANSACTION_TYPE_META[txn.type]
               const Icon = meta.icon
               const isCredit = txn.type === 'deposit' || txn.type === 'sell'
 
