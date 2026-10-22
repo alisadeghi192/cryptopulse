@@ -1,34 +1,22 @@
 import { BlurFade } from '@/components/ui/BlurFade'
 import type { CoinDetail } from '@/types/coin'
+import { formatCompactNumber, formatCompactUsd } from '@/utils/format'
 
 interface CoinStatsGridProps {
   marketData: CoinDetail['market_data']
 }
 
-function formatUSD(value: number) {
-  if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(2)}B`
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(2)}M`
-  return `$${value.toLocaleString()}`
-}
-
-function formatNumber(value: number | null) {
-  if (!value) return '—'
-  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(2)}B`
-  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(2)}M`
-  if (value >= 1_000) return `${(value / 1_000).toFixed(2)}K`
-  return value.toLocaleString()
-}
 
 export function CoinStatsGrid({ marketData }: CoinStatsGridProps) {
   const stats = [
-    { label: 'Market Cap', value: formatUSD(marketData.market_cap.usd) },
-    { label: '24h Volume', value: formatUSD(marketData.total_volume.usd) },
-    { label: '24h High', value: formatUSD(marketData.high_24h.usd) },
-    { label: '24h Low', value: formatUSD(marketData.low_24h.usd) },
-    { label: 'Circulating', value: formatNumber(marketData.circulating_supply) },
-    { label: 'Total Supply', value: formatNumber(marketData.total_supply) },
-    { label: 'Max Supply', value: formatNumber(marketData.max_supply) },
-    { label: 'All-Time High', value: formatUSD(marketData.ath.usd) },
+    { label: 'Market Cap', value: formatCompactUsd(marketData.market_cap.usd) },
+    { label: '24h Volume', value: formatCompactUsd(marketData.total_volume.usd) },
+    { label: '24h High', value: formatCompactUsd(marketData.high_24h.usd) },
+    { label: '24h Low', value: formatCompactUsd(marketData.low_24h.usd) },
+    { label: 'Circulating', value: formatCompactNumber(marketData.circulating_supply) },
+    { label: 'Total Supply', value: formatCompactNumber(marketData.total_supply) },
+    { label: 'Max Supply', value: formatCompactNumber(marketData.max_supply) },
+    { label: 'All-Time High', value: formatCompactUsd(marketData.ath.usd) },
   ]
 
   return (

@@ -2,6 +2,7 @@ import { TrendingUp, TrendingDown } from 'lucide-react'
 import { Marquee } from '@/components/ui/Marquee'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
+import { formatCompactPrice } from '@/utils/format'
 
 interface PriceMarqueeProps {
   coins: Coin[]
@@ -20,15 +21,10 @@ export function PriceMarquee({ coins }: PriceMarqueeProps) {
             key={coin.id}
             className="flex shrink-0 items-center gap-2 px-3 font-mono text-xs"
           >
-            <span className="text-text-secondary uppercase">
-              {coin.symbol}
-            </span>
-            <span className="text-text">
-              $
-              {coin.current_price.toLocaleString('en-US', {
-                maximumFractionDigits: coin.current_price < 1 ? 4 : 2,
-              })}
-            </span>
+            <span className="text-text-secondary uppercase">{coin.symbol}</span>
+            <p className="text-text font-mono text-sm tabular-nums">
+              {formatCompactPrice(coin.current_price)}
+            </p>
             <span
               className={cn(
                 'flex items-center gap-0.5',
@@ -43,8 +39,7 @@ export function PriceMarquee({ coins }: PriceMarqueeProps) {
                 <TrendingDown className="h-3 w-3" />
               )}
               {(coin.price_change_percentage_24h ?? 0) >= 0 ? '+' : ''}
-              {coin.price_change_percentage_24h?.toFixed(2) ?? '0.00'}
-              %
+              {coin.price_change_percentage_24h?.toFixed(2) ?? '0.00'}%
             </span>
           </div>
         ))}

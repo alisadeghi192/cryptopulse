@@ -1,17 +1,11 @@
 import { BlurFade } from '@/components/ui/BlurFade'
+import { formatCompactNumber } from '@/utils/format'
 
 interface SupplyVisualProps {
   circulating: number | null
   max: number | null
 }
 
-function formatNumber(value: number | null) {
-  if (!value) return '—'
-  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(2)}B`
-  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(2)}M`
-  if (value >= 1_000) return `${(value / 1_000).toFixed(2)}K`
-  return value.toLocaleString()
-}
 
 export function SupplyVisual({ circulating, max }: SupplyVisualProps) {
   const circ = circulating ?? 0
@@ -24,7 +18,7 @@ export function SupplyVisual({ circulating, max }: SupplyVisualProps) {
             Supply
           </h3>
           <p className="text-text-secondary text-xs">
-            Circulating: {formatNumber(circ)}
+            Circulating: {formatCompactNumber(circ)}
           </p>
           <p className="text-text-secondary mt-1 text-[10px]">No max supply</p>
         </div>
@@ -84,7 +78,7 @@ export function SupplyVisual({ circulating, max }: SupplyVisualProps) {
                 Circulating
               </p>
               <p className="text-text font-mono text-sm font-semibold tabular-nums">
-                {formatNumber(circ)}
+                {formatCompactNumber(circ)}
               </p>
             </div>
 
@@ -93,7 +87,7 @@ export function SupplyVisual({ circulating, max }: SupplyVisualProps) {
                 Max Supply
               </p>
               <p className="text-text font-mono text-sm font-semibold tabular-nums">
-                {formatNumber(max)}
+                {formatCompactNumber(max)}
               </p>
             </div>
           </div>

@@ -132,3 +132,64 @@ export function formatFee(value: number): string {
     maximumFractionDigits: 6,
   })}`
 }
+/**
+ * Compact USD formatter for large values (market cap, volume, etc.).
+ * Examples: $1.2B, $340.5M, $12.5K, $42.30
+ */
+export function formatCompactUsd(value: number): string {
+  if (!isFinite(value) || value === 0) return '$0.00'
+
+  const abs = Math.abs(value)
+  const sign = value < 0 ? '-' : ''
+
+  if (abs >= 1_000_000_000) return `${sign}$${(abs / 1_000_000_000).toFixed(2)}B`
+  if (abs >= 1_000_000) return `${sign}$${(abs / 1_000_000).toFixed(2)}M`
+  if (abs >= 10_000) return `${sign}$${(abs / 1_000).toFixed(2)}K`
+  if (abs >= 1) {
+    return `${sign}$${abs.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`
+  }
+  return `${sign}$${abs.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 6,
+  })}`
+}
+
+/**
+ * Compact price formatter for crypto prices.
+ * Examples: $67,432.10, $3,421.50, $0.00001234
+ */
+export function formatCompactPrice(value: number): string {
+  if (!isFinite(value) || value === 0) return '$0.00'
+
+  const abs = Math.abs(value)
+  const sign = value < 0 ? '-' : ''
+
+  if (abs >= 1000) {
+    return `${sign}$${abs.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`
+  }
+  if (abs >= 0.01) {
+    return `${sign}$${abs.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 4,
+    })}`
+  }
+  return `${sign}$${abs.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 8,
+  })}`
+}
+
+export function formatCompactNumber(value: number | null): string {
+  if (value === null || value === 0) return '—'
+  const abs = Math.abs(value)
+  if (abs >= 1_000_000_000) return `${(abs / 1_000_000_000).toFixed(2)}B`
+  if (abs >= 1_000_000) return `${(abs / 1_000_000).toFixed(2)}M`
+  if (abs >= 1_000) return `${(abs / 1_000).toFixed(2)}K`
+  return abs.toLocaleString()
+}

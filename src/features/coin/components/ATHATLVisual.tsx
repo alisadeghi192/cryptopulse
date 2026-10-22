@@ -1,6 +1,7 @@
 import { BlurFade } from '@/components/ui/BlurFade'
 import { SpotlightCard } from '@/components/ui/SpotlightCard'
 import { cn } from '@/utils/cn'
+import { formatCompactUsd } from '@/utils/format'
 
 interface ATHATLVisualProps {
   current: number
@@ -9,11 +10,6 @@ interface ATHATLVisualProps {
   athChangePercentage: number
 }
 
-function formatUSD(value: number) {
-  if (value >= 1000)
-    return `$${value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`
-  return `$${value.toLocaleString('en-US', { maximumFractionDigits: 2 })}`
-}
 
 export function ATHATLVisual({ current, ath, atl, athChangePercentage }: ATHATLVisualProps) {
   const range = ath - atl
@@ -60,7 +56,7 @@ export function ATHATLVisual({ current, ath, atl, athChangePercentage }: ATHATLV
               ATL
             </p>
             <p className="text-error mt-1 font-mono text-xs font-semibold tabular-nums">
-              {formatUSD(atl)}
+              {formatCompactUsd(atl)}
             </p>
           </div>
           <div>
@@ -68,7 +64,7 @@ export function ATHATLVisual({ current, ath, atl, athChangePercentage }: ATHATLV
               Current
             </p>
             <p className="text-primary mt-1 font-mono text-sm font-bold tabular-nums">
-              {formatUSD(current)}
+              {formatCompactUsd(current)}
             </p>
           </div>
           <div>
@@ -76,7 +72,7 @@ export function ATHATLVisual({ current, ath, atl, athChangePercentage }: ATHATLV
               ATH
             </p>
             <p className="text-success mt-1 font-mono text-xs font-semibold tabular-nums">
-              {formatUSD(ath)}
+              {formatCompactUsd(ath)}
             </p>
           </div>
         </div>
