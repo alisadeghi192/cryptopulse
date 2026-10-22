@@ -1,7 +1,3 @@
-export { TransactionsHeader } from './TransactionsHeader'
-export {
-  TransactionsFilters,
-  type TransactionFilter,
-} from './TransactionsFilters'
+export { TransactionsHeader, type TransactionFilter } from './TransactionsHeader'
 export { TransactionsList } from './TransactionsList'
 export { TransactionItem } from './TransactionItem'
