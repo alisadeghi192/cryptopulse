@@ -16,6 +16,7 @@ import { CoinAbout } from '@/features/coin/components/CoinAbout'
 import { RelatedCoins } from '@/features/coin/components/RelatedCoins'
 import { CoinLinks } from '@/features/coin/components/CoinLinks'
 import { PageLoader } from '@/components/ui/PageLoader'
+import { Head } from '@/components/ui/Head'
 
 export function CoinDetail() {
   const { id } = useParams<{ id: string }>()
@@ -43,6 +44,11 @@ export function CoinDetail() {
 
   return (
     <main className="relative">
+      <Head
+        title={`${coin.name} (${coin.symbol.toUpperCase()}) Price & Chart`}
+        description={`Live ${coin.name} price, chart, market cap, volume, and stats. Track ${coin.symbol.toUpperCase()} in real time.`}
+        url={`/coin/${coin.id}`}
+      />
       <AmbientLights variant="coin" intensity="subtle" />
 
       <div className="relative z-10 container py-8 md:py-12">
@@ -86,7 +92,9 @@ export function CoinDetail() {
             current={coin.market_data.current_price.usd}
             ath={coin.market_data.ath.usd}
             atl={coin.market_data.atl.usd}
-            athChangePercentage={coin.market_data.ath_change_percentage.usd ?? 0}
+            athChangePercentage={
+              coin.market_data.ath_change_percentage.usd ?? 0
+            }
           />
 
           {/* 7. Sentiment + Heatmap */}
@@ -108,13 +116,13 @@ export function CoinDetail() {
           </div>
 
           {/* 9. About */}
-          <CoinAbout name={coin.name} description={coin.description?.en ?? ''} />
+          <CoinAbout
+            name={coin.name}
+            description={coin.description?.en ?? ''}
+          />
 
           {/* 10. Related Coins */}
-          <RelatedCoins
-            coinId={coin.id}
-            marketCapRank={coin.market_cap_rank}
-          />
+          <RelatedCoins coinId={coin.id} marketCapRank={coin.market_cap_rank} />
 
           {/* 11. Links */}
           <CoinLinks

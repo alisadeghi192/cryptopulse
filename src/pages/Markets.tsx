@@ -12,6 +12,7 @@ import type { Coin } from '@/types/coin'
 import { MarketsGrid } from '@/features/markets/components/MarketsGrid'
 import { MarketsMobileCard } from '@/features/markets/components/MarketsMobileCard'
 import { AmbientLights } from '@/components/ui/AmbientLights'
+import { Head } from '@/components/ui/Head'
 
 const FILTER_LABEL: Record<string, string> = {
   all: 'All',
@@ -63,6 +64,11 @@ export function Markets() {
 
   return (
     <main className="relative py-8 md:py-12">
+      <Head
+        title="Markets"
+        description="Live prices, 24h change, and market cap for 5,000+ cryptocurrencies. Filter by top 100, 500, or 5,000."
+        url="/markets"
+      />
       <AmbientLights variant="home" intensity="subtle" />
       <div className="relative z-10 container">
         <MarketsHeader totalCoins={coins.length} />
@@ -95,7 +101,7 @@ export function Markets() {
             virtualize
             estimateSize={56}
             onLoadMore={fetchNextPage}
-            hasNextPage={hasNextPage} 
+            hasNextPage={hasNextPage}
             isFetchingNextPage={isFetchingNextPage}
             mobileCardRender={(coin) => <MarketsMobileCard coin={coin} />}
           />

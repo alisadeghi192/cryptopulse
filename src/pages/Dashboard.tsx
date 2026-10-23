@@ -12,6 +12,7 @@ import {
 import { DepositModal } from '@/features/wallet/components/DepositModal'
 import { WithdrawModal } from '@/features/wallet/components/WithdrawModal'
 import { cn } from '@/utils/cn'
+import { Head } from '@/components/ui/Head'
 
 export function Dashboard() {
   const isLoaded = useWalletStore((s) => s.isLoaded)
@@ -37,6 +38,12 @@ export function Dashboard() {
 
   return (
     <main className="relative min-h-full">
+      <Head
+        title="Dashboard"
+        description="Your personal portfolio dashboard."
+        url="/dashboard"
+        noIndex
+      />
       <div
         className={cn(
           'relative z-10 mx-auto max-w-6xl space-y-6 transition-all duration-500',

@@ -14,6 +14,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { buttonVariants } from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
 import type { Coin } from '@/types/coin'
+import { Head } from '@/components/ui/Head'
 
 export function Watchlist() {
   const [search, setSearch] = useState('')
@@ -61,6 +62,12 @@ export function Watchlist() {
 
   return (
     <main className="relative">
+      <Head
+        title="Watchlist"
+        description="Cryptocurrencies you're tracking."
+        url="/watchlist"
+        noIndex
+      />
       <WatchlistHeader
         count={watchlistCoins.length}
         avgChange={avgChange}

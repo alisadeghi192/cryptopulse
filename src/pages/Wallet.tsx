@@ -9,6 +9,7 @@ import { DepositModal } from '@/features/wallet/components/DepositModal'
 import { WithdrawModal } from '@/features/wallet/components/WithdrawModal'
 import { ErrorState } from '@/components/ui/ErrorState'
 import { cn } from '@/utils/cn'
+import { Head } from '@/components/ui/Head'
 
 export function Wallet() {
   const wallet = useWalletStore((s) => s.wallet)
@@ -26,7 +27,13 @@ export function Wallet() {
   // Show error state if initial load failed
   if (error && !isLoaded) {
     return (
-      <main className="relative min-h-full bg-background p-6">
+      <main className="bg-background relative min-h-full p-6">
+        <Head
+          title="Wallet"
+          description="Your virtual wallet."
+          url="/wallet"
+          noIndex
+        />
         <div className="mx-auto max-w-6xl">
           <ErrorState
             title="Failed to load wallet"
@@ -39,7 +46,13 @@ export function Wallet() {
   }
 
   return (
-    <main className="relative min-h-full bg-background">
+    <main className="bg-background relative min-h-full">
+      <Head
+        title="Wallet"
+        description="Your virtual wallet, cash balance, and holdings."
+        url="/wallet"
+        noIndex
+      />
       <div
         className={cn(
           'mx-auto max-w-6xl transition-all duration-500',

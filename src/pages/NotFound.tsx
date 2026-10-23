@@ -6,10 +6,16 @@ import { BlurFade } from '@/components/ui/BlurFade'
 import { GridPattern } from '@/components/ui/GridPattern'
 import { buttonVariants } from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
+import { Head } from '@/components/ui/Head'
 
 export function NotFound() {
   return (
     <main className="relative flex min-h-dvh items-center justify-center overflow-hidden">
+      <Head
+        title="404 — Page Not Found"
+        description="The page you're looking for doesn't exist."
+        noIndex
+      />
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
         <AmbientLights variant="aurora" intensity="subtle" />
@@ -24,7 +30,7 @@ export function NotFound() {
             style={{ animation: 'notfound-float 4s ease-in-out infinite' }}
           >
             {/* 4 */}
-            <span className="font-display text-[100px] leading-none font-black tracking-tighter text-primary md:text-[180px]">
+            <span className="font-display text-primary text-[100px] leading-none font-black tracking-tighter md:text-[180px]">
               4
             </span>
 
@@ -56,7 +62,7 @@ export function NotFound() {
             </div>
 
             {/* 4 */}
-            <span className="font-display text-[100px] leading-none font-black tracking-tighter text-primary md:text-[180px]">
+            <span className="font-display text-primary text-[100px] leading-none font-black tracking-tighter md:text-[180px]">
               4
             </span>
           </div>

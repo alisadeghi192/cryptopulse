@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="theme-color"
@@ -14,7 +15,46 @@
       content="#0b0e14"
       media="(prefers-color-scheme: dark)"
     />
+
     <title>CryptoPulse — Real-Time Crypto Tracker</title>
+
+    <!-- Default meta (overwritten by <Head /> for per-page values) -->
+    <meta
+      name="description"
+      content="Track 5,000+ cryptocurrencies with live prices, charts, and a free $1,000 simulated wallet."
+    />
+
+    <!-- Open Graph defaults (for social crawlers that don't run JS) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CryptoPulse" />
+    <meta
+      property="og:title"
+      content="CryptoPulse — Real-Time Crypto Tracker"
+    />
+    <meta
+      property="og:description"
+      content="Track 5,000+ cryptocurrencies with live prices, charts, and a free $1,000 simulated wallet."
+    />
+    <meta
+      property="og:image"
+      content="https://cryptopulse.vercel.app/og-image.png"
+    />
+    <meta property="og:url" content="https://cryptopulse.vercel.app" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="CryptoPulse — Real-Time Crypto Tracker"
+    />
+    <meta
+      name="twitter:description"
+      content="Track 5,000+ cryptocurrencies with live prices, charts, and a free $1,000 simulated wallet."
+    />
+    <meta
+      name="twitter:image"
+      content="https://cryptopulse.vercel.app/og-image.png"
+    />
+
     <!-- Anti-FOUC theme script -->
     <script>
       ;(function () {

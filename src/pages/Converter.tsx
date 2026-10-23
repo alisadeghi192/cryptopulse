@@ -5,6 +5,7 @@ import { PageLoader } from '@/components/ui/PageLoader'
 import type { SelectOption } from '@/features/converter/components/CurrencySelect'
 import { ConverterCard } from '@/features/converter/components/ConverterCard'
 import { useConverterData } from '@/features/converter/hooks/useConverterData'
+import { Head } from '@/components/ui/Head'
 
 export function Converter() {
   const { options, convert, isLoading, isError } = useConverterData()
@@ -49,6 +50,11 @@ export function Converter() {
 
   return (
     <main className="relative z-30">
+      <Head
+        title="Converter"
+        description="Convert between 250+ cryptocurrencies and USD with live exchange rates."
+        url="/converter"
+      />
       <AmbientLights variant="home" intensity="subtle" />
 
       <div className="relative z-10 container py-8 md:py-12">

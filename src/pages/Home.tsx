@@ -8,6 +8,7 @@ import { useHomeData } from '@/features/home/hooks/useHomeData'
 import { useTrending } from '@/hooks/useTrending'
 import { AmbientLights } from '@/components/ui/AmbientLights'
 import { PageLoader } from '@/components/ui/PageLoader'
+import { Head } from '@/components/ui/Head'
 
 export function Home() {
   const {
@@ -22,7 +23,6 @@ export function Home() {
   } = useHomeData()
   const { data: trending, isLoading: trendingLoading } = useTrending()
   const pageLoading = isLoading || trendingLoading
-
 
   if (error) {
     return (
@@ -48,6 +48,11 @@ export function Home() {
 
   return (
     <main className="animate-[fade-in_0.4s_ease-out]">
+      <Head
+        fullTitle="CryptoPulse — Real-Time Crypto Tracker"
+        description="Track 5,000+ cryptocurrencies with live prices, charts, and a free $1,000 simulated wallet."
+        url="/"
+      />
       <HeroSection coins={top10} bitcoin={bitcoin} isPositive={isPositive} />
 
       <div className="mx-auto">

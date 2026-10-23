@@ -8,6 +8,7 @@ import {
   TransactionsList,
   type TransactionFilter,
 } from '@/features/transactions/components'
+import { Head } from '@/components/ui/Head'
 
 export function Transactions() {
   const transactions = useWalletStore((s) => s.transactions)
@@ -59,6 +60,12 @@ export function Transactions() {
 
   return (
     <main className="relative min-h-full">
+      <Head
+        title="Transactions"
+        description="Your full transaction history."
+        url="/transactions"
+        noIndex
+      />
       <div className="relative z-10 mx-auto max-w-5xl">
         <TransactionsHeader
           total={transactions.length}

@@ -10,6 +10,7 @@ import { InfoCard } from '@/features/profile/components/InfoCard'
 import { BalanceCard } from '@/features/profile/components/BalanceCard'
 import { SecuritySection } from '@/features/profile/components/SecuritySection'
 import { CardNumberCard } from '@/features/profile/components/CardNumberCard'
+import { Head } from '@/components/ui/Head'
 
 const shortWallet = (id: string) => id.replace(/-/g, '').slice(0, 16)
 
@@ -19,7 +20,6 @@ export function Profile() {
   const watchlistCount = useWatchlistStore((s) => s.coinIds.length)
   const transactions = useWalletStore((s) => s.transactions)
   const cashBalance = useWalletStore((s) => s.wallet?.cash_balance ?? 0)
-
 
   const tradesCount = useMemo(
     () =>
@@ -54,6 +54,12 @@ export function Profile() {
 
   return (
     <main className="bg-background relative min-h-full">
+      <Head
+        title="Profile"
+        description="Your account settings and security."
+        url="/profile"
+        noIndex
+      />
       <div className="mx-auto w-full">
         <BlurFade>
           <ProfileHeader

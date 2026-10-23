@@ -5,6 +5,7 @@ import { AuthImagePanel } from '@/features/auth/components/AuthImagePanel'
 import { AmbientLights } from '@/components/ui/AmbientLights'
 import { LoginForm } from '@/features/auth/components/LoginForm'
 import { RegisterForm } from '@/features/auth/components/RegisterForm'
+import { Head } from '@/components/ui/Head'
 
 type AuthMode = 'login' | 'register'
 
@@ -101,9 +102,7 @@ export function Auth() {
 
   const emailParam = params.get('email') || undefined
 
-  const mode: AuthMode = pathname.includes('register')
-    ? 'register'
-    : 'login'
+  const mode: AuthMode = pathname.includes('register') ? 'register' : 'login'
   const isLogin = mode === 'login'
 
   const handleSwitch = () => {
@@ -115,6 +114,16 @@ export function Auth() {
 
   return (
     <div className="bg-background relative min-h-screen w-full overflow-hidden">
+      <Head
+        title={isLogin ? 'Sign In' : 'Create Account'}
+        description={
+          isLogin
+            ? 'Sign in to your CryptoPulse account.'
+            : 'Create a free account and get $1,000 in virtual funds to start trading.'
+        }
+        url={isLogin ? '/login' : '/register'}
+        noIndex
+      />
       <div className="hidden min-h-screen w-full md:flex">
         <SwapCard
           flipped={!isLogin}
