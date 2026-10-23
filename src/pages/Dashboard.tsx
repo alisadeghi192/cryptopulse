@@ -11,8 +11,8 @@ import {
 } from '@/features/dashboard/components'
 import { DepositModal } from '@/features/wallet/components/DepositModal'
 import { WithdrawModal } from '@/features/wallet/components/WithdrawModal'
-import { cn } from '@/utils/cn'
 import { Head } from '@/components/ui/Head'
+import { cn } from '@/utils/cn'
 
 export function Dashboard() {
   const isLoaded = useWalletStore((s) => s.isLoaded)
@@ -31,6 +31,7 @@ export function Dashboard() {
     recentTransactions,
     allTransactions,
     coinImages,
+    isCoinsLoading,
   } = useDashboardData()
 
   const [depositOpen, setDepositOpen] = useState(false)
@@ -58,10 +59,15 @@ export function Dashboard() {
           holdingsValue={holdingsValue}
           holdingsCount={holdingsWithPrice.length}
           dailyPnl={dailyPnl}
+          isCoinsLoading={isCoinsLoading}
         />
 
         <div className="grid gap-6 md:grid-cols-2">
-          <AllocationDonut slices={allocation} total={totalPortfolio} />
+          <AllocationDonut
+            slices={allocation}
+            total={totalPortfolio}
+            loading={isCoinsLoading}
+          />
           <PersonalMovers
             gainers={personalMovers.gainers}
             losers={personalMovers.losers}

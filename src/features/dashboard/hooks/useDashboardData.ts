@@ -27,11 +27,11 @@ export function useDashboardData() {
   const cashBalance = useWalletStore((s) => s.wallet?.cash_balance ?? 0)
   const transactions = useWalletStore((s) => s.transactions)
 
-  const { holdingsWithPrice, holdingsValue, totalPnl } = useHoldingsWithPrice()
+  const { holdingsWithPrice, holdingsValue, totalPnl, isCoinsLoading } =
+    useHoldingsWithPrice()
   const { data: trending } = useTrending()
   const coinImages = useCoinImages(transactions)
 
-  // Daily P&L: reconstruct 24h-ago value from each holding's 24h change.
   const dailyPnl = useMemo(() => {
     let currentValue = 0
     let previousValue = 0
@@ -51,7 +51,6 @@ export function useDashboardData() {
     return { value, percent, previousValue }
   }, [holdingsWithPrice])
 
-  // Allocation slices: cash + each holding, sorted by value desc.
   const allocation = useMemo<AllocationSlice[]>(() => {
     const slices: AllocationSlice[] = []
 
@@ -80,7 +79,6 @@ export function useDashboardData() {
     return slices
   }, [cashBalance, holdingsWithPrice])
 
-  // Personal movers: biggest 24h changes among holdings.
   const personalMovers = useMemo(() => {
     const withChange = holdingsWithPrice
       .filter((h) => h.change24h !== undefined)
@@ -129,5 +127,6 @@ export function useDashboardData() {
     recentTransactions: transactions.slice(0, 3),
     allTransactions: transactions,
     coinImages,
+    isCoinsLoading,
   }
 }

@@ -9,6 +9,7 @@ import type { AllocationSlice } from '../hooks/useDashboardData'
 interface AllocationDonutProps {
   slices: AllocationSlice[]
   total: number
+  loading?: boolean
 }
 
 const SIZE = 180
@@ -16,7 +17,11 @@ const STROKE = 22
 const RADIUS = (SIZE - STROKE) / 2
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 
-export function AllocationDonut({ slices, total }: AllocationDonutProps) {
+export function AllocationDonut({
+  slices,
+  total,
+  loading = false,
+}: AllocationDonutProps) {
   const [hovered, setHovered] = useState<string | null>(null)
 
   const segments = useMemo(() => {
@@ -53,11 +58,25 @@ export function AllocationDonut({ slices, total }: AllocationDonutProps) {
             </span>
           </div>
           <span className="text-text/60 font-mono text-[10px] tracking-widest uppercase">
-            {slices.length} {slices.length === 1 ? 'asset' : 'assets'}
+            {loading
+              ? '—'
+              : `${slices.length} ${slices.length === 1 ? 'asset' : 'assets'}`}
           </span>
         </div>
 
-        {total <= 0 ? (
+        {loading ? (
+          <div className="relative flex flex-col items-center gap-4 p-5 md:flex-row md:items-center md:gap-6 md:p-6">
+            <div className="bg-elevated size-45 shrink-0 animate-pulse rounded-full" />
+            <div className="flex w-full flex-1 flex-col gap-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-elevated h-6 animate-pulse rounded"
+                />
+              ))}
+            </div>
+          </div>
+        ) : total <= 0 ? (
           <div className="relative flex flex-col items-center gap-3 p-8 text-center">
             <div className="border-border/40 bg-elevated/40 flex size-12 items-center justify-center rounded-xl border">
               <PieChart className="text-text/40 size-5" />

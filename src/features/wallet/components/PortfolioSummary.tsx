@@ -14,6 +14,7 @@ interface PortfolioSummaryProps {
   cashBalance: number
   holdingsValue: number
   totalPnl: number
+  isCoinsLoading?: boolean
   onDeposit: () => void
   onWithdraw: () => void
 }
@@ -23,6 +24,7 @@ export function PortfolioSummary({
   cashBalance,
   holdingsValue,
   totalPnl,
+  isCoinsLoading = false,
   onDeposit,
   onWithdraw,
 }: PortfolioSummaryProps) {
@@ -34,16 +36,15 @@ export function PortfolioSummary({
         </div>
         <div className="border-border/40 bg-surface/40 relative rounded-3xl border shadow-2xl backdrop-blur-3xl">
           <div className="grid gap-6 p-6 md:grid-cols-[1fr_auto] md:gap-8 md:p-8">
-            {/* Left: Total value */}
             <div>
               <p className="text-text/70 font-mono text-[10px] tracking-widest uppercase">
                 Total Portfolio Value
               </p>
               <p className="font-display text-text mt-2 text-4xl font-bold tabular-nums md:text-5xl">
-                <BalanceValue value={totalPortfolio} />
+                <BalanceValue value={totalPortfolio} loading={isCoinsLoading} />
               </p>
 
-              {totalPnl !== 0 && (
+              {!isCoinsLoading && totalPnl !== 0 && (
                 <div className="mt-3 flex items-center gap-2">
                   <span
                     className={cn(
@@ -81,13 +82,15 @@ export function PortfolioSummary({
                     Holdings
                   </p>
                   <p className="text-text mt-1 font-mono text-lg font-semibold tabular-nums">
-                    <BalanceValue value={holdingsValue} />
+                    <BalanceValue
+                      value={holdingsValue}
+                      loading={isCoinsLoading}
+                    />
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Right: Actions */}
             <div className="flex flex-col gap-3 md:w-48">
               <button
                 type="button"

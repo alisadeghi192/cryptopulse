@@ -8,15 +8,16 @@ import { TransactionsPreview } from '@/features/wallet/components/TransactionsPr
 import { DepositModal } from '@/features/wallet/components/DepositModal'
 import { WithdrawModal } from '@/features/wallet/components/WithdrawModal'
 import { ErrorState } from '@/components/ui/ErrorState'
-import { cn } from '@/utils/cn'
 import { Head } from '@/components/ui/Head'
+import { cn } from '@/utils/cn'
 
 export function Wallet() {
   const wallet = useWalletStore((s) => s.wallet)
   const isLoaded = useWalletStore((s) => s.isLoaded)
   const isLoading = useWalletStore((s) => s.isLoading)
   const error = useWalletStore((s) => s.error)
-  const { holdingsWithPrice, holdingsValue, totalPnl } = useHoldingsWithPrice()
+  const { holdingsWithPrice, holdingsValue, totalPnl, isCoinsLoading } =
+    useHoldingsWithPrice()
 
   const [depositOpen, setDepositOpen] = useState(false)
   const [withdrawOpen, setWithdrawOpen] = useState(false)
@@ -24,10 +25,9 @@ export function Wallet() {
   const cashBalance = wallet?.cash_balance ?? 0
   const totalPortfolio = cashBalance + holdingsValue
 
-  // Show error state if initial load failed
   if (error && !isLoaded) {
     return (
-      <main className="bg-background relative min-h-full p-6">
+      <main className="relative min-h-full bg-background p-6">
         <Head
           title="Wallet"
           description="Your virtual wallet."
@@ -46,7 +46,7 @@ export function Wallet() {
   }
 
   return (
-    <main className="bg-background relative min-h-full">
+    <main className="relative min-h-full bg-background">
       <Head
         title="Wallet"
         description="Your virtual wallet, cash balance, and holdings."
@@ -65,6 +65,7 @@ export function Wallet() {
           cashBalance={cashBalance}
           holdingsValue={holdingsValue}
           totalPnl={totalPnl}
+          isCoinsLoading={isCoinsLoading}
           onDeposit={() => setDepositOpen(true)}
           onWithdraw={() => setWithdrawOpen(true)}
         />

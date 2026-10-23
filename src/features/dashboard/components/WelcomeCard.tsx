@@ -19,6 +19,7 @@ interface WelcomeCardProps {
   holdingsValue: number
   holdingsCount: number
   dailyPnl: { value: number; percent: number }
+  isCoinsLoading?: boolean
 }
 
 export function WelcomeCard({
@@ -29,9 +30,10 @@ export function WelcomeCard({
   holdingsValue,
   holdingsCount,
   dailyPnl,
+  isCoinsLoading = false,
 }: WelcomeCardProps) {
   const isPositive = dailyPnl.value >= 0
-  const showDaily = dailyPnl.value !== 0
+  const showDaily = !isCoinsLoading && dailyPnl.value !== 0
 
   return (
     <BlurFade>
@@ -71,7 +73,7 @@ export function WelcomeCard({
                 Total Portfolio
               </p>
               <p className="font-display text-text mt-1 text-4xl font-bold tabular-nums md:text-5xl">
-                <BalanceValue value={totalPortfolio} />
+                <BalanceValue value={totalPortfolio} loading={isCoinsLoading} />
               </p>
 
               {showDaily && (
@@ -109,7 +111,10 @@ export function WelcomeCard({
                     Holdings
                   </div>
                   <p className="text-text mt-1 font-mono text-sm font-semibold tabular-nums">
-                    <BalanceValue value={holdingsValue} />
+                    <BalanceValue
+                      value={holdingsValue}
+                      loading={isCoinsLoading}
+                    />
                   </p>
                 </div>
                 <div>
@@ -118,7 +123,11 @@ export function WelcomeCard({
                     Assets
                   </div>
                   <p className="text-text mt-1 font-mono text-sm font-semibold tabular-nums">
-                    {holdingsCount}
+                    {isCoinsLoading ? (
+                      <span className="bg-elevated inline-block h-4 w-8 animate-pulse rounded" />
+                    ) : (
+                      holdingsCount
+                    )}
                   </p>
                 </div>
               </div>
