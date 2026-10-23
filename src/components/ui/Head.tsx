@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 const SITE_NAME = 'CryptoPulse'
-const SITE_URL = 'https://cryptopulse.vercel.app'
+const SITE_URL = 'https://cryptopulse-self.vercel.app'
 const DEFAULT_IMAGE = '/og-image.png'
 const DEFAULT_DESCRIPTION =
   'Track 5,000+ cryptocurrencies with live prices, charts, and a free $1,000 simulated wallet.'
