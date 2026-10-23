@@ -23,7 +23,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className="container flex h-screen flex-col overflow-hidden bg-background">
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
       <ScrollToTop containerRef={mainRef} />
 
       <TopBar
