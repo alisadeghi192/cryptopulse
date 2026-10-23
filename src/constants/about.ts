@@ -5,13 +5,15 @@ import {
   ShieldCheck,
   Cpu,
   type LucideIcon,
+  Globe,
+  ShieldAlert,
 } from 'lucide-react'
 
 export const ABOUT_STATS = [
   { label: 'Coins tracked', value: '5,000+', color: 'text-primary' },
   { label: 'Type-safe', value: '100%', color: 'text-[#3178C6]' },
   { label: 'AI-assisted', value: 'UI & Motion', color: 'text-[#7C3AED]' },
-  { label: 'Edge Caching', value: 'API Layer', color: 'text-success' },
+  { label: 'Global CDN', value: 'Proxy Layer', color: 'text-success' },
 ]
 
 export interface Challenge {
@@ -87,6 +89,30 @@ export const CHALLENGES: Challenge[] = [
     icon: Palette,
     accent: '#F97316',
     glow: 'rgba(249, 115, 22, 0.10)',
+  },
+  {
+    id: 'regional-access',
+    title: 'Regional Access',
+    summary: 'Serving CoinGecko images in regions where its CDN is blocked.',
+    description:
+      'CoinGecko images are served from assets.coingecko.com, which is blocked in some regions (including Iran). Without a workaround, every coin logo and icon in the app would fail to load, leaving the UI visually broken for a large group of users.',
+    solution:
+      'Built a Vercel Edge Function (api/image.ts) that proxies CoinGecko images through a whitelisted domain, with 24-hour edge caching and a client-side coinImageUrl() helper that routes only CoinGecko hosts through the proxy. All coin images across cards, tables, modals, and the wallet now render reliably.',
+    icon: Globe,
+    accent: '#0EA5E9',
+    glow: 'rgba(14, 165, 233, 0.10)',
+  },
+  {
+    id: 'production-resilience',
+    title: 'Production Resilience',
+    summary: 'Keeping the app usable when a single component crashes.',
+    description:
+      'A single unhandled runtime error in a React tree can blank the entire page in production. Without guardrails, any edge case in a page component (bad API data, a missing field, a race condition) would destroy the whole session and force a manual reload.',
+    solution:
+      'Added a global ErrorBoundary for non-route errors and a RouteError component wired via React Router errorElement. Route-level crashes now render a themed recovery screen with Reload / Home actions, while the shell (TopBar, Sidebar, Footer) stays intact.',
+    icon: ShieldAlert,
+    accent: '#F43F5E',
+    glow: 'rgba(244, 63, 94, 0.10)',
   },
 ]
 
@@ -259,4 +285,3 @@ export const TECH_STACK = [
     category: 'ai',
   },
 ] as const
-
