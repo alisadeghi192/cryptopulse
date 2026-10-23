@@ -1,5 +1,4 @@
 import { useCallback, useRef } from 'react'
-import { flushSync } from 'react-dom'
 import { Moon, Sun } from 'lucide-react'
 import { useThemeStore } from '@/stores/useThemeStore'
 import { cn } from '@/utils/cn'
@@ -10,7 +9,7 @@ interface ThemeToggleProps extends React.ComponentPropsWithoutRef<'button'> {
 
 export function ThemeToggle({
   className,
-  duration = 400,
+  duration = 650,
   ...props
 }: ThemeToggleProps) {
   const theme = useThemeStore((s) => s.theme)
@@ -39,25 +38,33 @@ export function ThemeToggle({
 
     const maxRadius = Math.hypot(
       Math.max(x, viewportWidth - x),
-      Math.max(y, viewportHeight - y)
+      Math.max(y, viewportHeight - y),
     )
 
-    const applyTheme = () => {
+    const applyThemeClass = () => {
       const newTheme = isDark ? 'light' : 'dark'
       document.documentElement.classList.toggle('dark', newTheme === 'dark')
-      setTheme(newTheme)
-
-      // Persist
       document.cookie = `theme=${newTheme}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`
       localStorage.setItem('theme', newTheme)
     }
 
-    if (typeof document.startViewTransition !== 'function') {
-      applyTheme()
+    const applyThemeState = () => {
+      setTheme(isDark ? 'light' : 'dark')
+    }
+
+    const prefersReduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+
+    if (prefersReduced || typeof document.startViewTransition !== 'function') {
+      applyThemeClass()
+      applyThemeState()
       return
     }
 
-   
+    const isMobile = viewportWidth < 768
+    const effectiveDuration = isMobile ? 700 : duration
+
     const toX = (val: number) => `${(val / viewportWidth) * 100}%`
     const toY = (val: number) => `${(val / viewportHeight) * 100}%`
     const toRadius = (r: number) =>
@@ -71,37 +78,43 @@ export function ThemeToggle({
 
     const root = document.documentElement
     root.dataset.themeVt = 'active'
-    root.style.setProperty('--theme-toggle-vt-duration', `${duration}ms`)
+    root.classList.add('freeze-animations')
+    root.style.setProperty(
+      '--theme-toggle-vt-duration',
+      `${effectiveDuration}ms`,
+    )
     root.style.setProperty('--theme-vt-clip-from', clipPath[0])
 
     const cleanup = () => {
       isTransitioningRef.current = false
       delete root.dataset.themeVt
+      root.classList.remove('freeze-animations')
       root.style.removeProperty('--theme-toggle-vt-duration')
       root.style.removeProperty('--theme-vt-clip-from')
     }
 
     isTransitioningRef.current = true
     const transition = document.startViewTransition(() => {
-      flushSync(applyTheme)
+      applyThemeClass()
     })
 
-    if (typeof transition?.finished?.finally === 'function') {
-      transition.finished.finally(cleanup).catch(() => {})
-    } else {
-      cleanup()
-    }
+    transition.finished
+      .finally(() => {
+        applyThemeState()
+        cleanup()
+      })
+      .catch(() => {})
 
     transition.ready
       .then(() => {
-        document.documentElement.animate(
+        root.animate(
           { clipPath },
           {
-            duration,
+            duration: effectiveDuration,
             easing: 'ease-in-out',
             fill: 'forwards',
             pseudoElement: '::view-transition-new(root)',
-          }
+          },
         )
       })
       .catch(() => {})
@@ -112,7 +125,7 @@ export function ThemeToggle({
       <div
         className={cn(
           'flex h-9 w-9 items-center justify-center rounded-lg bg-elevated/50',
-          className
+          className,
         )}
       >
         <div className="h-4 w-4 animate-pulse rounded-full bg-border" />
@@ -128,11 +141,15 @@ export function ThemeToggle({
       aria-label="Toggle theme"
       className={cn(
         'flex h-9 w-9 items-center cursor-pointer justify-center rounded-lg text-text-secondary transition-colors hover:bg-elevated hover:text-text',
-        className
+        className,
       )}
       {...props}
     >
-      {isDark ? <Sun className="h-4 w-4 text-primary" /> : <Moon className="h-4 w-4 text-blue-900" />}
+      {isDark ? (
+        <Sun className="h-4 w-4 text-primary" />
+      ) : (
+        <Moon className="h-4 w-4 text-blue-900" />
+      )}
     </button>
   )
 }
