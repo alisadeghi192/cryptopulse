@@ -8,7 +8,7 @@ export function SecuritySection() {
     <div className="relative mt-6">
       <div className="mb-3 flex items-center gap-2">
         <Shield className="text-primary size-3.5" />
-        <span className="text-primary font-mono text-[10px] tracking-[0.25em] uppercase">
+        <span className="text-primary font-mono text-sm tracking-[0.25em] uppercase">
           Security
         </span>
         <div className="bg-border h-px flex-1" />

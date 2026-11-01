@@ -30,11 +30,11 @@ export function BalanceCard({ cashBalance }: BalanceCardProps) {
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Wallet className="size-4 text-[#FACC15]" />
-                <span className="text-text/70 font-mono text-[10px] tracking-widest uppercase">
+                <span className="text-text/70 font-mono text-sm tracking-widest uppercase">
                   Cash Balance
                 </span>
               </div>
-              <ChevronRight className="text-text/40 group-hover/wallet:text-[#FACC15] size-4 shrink-0 transition-all group-hover/wallet:translate-x-0.5" />
+              <ChevronRight className="text-text/40 group-hover/wallet:text-[#FACC15] size-6 shrink-0 transition-all group-hover/wallet:translate-x-0.5" />
             </div>
             <p className="text-text mt-3 font-mono text-base font-semibold tabular-nums md:text-lg">
               <BalanceValue value={cashBalance} />

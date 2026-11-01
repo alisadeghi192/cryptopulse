@@ -1,12 +1,11 @@
 import { useMemo } from 'react'
-import { LinkIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { BlurFade } from '@/components/ui/BlurFade'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useWatchlistStore } from '@/stores/useWatchlistStore'
 import { useWalletStore } from '@/stores/useWalletStore'
 import { ProfileHeader } from '@/features/profile/components/ProfileHeader'
-import { InfoCard } from '@/features/profile/components/InfoCard'
+import { WalletCard } from '@/features/profile/components/WalletCard'
 import { BalanceCard } from '@/features/profile/components/BalanceCard'
 import { SecuritySection } from '@/features/profile/components/SecuritySection'
 import { CardNumberCard } from '@/features/profile/components/CardNumberCard'
@@ -81,18 +80,7 @@ export function Profile() {
           </BlurFade>
 
           <BlurFade delay={0.15}>
-            <InfoCard
-              label="Wallet Address"
-              value={shortWallet(userId)}
-              sublabel="Your unique wallet ID"
-              icon={LinkIcon}
-              ambientVariant="green"
-              spotlightColor="rgba(34, 197, 94, 0.15)"
-              accent="success"
-              copyValue={shortWallet(userId)}
-              copyLabel="Wallet address copied to clipboard"
-              valueClassName="text-sm md:text-base"
-            />
+            <WalletCard address={shortWallet(userId)} />
           </BlurFade>
 
           <BlurFade delay={0.2}>

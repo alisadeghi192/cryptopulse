@@ -7,8 +7,7 @@ import { useAuthStore } from '@/stores/useAuthStore'
 import { cn } from '@/utils/cn'
 
 function formatCardNumber(value: string) {
-  const digits = value.replace(/\D/g, '').slice(0, 16)
-  return digits.replace(/(\d{4})(?=\d)/g, '$1 ')
+  return value.replace(/(\d{4})(?=\d)/g, '$1 ')
 }
 
 export function CardNumberCard() {
@@ -20,8 +19,7 @@ export function CardNumberCard() {
   const [draft, setDraft] = useState('')
   const [saving, setSaving] = useState(false)
 
-  const digits = draft.replace(/\D/g, '')
-  const isValid = digits.length === 16
+  const isValid = draft.length === 16
 
   const handleEdit = () => {
     setDraft(savedCard)
@@ -43,7 +41,7 @@ export function CardNumberCard() {
 
     setSaving(true)
 
-    const { error } = await updateProfile({ card_number: digits })
+    const { error } = await updateProfile({ card_number: draft })
 
     setSaving(false)
 
@@ -72,11 +70,10 @@ export function CardNumberCard() {
         />
 
         <div className="relative z-10">
-          {/* ─── Header ─── */}
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center gap-2">
               <CreditCard className="size-4 text-[#3B82F6]" />
-              <span className="text-text/70 font-mono text-[10px] tracking-widest uppercase">
+              <span className="text-text/70 font-mono text-sm tracking-widest uppercase">
                 Card Number
               </span>
             </div>
@@ -88,7 +85,7 @@ export function CardNumberCard() {
                 aria-label="Edit card number"
                 className="text-text/40 hover:text-[#3B82F6] -mt-0.5 shrink-0 transition-colors"
               >
-                <Pencil className="size-4 cursor-pointer" />
+                <Pencil className="size-6 cursor-pointer" />
               </button>
             ) : (
               <div className="flex shrink-0 items-center gap-1">
@@ -100,9 +97,9 @@ export function CardNumberCard() {
                   className="text-success hover:bg-success/15 flex size-7 items-center justify-center rounded-md transition-colors disabled:opacity-30"
                 >
                   {saving ? (
-                    <Loader2 className="size-4 animate-spin" />
+                    <Loader2 className="size-6 animate-spin" />
                   ) : (
-                    <Check className="size-4 cursor-pointer" />
+                    <Check className="size-6 cursor-pointer" />
                   )}
                 </button>
                 <button
@@ -118,14 +115,16 @@ export function CardNumberCard() {
             )}
           </div>
 
-          {/* ─── Body ─── */}
           {editing ? (
             <div className="mt-3">
               <input
                 type="text"
                 inputMode="numeric"
                 value={formatCardNumber(draft)}
-                onChange={(e) => setDraft(e.target.value)}
+                onChange={(e) => {
+                  const digits = e.target.value.replace(/\D/g, '').slice(0, 16)
+                  setDraft(digits)
+                }}
                 placeholder="0000 0000 0000 0000"
                 autoFocus
                 disabled={saving}
@@ -142,7 +141,7 @@ export function CardNumberCard() {
                 }}
               />
               <p className="text-text/60 mt-2 font-mono text-[10px]">
-                {digits.length}/16 digits
+                {draft.length}/16 digits
               </p>
             </div>
           ) : savedCard ? (
