@@ -10,7 +10,7 @@ export default function TechStackSection() {
       <div className="container">
         <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <span className="text-primary font-mono text-xs tracking-[0.2em] uppercase">
+            <span className="text-primary font-mono tracking-[0.2em] uppercase">
               02 / Technology
             </span>
 
@@ -42,11 +42,11 @@ export default function TechStackSection() {
                   <div className="bg-primary/50 h-px w-5" />
 
                   <div>
-                    <h3 className="text-text text-xs font-semibold tracking-[0.15em] uppercase">
+                    <h3 className="text-text text-sm font-semibold tracking-[0.15em] uppercase">
                       {group.label}
                     </h3>
 
-                    <p className="text-text-secondary mt-0.5 text-[11px]">
+                    <p className="text-text-secondary mt-0.5 text-xs">
                       {group.description}
                     </p>
                   </div>
@@ -134,7 +134,7 @@ export default function TechStackSection() {
         <div className="mt-16">
           <div className="mb-3 flex items-center gap-2">
             <Layers className="text-primary size-3.5" />
-            <span className="text-primary font-mono text-[10px] tracking-[0.25em] uppercase">
+            <span className="text-primary font-mono text-xs tracking-[0.25em] uppercase">
               Architecture Principle
             </span>
             <div className="bg-border h-px flex-1" />
@@ -146,7 +146,7 @@ export default function TechStackSection() {
           <div className="border-border bg-surface/20 grid overflow-hidden rounded-2xl border shadow-lg md:grid-cols-[1fr_auto_1fr]">
             {/* Left: What */}
             <div className="p-5 sm:p-6">
-              <span className="text-text-secondary font-mono text-[10px] tracking-[0.2em] uppercase">
+              <span className="text-text-secondary font-mono text-xs tracking-[0.2em] uppercase">
                 What we do
               </span>
               <p className="text-text mt-2 text-sm leading-relaxed font-medium">
@@ -161,7 +161,7 @@ export default function TechStackSection() {
 
             {/* Right: Why */}
             <div className="p-5 sm:p-6">
-              <span className="text-primary font-mono text-[10px] tracking-[0.2em] uppercase">
+              <span className="text-primary font-mono text-xs tracking-[0.2em] uppercase">
                 Why it matters
               </span>
               <p className="text-text mt-2 text-sm leading-relaxed font-medium">

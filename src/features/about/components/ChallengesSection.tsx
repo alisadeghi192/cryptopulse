@@ -17,7 +17,7 @@ export default function ChallengesSection() {
     <section id="challenges" className="relative py-16 lg:py-24">
       <div className="container">
         <div className="mb-12 max-w-2xl">
-          <span className="text-primary font-mono text-xs tracking-[0.2em] uppercase">
+          <span className="text-primary font-mono tracking-[0.2em] uppercase">
             03 / Challenges
           </span>
 
@@ -26,7 +26,7 @@ export default function ChallengesSection() {
           </h2>
 
           <p className="text-text-secondary mt-4 text-sm leading-7 md:text-base">
-            Five specific constraints shaped the technical decisions in this
+            Seven specific constraints shaped the technical decisions in this
             project. Click on any card to see how each one was solved.
           </p>
         </div>

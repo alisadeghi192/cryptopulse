@@ -10,7 +10,7 @@ export default function MissionSection() {
           
           {/* Intro - Sticky */}
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <span className="text-primary font-mono text-xs tracking-[0.2em] uppercase">
+            <span className="text-primary font-mono tracking-[0.2em] uppercase">
               01 / The Idea
             </span>
 
@@ -34,7 +34,7 @@ export default function MissionSection() {
           <div>
             {/* Header - outside the relative line container */}
             <div className="mb-10 flex items-center gap-3">
-              <span className="text-primary font-mono text-[10px] tracking-[0.2em] uppercase">
+              <span className="text-primary font-mono text-sm tracking-[0.2em] uppercase">
                 Development Workflow
               </span>
               <div className="bg-border h-px flex-1" />

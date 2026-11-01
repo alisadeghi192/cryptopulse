@@ -94,11 +94,11 @@ export function AuthImagePanel({ mode }: AuthImagePanelProps) {
             )}
           >
             {content.stats.map((stat) => (
-              <div key={stat.label}>
+              <div key={stat.label} className='flex flex-col items-center'>
                 <p className="font-display text-primary text-3xl font-bold">
                   {stat.value}
                 </p>
-                <p className="font-mono text-[10px] tracking-widest text-white/50 uppercase">
+                <p className="font-mono text-sm tracking-widest text-white/70 uppercase">
                   {stat.label}
                 </p>
               </div>
