@@ -23,7 +23,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-background">
+    <div className="bg-background flex min-h-screen flex-col lg:h-screen lg:overflow-hidden">
       <ScrollToTop containerRef={mainRef} />
 
       <TopBar
@@ -33,7 +33,7 @@ export function AppLayout() {
         useBorderBeam={false}
       />
 
-      <div className="flex min-h-0 flex-1">
+      <div className="flex flex-1 lg:min-h-0">
         <Sidebar
           collapsed={collapsed}
           onToggleCollapse={() => setCollapsed(!collapsed)}
@@ -43,9 +43,11 @@ export function AppLayout() {
 
         <main
           ref={mainRef}
-          className="custom-scroll min-w-0 flex-1 overflow-y-auto p-2 md:p-8"
+          className="custom-scroll min-w-0 flex-1 lg:overflow-y-auto lg:p-8"
         >
-          <Outlet />
+          <div className="p-4 lg:p-0">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

@@ -408,7 +408,7 @@ grant execute on function public.sell_coin(text, text, numeric, numeric, numeric
 -- 6. Storage: avatars bucket (optional)
 -- ============================================================
 
--- Uncomment if you want to store avatars in Supabase Storage.
+--! Uncomment if you want to store avatars in Supabase Storage.
 -- 1. Create a public bucket named "avatars" in the dashboard.
 -- 2. Then run:
 
