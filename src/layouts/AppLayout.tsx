@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { Navigate, Outlet } from 'react-router'
 import { TopBar } from '@/components/layout/TopBar'
 import { Sidebar } from '@/components/layout/Sidebar'
+import { MobileNavDrawer } from '@/components/layout/MobileNavDrawer'
 import { PageLoader } from '@/components/ui/PageLoader'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { useAuthStore } from '@/stores/useAuthStore'
@@ -22,6 +23,13 @@ export function AppLayout() {
     return <Navigate to="/login" replace />
   }
 
+  const navLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'Markets', href: '/markets' },
+    { label: 'Converter', href: '/converter' },
+    { label: 'About', href: '/about' },
+  ]
+
   return (
     <div className="bg-background flex min-h-screen flex-col lg:h-screen lg:overflow-hidden">
       <ScrollToTop containerRef={mainRef} />
@@ -37,8 +45,13 @@ export function AppLayout() {
         <Sidebar
           collapsed={collapsed}
           onToggleCollapse={() => setCollapsed(!collapsed)}
-          mobileOpen={mobileOpen}
-          onMobileClose={() => setMobileOpen(false)}
+        />
+
+        {/* Mobile drawer for app routes */}
+        <MobileNavDrawer
+          open={mobileOpen}
+          links={navLinks}
+          onClose={() => setMobileOpen(false)}
         />
 
         <main
