@@ -9,6 +9,11 @@ import {
   X,
   Wallet,
   Receipt,
+  Home,
+  LineChart,
+  ArrowLeftRight,
+  Info,
+  type LucideIcon,
 } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import { Logo } from '@/components/ui/Logo'
@@ -25,15 +30,22 @@ interface SidebarProps {
 interface NavItem {
   label: string
   href: string
-  icon: typeof LayoutDashboard
+  icon: LucideIcon
 }
 
-const navItems: NavItem[] = [
+const PANEL_ITEMS: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { label: 'Wallet', href: '/wallet', icon: Wallet },
   { label: 'Transactions', href: '/transactions', icon: Receipt },
   { label: 'Watchlist', href: '/watchlist', icon: Star },
   { label: 'Profile', href: '/profile', icon: User },
+]
+
+const PUBLIC_ITEMS: NavItem[] = [
+  { label: 'Home', href: '/', icon: Home },
+  { label: 'Markets', href: '/markets', icon: LineChart },
+  { label: 'Converter', href: '/converter', icon: ArrowLeftRight },
+  { label: 'About', href: '/about', icon: Info },
 ]
 
 export function Sidebar({
@@ -43,6 +55,7 @@ export function Sidebar({
   onMobileClose,
 }: SidebarProps) {
   const handleSignOut = useSignOut()
+
   return (
     <>
       {/* Mobile Backdrop */}
@@ -79,9 +92,9 @@ export function Sidebar({
           </button>
         </div>
 
-        {/* Nav Items */}
+        {/* Panel Items */}
         <nav className="flex-1 space-y-1 overflow-y-auto p-3">
-          {navItems.map((item) => {
+          {PANEL_ITEMS.map((item) => {
             const Icon = item.icon
 
             return (
@@ -103,6 +116,32 @@ export function Sidebar({
                 <span className={cn(collapsed && 'lg:hidden')}>
                   {item.label}
                 </span>
+              </NavLink>
+            )
+          })}
+
+          {/* Separator + Public links (mobile only) */}
+          <div className="my-3 h-px bg-border/40 lg:hidden" />
+
+          {PUBLIC_ITEMS.map((item) => {
+            const Icon = item.icon
+
+            return (
+              <NavLink
+                key={item.href}
+                to={item.href}
+                onClick={onMobileClose}
+                className={({ isActive }) =>
+                  cn(
+                    'group flex h-11 items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium transition-all duration-200 lg:hidden',
+                    isActive
+                      ? 'text-primary bg-primary/10'
+                      : 'text-text-secondary hover:bg-elevated/40 hover:text-text',
+                  )
+                }
+              >
+                <Icon className="h-5 w-5 shrink-0" />
+                <span>{item.label}</span>
               </NavLink>
             )
           })}

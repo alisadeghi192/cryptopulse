@@ -26,9 +26,10 @@ export function TopBar({
   const scrolled = useScroll()
 
   const navLinks = [
+    { label: 'Home', href: '/' },
     { label: 'Markets', href: '/markets' },
+    { label: 'Converter', href: '/converter' }, 
     { label: 'About', href: '/about' },
-    { label: 'Converter', href: '/converter' },
   ]
 
   const headerContent = (
