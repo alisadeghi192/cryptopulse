@@ -9,6 +9,9 @@ import {
   LogIn,
   Wallet,
   LogOut,
+  LayoutDashboard,
+  Receipt,
+  User as UserIcon,
   type LucideIcon,
 } from 'lucide-react'
 import { cn } from '@/utils/cn'
@@ -29,12 +32,51 @@ interface MobileNavDrawerProps {
 }
 
 const LINK_ICONS: Record<string, LucideIcon> = {
-  Home: Home,
+  Home,
   Markets: LineChart,
   Converter: ArrowLeftRight,
   Watchlist: Star,
   About: Info,
-  Wallet: Wallet,
+  Wallet,
+  Dashboard: LayoutDashboard,
+  Transactions: Receipt,
+  Profile: UserIcon,
+}
+
+const DASHBOARD_LINKS: NavLinkItem[] = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Wallet', href: '/wallet' },
+  { label: 'Transactions', href: '/transactions' },
+  { label: 'Watchlist', href: '/watchlist' },
+  { label: 'Profile', href: '/profile' },
+]
+
+function NavItem({
+  link,
+  onClose,
+}: {
+  link: NavLinkItem
+  onClose: () => void
+}) {
+  const Icon = LINK_ICONS[link.label] ?? Home
+
+  return (
+    <NavLink
+      to={link.href}
+      onClick={onClose}
+      className={({ isActive }) =>
+        cn(
+          'flex h-11 items-center gap-3 rounded-lg border px-3 text-sm font-medium transition-all duration-200',
+          isActive
+            ? 'border-primary/30 dark:bg-primary/10 text-primary dark:text-primary bg-white/20 shadow-[inset_0_3px_6px_rgba(0,0,0,0.6),inset_0_-1px_0_rgba(240,185,11,0.15),inset_0_1px_0_rgba(255,255,255,0.05),0_0_12px_-4px_rgba(240,185,11,0.3)] backdrop-blur-3xl'
+            : 'text-text dark:hover:bg-elevated/40 border-transparent hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]',
+        )
+      }
+    >
+      <Icon className="h-4 w-4 shrink-0" />
+      <span>{link.label}</span>
+    </NavLink>
+  )
 }
 
 export function MobileNavDrawer({
@@ -82,7 +124,7 @@ export function MobileNavDrawer({
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            className="text-text-secondary hover:bg-elevated hover:text-text flex h-9 w-9 items-center justify-center rounded-lg transition-colors"
+            className="text-text-secondary hover:bg-elevated hover:text-text flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -90,49 +132,21 @@ export function MobileNavDrawer({
 
         {/* Nav Items */}
         <nav className="flex-1 space-y-1 overflow-y-auto p-3">
-          {links.map((link) => {
-            const Icon = LINK_ICONS[link.label] ?? Home
+          {/* Public links */}
+          {links.map((link) => (
+            <NavItem key={link.href} link={link} onClose={onClose} />
+          ))}
 
-            return (
+          {/* Authenticated section */}
+          {isAuthenticated && (
+            <>
+              <div className="bg-border/40 my-3 h-px" />
+
+              {/* User header */}
               <NavLink
-                key={link.href}
-                to={link.href}
+                to="/profile"
                 onClick={onClose}
-                className={({ isActive }) =>
-                  cn(
-                    'flex h-11 items-center gap-3 rounded-lg border px-3 text-sm font-medium transition-all duration-200',
-                    isActive
-                      ? 'border-primary/30 dark:bg-primary/10 text-primary dark:text-primary bg-white/20 shadow-[inset_0_3px_6px_rgba(0,0,0,0.6),inset_0_-1px_0_rgba(240,185,11,0.15),inset_0_1px_0_rgba(255,255,255,0.05),0_0_12px_-4px_rgba(240,185,11,0.3)] backdrop-blur-3xl'
-                      : 'text-text dark:hover:bg-elevated/40 border-transparent hover:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]',
-                  )
-                }
-              >
-                <Icon className="h-4 w-4 shrink-0" />
-                <span>{link.label}</span>
-              </NavLink>
-            )
-          })}
-        </nav>
-
-        {/* Bottom: Sign Out + User */}
-        <div className="border-border border-t p-3">
-          {isAuthenticated ? (
-            <div className="space-y-2">
-              <button
-                type="button"
-                onClick={() => handleSignOut(onClose)}
-                className="text-error hover:bg-error/10 cursor-pointer flex h-11 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-left text-sm font-medium transition-colors"
-              >
-                <LogOut className="h-4 w-4 shrink-0" />
-                <span>Sign Out</span>
-              </button>
-
-              <div className="bg-border/40 h-px" />
-
-              <NavLink
-                to="/dashboard"
-                onClick={onClose}
-                className="hover:bg-elevated flex items-center gap-3 rounded-lg px-3 py-2 transition-colors"
+                className="hover:bg-elevated mb-1 flex items-center gap-3 rounded-lg px-3 py-2 transition-colors"
               >
                 <div className="bg-primary text-background relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-bold">
                   {avatarUrl ? (
@@ -149,21 +163,45 @@ export function MobileNavDrawer({
                   <span className="text-text truncate text-sm font-medium">
                     {userName}
                   </span>
-                  <span className="text-text text-xs">View Dashboard</span>
+                  <span className="text-text-secondary text-xs">
+                    View Profile
+                  </span>
                 </div>
               </NavLink>
-            </div>
-          ) : (
-            <NavLink
-              to="/login"
-              onClick={onClose}
-              className="bg-primary text-background hover:bg-primary-hover flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors"
-            >
-              <LogIn className="h-4 w-4" />
-              Sign In
-            </NavLink>
+
+              {/* Dashboard links */}
+              {DASHBOARD_LINKS.map((link) => (
+                <NavItem key={link.href} link={link} onClose={onClose} />
+              ))}
+
+              <div className="bg-border/40 my-3 h-px" />
+
+              {/* Sign Out */}
+              <button
+                type="button"
+                onClick={() => handleSignOut(onClose)}
+                className="text-error hover:bg-error/10 flex h-11 w-full cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 text-left text-sm font-medium transition-colors"
+              >
+                <LogOut className="h-4 w-4 shrink-0" />
+                <span>Sign Out</span>
+              </button>
+            </>
           )}
-        </div>
+
+          {/* Not authenticated: Sign In */}
+          {!isAuthenticated && (
+            <div className="mt-3">
+              <NavLink
+                to="/login"
+                onClick={onClose}
+                className="bg-primary text-background hover:bg-primary-hover flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors"
+              >
+                <LogIn className="h-4 w-4" />
+                Sign In
+              </NavLink>
+            </div>
+          )}
+        </nav>
       </aside>
     </>
   )
