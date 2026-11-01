@@ -400,10 +400,11 @@ cryptopulse/
 │   └── tech/                         # Tech stack icons (SVG)
 │
 ├── screenshots/                      # README screenshots
-│   ├── home-desktop.png
-│   ├── home-mobile.png
-│   ├── markets-desktop.png
-│   ├── coin-mobile.png
+│   ├── home-dark-des.png
+│   ├── home-light-des.png
+│   ├── coin-dark-des.png
+│   ├── markets-dark-des.png
+│   ├── wallet-dark-mob.png
 │   └── ...
 │
 ├── src/
@@ -416,14 +417,23 @@ cryptopulse/
 │   │   ├── layout/                   # TopBar, Sidebar, Footer, MobileNavDrawer
 │   │   ├── providers/                # Auth, Wallet, Watchlist, Theme initializers
 │   │   └── ui/                       # AnimatedModal, Button, Charts, DataTable, etc.
+│   │       ├── DataTable/            # DataTable, DataTableRow, VirtualBody, types
+│   │       ├── AmbientLights.tsx
+│   │       ├── AnimatedModal.tsx
+│   │       ├── Button.tsx
+│   │       ├── EmptyState.tsx        # Shared empty state
+│   │       ├── FilterTabs.tsx        # Shared filter tabs
+│   │       ├── Head.tsx              # SEO / Open Graph meta
+│   │       ├── PremiumCard.tsx       # Shared TiltCard + BorderBeam + SpotlightCard
+│   │       └── ...
 │   │
 │   ├── constants/                    # Fees, about content, ambient lights, etc.
 │   │   ├── about.ts
-│   │   ├── ambient.ts
+│   │   ├── ambient.ts                # AmbientLights variants
 │   │   ├── fees.ts
 │   │   ├── footer.ts
 │   │   ├── header.ts
-│   │   ├── transactions.ts
+│   │   ├── transactions.ts           # Transaction type meta
 │   │   ├── ui.ts
 │   │   ├── zIndex.ts
 │   │   └── index.ts
@@ -436,11 +446,11 @@ cryptopulse/
 │   │   ├── dashboard/                # Allocation, Movers, QuickActions
 │   │   ├── home/                     # Hero, LivePulse, TrendingCoins
 │   │   ├── markets/                  # Markets table, filters, grid
-│   │   ├── profile/                  # Profile, Security, Avatar
-│   │   ├── transactions/             # Transactions list, filters, modal
+│   │   ├── profile/                  # Profile, Security, Avatar, WalletCard
+│   │   ├── transactions/             # Transactions list, modal
 │   │   └── wallet/                   # Portfolio, Holdings, Deposit/Withdraw
 │   │
-│   ├── hooks/                        # useWallet, useCoins, useCoinImages, etc.
+│   ├── hooks/                        # useWallet, useCoins, useSignOut, etc.
 │   │
 │   ├── layouts/                      # RootLayout, AppLayout, AuthLayout
 │   │
@@ -487,11 +497,12 @@ cryptopulse/
 │
 ├── .env.example                      # Environment variables example
 ├── .gitignore                        # Git ignore (node_modules, dist, .env.local)
-├── .prettierrc                       # Prettier config
 ├── eslint.config.js                  # ESLint config
 ├── index.html                        # HTML entry
+├── LICENSE                           # MIT License
 ├── package.json
 ├── pnpm-lock.yaml
+├── prettier.config.js                # Prettier config
 ├── README.md                         # 👋 Hello You are here now
 ├── tsconfig.json
 ├── tsconfig.app.json
