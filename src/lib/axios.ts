@@ -16,19 +16,14 @@ export const apiClient = axios.create({
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response) {
-      const { status } = error.response
-
-      if (status === 429) {
-        console.error('Rate limit exceeded. Please try again later.')
-      }
-      if (status >= 500) {
-        console.error('Server error. Please try again.')
-      }
-    } else if (error.request) {
-      console.error('Network error. Check your connection.')
-    }
-
+    console.error('API Error:', {
+      url: error.config?.url,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      message: error.message,
+      code: error.code,
+      data: error.response?.data,
+    })
     return Promise.reject(error)
   }
 )

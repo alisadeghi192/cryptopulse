@@ -112,40 +112,22 @@ export function ModalBody({
     )
   }, [open])
 
-  // Outside click
-  useEffect(() => {
-    if (!open || !dismissible) return
-    const onDown = (e: MouseEvent | TouchEvent) => {
-      if (!panelRef.current?.contains(e.target as Node)) setOpen(false)
-    }
-    document.addEventListener('mousedown', onDown)
-    document.addEventListener('touchstart', onDown)
-    return () => {
-      document.removeEventListener('mousedown', onDown)
-      document.removeEventListener('touchstart', onDown)
-    }
-  }, [open, dismissible, setOpen])
-
   // Escape
   useEffect(() => {
     if (!open || !dismissible) return
-
-    const onDown = (e: MouseEvent | TouchEvent) => {
-      if (!panelRef.current?.contains(e.target as Node)) {
-        e.preventDefault()
-        e.stopPropagation()
-        setOpen(false)
-      }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
     }
-
-    document.addEventListener('mousedown', onDown, true)
-    document.addEventListener('touchstart', onDown, { capture: true })
-
-    return () => {
-      document.removeEventListener('mousedown', onDown, true)
-      document.removeEventListener('touchstart', onDown, true)
-    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
   }, [open, dismissible, setOpen])
+
+  const handleOverlayClose = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!dismissible) return
+    e.preventDefault()
+    e.stopPropagation()
+    setOpen(false)
+  }
 
   if (!open) return null
 
@@ -157,6 +139,8 @@ export function ModalBody({
       <div
         ref={overlayRef}
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={handleOverlayClose}
+        onTouchEnd={handleOverlayClose}
       />
       <div
         ref={panelRef}

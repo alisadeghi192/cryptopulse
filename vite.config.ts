@@ -56,23 +56,14 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api/coingecko': {
-          target: 'https://api.coingecko.com/api/v3',
+          target: 'https://cryptopulse-self.vercel.app',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/coingecko/, ''),
-          headers: {
-            'x-cg-demo-api-key': env.COINGECKO_API_KEY || '',
-          },
+          secure: true,
         },
         '/api/image': {
-          target: 'https://assets.coingecko.com',
+          target: 'https://cryptopulse-self.vercel.app',
           changeOrigin: true,
-          rewrite: (path) => {
-            const url = new URL(`http://localhost${path}`)
-            const target = url.searchParams.get('url')
-            if (!target) return path
-            const targetUrl = new URL(target)
-            return targetUrl.pathname + targetUrl.search
-          },
+          secure: true,
         },
       },
     },
